@@ -6,8 +6,7 @@ import { addNewBook,GetFloodReports } from "../../redux/reducer";
 import style from "./style";
 
 const Home = () => {
-    const bookList = useAppSelector((state) => state.book.bookList);
-    const floodReports = useAppSelector((state) => state.book.flood_reports);
+    const {bookList,flood_reports} = useAppSelector((state) => state.book);
     
     const dispatch = useAppDispatch();
     const [id, setId] = useState('')
@@ -15,9 +14,9 @@ const Home = () => {
     const [author, setAuthor] = useState('')
 
     useEffect(()=>{
-        dispatch(GetFloodReports())
-        console.log(floodReports)
-    })
+        dispatch(GetFloodReports(null))
+        console.log(flood_reports, bookList)
+    },[])
 
     const itemBook = ({ item }) => {
         const { author, title } = item

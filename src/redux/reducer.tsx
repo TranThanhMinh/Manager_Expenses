@@ -65,34 +65,16 @@ export const bookSlice = createSlice({
     deleteBook: (state, action: PayloadAction<{ id: string }>) => {
       state.bookList = state.bookList.filter((book) => book.id !== action.payload.id);
     },
-    GetFloodReports: (state, action: PayloadAction<any>) => {
+    GetFloodReports: (state, action: PayloadAction<null>) => {
+      
       Service.getApi(list_flood_reports).then(data => {
         if (data.status == 'success') {
-          state.flood_reports = data
-        } else {
-
+          state.flood_reports  = data
         }
       }).catch(message => console.log(message))
     }
   },
 });
-
-// export const getFloodReports = createSlice({
-//   name: 'flood_reports',
-//   initialState,
-//   reducers: {
-//     GetFloodReports: (state, action: PayloadAction<FloodReports>) => {
-//       Service.getApi(list_flood_reports).then(data => {
-//         if (action.payload.status == 'success') {
-//           state.flood_reports = action.payload
-
-//         } else {
-
-//         }
-//       }).catch(message => console.log(message))
-//     }
-//   },
-// });
 
 // To able to use reducers we need to export them.
 export const { addNewBook, updateBook, deleteBook, GetFloodReports } = bookSlice.actions;
