@@ -5,7 +5,7 @@ class Service {
 
     static getApi(uri) {
         return new Promise<FloodReports>(function (resolve, reject) {
-            axios.get<FloodReports>(uri)
+            axios.get(uri)
                 .then(res => {
                     {
                         resolve(res.data);

@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, TextInput, TouchableOpacity } from "react-native"
 import { Color } from "../../common";
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { addNewBook,GetFloodReports } from "../../redux/reducer";
+import * as ActionTypes from '../../redux/actions/ActionTypes'
+import { useSelector, useDispatch } from "react-redux";
+// import { addNewBook,GetFloodReports } from "../../redux/reducer";
 import style from "./style";
+import { useTypedSelector } from '../../hooks/useTypeSelector';
 
+import { getFloodReports } from "../../redux/actions/danang";
 const Home = () => {
-    const {bookList,flood_reports} = useAppSelector((state) => state.book);
-    
-    const dispatch = useAppDispatch();
+  //  const {bookList,flood_reports} = useAppSelector((state) => state.book);
+  const { comments, loading, error } = useTypedSelector((state) => state.comments);
+    const dispatch = useDispatch();
     const [id, setId] = useState('')
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
 
     useEffect(()=>{
-        dispatch(GetFloodReports(null))
-        console.log(flood_reports, bookList)
+         dispatch(getFloodReports());
     },[])
 
     const itemBook = ({ item }) => {
@@ -28,7 +30,7 @@ const Home = () => {
     }
 
     const handleAddBook = () => {
-        dispatch(addNewBook({ id, title, author }))
+      //  dispatch(addNewBook({ id, title, author }))
     }
 
     const addBook = () => {
@@ -48,9 +50,9 @@ const Home = () => {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Color.white, marginHorizontal: 5 }}>
             {addBook()}
-            <FlatList
+            {/* <FlatList
                 data={bookList}
-                renderItem={itemBook} />
+                renderItem={itemBook} /> */}
         </View>
     )
 }

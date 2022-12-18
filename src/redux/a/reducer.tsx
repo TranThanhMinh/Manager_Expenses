@@ -66,7 +66,6 @@ export const bookSlice = createSlice({
       state.bookList = state.bookList.filter((book) => book.id !== action.payload.id);
     },
     GetFloodReports: (state, action: PayloadAction<null>) => {
-      
       Service.getApi(list_flood_reports).then(data => {
         if (data.status == 'success') {
           state.flood_reports  = data
