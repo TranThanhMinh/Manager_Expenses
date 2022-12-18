@@ -10,13 +10,12 @@ import {
 
 export const getFloodReports = params => {
     return async (dispatch) => {
-        dispatch({ type: ActionTypes.FLOOD_REPORTS_PENDING })
+        dispatch({ type: ActionTypes.FLOOD_REPORTS_PENDING, loading: true })
         Service.getApi(list_flood_reports).then(data => {
             if (data.status == 'success') {
-                
-                dispatch({ type: ActionTypes.FLOOD_REPORTS_SUCCESS, data:data })
+                dispatch({ type: ActionTypes.FLOOD_REPORTS_SUCCESS, data: data, loading: false })
             } else {
-                dispatch({ type: ActionTypes.FLOOD_REPORTS_FAIL, data })
+                dispatch({ type: ActionTypes.FLOOD_REPORTS_FAIL, data: data, loading: false })
             }
         }).catch(message => dispatch({ type: ActionTypes.FLOOD_REPORTS_FAIL, message }))
     }

@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 // import { addNewBook,GetFloodReports } from "../../redux/reducer";
 import style from "./style";
 import { useTypedSelector } from '../../hooks/useTypeSelector';
-
 import { getFloodReports } from "../../redux/actions/danang";
 const Home = () => {
   //  const {bookList,flood_reports} = useAppSelector((state) => state.book);
