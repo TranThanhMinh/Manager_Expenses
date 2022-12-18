@@ -14,7 +14,7 @@ import { combineReducers } from 'redux';
 import { danangReducer } from '../reducer/danang';
 
 const reducers = combineReducers({
-comments: danangReducer
+    danang: danangReducer
 });
 
 export default reducers;

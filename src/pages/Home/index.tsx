@@ -10,7 +10,7 @@ import { useTypedSelector } from '../../hooks/useTypeSelector';
 import { getFloodReports } from "../../redux/actions/danang";
 const Home = () => {
   //  const {bookList,flood_reports} = useAppSelector((state) => state.book);
-  const { comments, loading, error } = useTypedSelector((state) => state.comments);
+  const { danang, loading, error } = useTypedSelector((state) => state.danang);
     const dispatch = useDispatch();
     const [id, setId] = useState('')
     const [title, setTitle] = useState('')
@@ -21,10 +21,10 @@ const Home = () => {
     },[])
 
     const itemBook = ({ item }) => {
-        const { author, title } = item
+        const { location  } = item
         return (
             <View>
-                <Text>{title} {author}</Text>
+                <Text>{location.address}</Text>
             </View>
         )
     }
@@ -50,9 +50,9 @@ const Home = () => {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Color.white, marginHorizontal: 5 }}>
             {addBook()}
-            {/* <FlatList
-                data={bookList}
-                renderItem={itemBook} /> */}
+            <FlatList
+                data={danang?.data}
+                renderItem={itemBook} /> 
         </View>
     )
 }

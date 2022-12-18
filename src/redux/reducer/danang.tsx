@@ -4,13 +4,13 @@ import { FloodReports } from '../../model/types.d'
 
 
 interface State {
-  comments: FloodReports|null;
+  danang: FloodReports|null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState = {
-  comments: null,
+  danang: null,
   loading: false, 
   error: null 
 }
@@ -19,19 +19,19 @@ export const danangReducer = (state:State = initialState, action):State => {
   switch(action.type) {
       case ActionTypes.FLOOD_REPORTS_PENDING:
           return {
-            comments: null,
+            danang: null,
             loading: true, 
             error: null 
           } 
       case ActionTypes.FLOOD_REPORTS_SUCCESS:
           return {
               loading: false,
-              comments: action.data,
+              danang: action.data,
               error: null 
           }
       case ActionTypes.FLOOD_REPORTS_FAIL:
           return {
-            comments: null,
+            danang: null,
               loading: false,
               error: action.data 
           }
