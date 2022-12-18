@@ -4,7 +4,7 @@ export type BookState = {
     author: string | undefined;
 };
 
-export interface FloodReports  {
+export type FloodReports = {
     status: String;
     data: Array<Data>
 };

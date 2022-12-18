@@ -1,11 +1,9 @@
 import axios from "axios";
-import { BookState, FloodReports, Data } from '../model/types.d';
 class Service {
 
-
     static getApi(uri) {
-        return new Promise<FloodReports>(function (resolve, reject) {
-            axios.get(uri)
+        return new Promise(function (resolve, reject) {
+             axios.get(uri)
                 .then(res => {
                     {
                         resolve(res.data);

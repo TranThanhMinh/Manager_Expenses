@@ -1,6 +1,7 @@
 
-import { Action, ActionTypes } from '../actions/ActionTypes'
+import * as ActionTypes from '../actions/ActionTypes'
 import Service from '../../common/Service';
+
 import {
     district, token, chaWard, list_flood_reports,
     create_reports, get_flood_report_detail, create_reports_sos,
@@ -8,16 +9,17 @@ import {
 } from '../../common/Api'
 
 
+
 export const getFloodReports = params => {
-    return async (dispatch) => {
-        dispatch({ type: ActionTypes.FLOOD_REPORTS_PENDING, loading: true })
+    return (dispatch) => {
+        dispatch({ type: ActionTypes.FLOOD_REPORTS_PENDING })
         Service.getApi(list_flood_reports).then(data => {
             if (data.status == 'success') {
-                dispatch({ type: ActionTypes.FLOOD_REPORTS_SUCCESS, data: data, loading: false })
+                dispatch({ type: ActionTypes.FLOOD_REPORTS_SUCCESS, data })
             } else {
-                dispatch({ type: ActionTypes.FLOOD_REPORTS_FAIL, data: data, loading: false })
+                global.floodReports = []
+                dispatch({ type: ActionTypes.FLOOD_REPORTS_FAIL, data })
             }
         }).catch(message => dispatch({ type: ActionTypes.FLOOD_REPORTS_FAIL, message }))
     }
 }
-

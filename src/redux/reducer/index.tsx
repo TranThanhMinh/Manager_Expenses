@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
-import { danangReducer } from '../reducer/danang';
+import danangReducer from "../reducer/danang";
 
 const reducers = combineReducers({
-  danang:danangReducer
+   danangReducer
 })
 
 export const store = configureStore({
@@ -12,7 +12,3 @@ export const store = configureStore({
     serializableCheck:false
   })
 })
-
-//This RootState is required to use useSelector later on 
-export type RootState = ReturnType<typeof reducers>;
-
