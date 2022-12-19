@@ -7,6 +7,8 @@ import { getFloodReports } from "../../redux/actions/danang";
 import { Data } from "../../model/types.d";
 import { FloodReports } from "../../model/types.d";
 
+import { addTask, getListTasks} from "../../data/StorageServices";
+
 import * as ActionTypes from '../../redux/actions/ActionTypes'
 const Home = () => {
     const { danangReducer } = useSelector(state => state)
@@ -17,6 +19,13 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getFloodReports());
+
+        // addTask('minh tran')
+        // addTask('minh tran')
+        // addTask('minh tran')
+        getListTasks().then(task =>{
+            console.log(task)
+        })
     }, [])
 
 
@@ -36,9 +45,9 @@ const Home = () => {
     const itemBook = ({ item }) => {
         const i = item as Data
         return (
-            <View>
+            <TouchableOpacity onPress={()=>{console.log(i.location.coordinates)}}>
                 <Text>{i.location.address}</Text>
-            </View>
+            </TouchableOpacity>
         )
     }
 
