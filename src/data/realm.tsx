@@ -9,6 +9,18 @@ const TaskSchema = {
     }
 }
 
+const DailyExpenses = {
+  name: 'Expenses',
+  properties: {
+      id:'string',
+      title:'string',
+      descripbe: 'string',
+      created_time: 'string',
+      price:'string',
+      type:'string',
+  }
+}
+
 export default new Realm({
-    schema: [TaskSchema]
+    schema: [TaskSchema,DailyExpenses]
 })
