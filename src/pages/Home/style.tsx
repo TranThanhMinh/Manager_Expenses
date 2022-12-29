@@ -2,34 +2,80 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 const style = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  list: {
+    color: '#FFF',
+  },
+  btnText: {
+    color: '#FFF',
+  },
+  rowFront: {
+    paddingVertical:5,
+    backgroundColor: 'white',
+    borderBottomColor: 'black',
+    borderBottomWidth: 0.5,
+    height: 50,
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 5,
+  },
+  actionButton: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 75,
+  },
+  closeBtn: {
+    backgroundColor: 'blue',
+    right: 75,
+  },
+  deleteBtn: {
+    backgroundColor: 'red',
+    right: 0,
+  },
   textInput: {
-    width: '100%',
     height: 35,
-    borderColor: 'red',
     borderRadius: 5,
     borderWidth: 1,
-    marginVertical: 5
+    marginVertical: 5,
+    paddingHorizontal:10,
+    marginHorizontal:5
   },
   button: {
-    padding: 10,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'red',
-    borderRadius: 10
+    backgroundColor: '#50a1e3',
+    width:150,
+    marginHorizontal:5,
+    borderRadius: 5
   },
   itemExpenses: {
     flexDirection: 'row',
+    justifyContent:'space-between'
   },
   text: {
     marginHorizontal: 5,
   },
   dropdown1BtnStyle: {
-    width: '100%',
+    width:'100%',
+    marginTop:10,
     height: 35,
     backgroundColor: '#FFF',
-    borderRadius: 8,
+    borderRadius: 5,
     borderWidth: 1,
     borderColor: '#444',
+  
   },
   dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left' },
   dropdown1DropdownStyle: { backgroundColor: '#EFEFEF' },

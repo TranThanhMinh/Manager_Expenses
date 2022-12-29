@@ -9,7 +9,7 @@ const Router = () => {
   return (
     <NavigationContainer>
       <stack.Navigator>
-        <stack.Screen name="Home" component={HomeScreen} />
+        <stack.Screen name="Home" options={{title:'Chi tiêu hàng ngày'}} component={HomeScreen} />
       </stack.Navigator>
     </NavigationContainer>
   );
