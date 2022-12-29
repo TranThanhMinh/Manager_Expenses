@@ -44,8 +44,8 @@ const Home = () => {
   useEffect(() => {
     //  dispatch(getFloodReports());
     let date = new Date().getTime()
-   getListDate(date, date)
- // getList()
+  // getListDate(date, date)
+ getList()
   }, [])
 
 
@@ -97,7 +97,7 @@ const Home = () => {
 
   const renderItem = ({ item, index }) => {
     console.log(item)
-    const { title, descripbe, price, id, created_date } = item
+    const { title, descripbe, price, id, created_date,created_time } = item
     sum = sum + parseFloat(price)
     if (index == listExpenses.length - 1)
       setSumExpenses(sum)
@@ -118,7 +118,7 @@ const Home = () => {
         <View>
           <View style={style.itemExpenses}>
             <Text style={style.text}>{title}</Text>
-            <Text style={style.text}>{momentFormat(parseFloat(created_date))} {momentFormatTime(parseFloat(created_date))}</Text>
+            <Text style={style.text}>{momentFormat(parseFloat(created_date))} {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
             <Text style={style.text}>{descripbe}</Text>
@@ -137,14 +137,16 @@ const Home = () => {
     } else {
       let datetime = new Date().getTime()
       if (id == '') {
-        addExpenses(urid(), title, datetime,datetime, descripbe, price, '1')
+        addExpenses(urid(), title, momentFormatTime(datetime), moment(momentFormat(datetime), "DD-MM-YYYY").toDate().getTime(), descripbe, price, '1')
       }
       else {
-        updateTask(id, title, descripbe, price, datetime,datetime)
+        updateTask(id, title, descripbe, price)
       }
       getListDate(fromDate, toDate)
       //    getList()
     }
+
+  //  momentFormatTime(datetime), moment(momentFormat(datetime), "DD-MM-YYYY").toDate().getTime().toString()
   }
 
   const numberWithCommas = (x) => {

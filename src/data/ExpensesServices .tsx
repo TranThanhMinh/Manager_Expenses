@@ -29,8 +29,8 @@ export const addExpenses = (id, title, created_time, created_date, descripbe, pr
     id: id,
     title: title,
     descripbe: descripbe,
-  //  created_time: created_time,
-    created_date: new Date().getTime().toString(),
+    created_time: created_time,
+    created_date: created_date,
     price: price,
     type: type,
   }
@@ -58,7 +58,7 @@ export const removeTask = (id) => {
   })
 }
 
-export const updateTask = (id, title, descripbe, price, created_time, created_date) => {
+export const updateTask = (id, title, descripbe, price) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   console.log(id, title, descripbe, price)
   console.log(puppies)
