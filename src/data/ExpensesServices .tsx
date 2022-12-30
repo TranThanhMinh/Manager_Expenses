@@ -14,7 +14,6 @@ export const getListExpensesDate = (created_date) => {
 
 export const getListExpensesFromDateToDate = (from_date, to_date) => {
   const tasks = realm.objects('Expenses').filter(item=>item.created_date >=from_date && item.created_date <=to_date)
-  console.log('tasks', tasks)
   return Promise.resolve(tasks)
 }
 
@@ -47,29 +46,26 @@ export const addExpenses = (id, title, created_time, created_date, descripbe, pr
 }
 
 export const removeTask = (id) => {
-
-  const puppies = realm.objects("Expenses").filter(item => item.id == id)
+  const puppies = realm.objects("Expenses").filtered('id = $0', id)
   return new Promise(resolve => {
     realm.write(() => {
       realm.delete(puppies);
-
       resolve(puppies)
     })
   })
 }
 
-export const updateTask = (id, title, descripbe, price) => {
+export const updateTask = (id, title, descripbe, price,typeExpenses) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   console.log(id, title, descripbe, price)
   console.log(puppies)
   // console.log(puppies)
   return new Promise(resolve => {
     realm.write(() => {
-
       puppies[0].descripbe = descripbe
       puppies[0].title = title
       puppies[0].price = price
-
+      puppies[0].type = typeExpenses
       resolve(puppies)
     })
   })

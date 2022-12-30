@@ -5,6 +5,8 @@ const style = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
+    padding:10,
+
   },
   list: {
     color: '#FFF',
@@ -13,11 +15,11 @@ const style = StyleSheet.create({
     color: '#FFF',
   },
   rowFront: {
-    paddingVertical:5,
+    paddingVertical: 5,
     backgroundColor: 'white',
     borderBottomColor: 'black',
     borderBottomWidth: 0.5,
-    height: 60,
+    height: 50,
   },
   rowBack: {
     alignItems: 'center',
@@ -44,51 +46,48 @@ const style = StyleSheet.create({
     right: 0,
   },
   textInput: {
+    flex:1,
     height: 35,
-    borderRadius: 5,
-    borderWidth: 1,
+    borderBottomWidth: 0.5,
     marginVertical: 5,
-    paddingHorizontal:10,
-    marginHorizontal:5
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+    backgroundColor: '#FFF',
   },
   button: {
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#50a1e3',
-    width:150,
-    marginHorizontal:5,
+    width: 150,
+    marginHorizontal: 5,
     borderRadius: 5
   },
   itemExpenses: {
     flexDirection: 'row',
-    justifyContent:'space-between'
+    justifyContent: 'space-between'
   },
   text: {
     marginHorizontal: 5,
-    marginTop:5
   },
   dropdown1BtnStyle: {
-    width:'100%',
-    marginTop:10,
+    flex:1,
     height: 35,
+    borderBottomWidth: 0.5,
+    marginVertical: 5,
+    paddingHorizontal: 0,
+    marginHorizontal: 5,
     backgroundColor: '#FFF',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#444',
-  
   },
   dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left' },
   dropdown1DropdownStyle: { backgroundColor: '#EFEFEF' },
   dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5' },
   dropdown1RowTxtStyle: { color: '#444', textAlign: 'left' },
-  borderSearch:{
+  combobox: {
+    flexDirection: 'row',
     width:'100%',
-    height:35,
-    borderRadius: 5,
-    borderColor :'#444',
-    borderWidth:0.5,
-    paddingHorizontal:10
+    alignItems: 'center',
+
   }
 })
 
