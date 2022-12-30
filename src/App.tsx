@@ -17,11 +17,11 @@ import {
 
 
 const App = () => {
-
+  console.disableYellowBox = true
   return (
     <Provider store={store}>
-     <Router/>
-     </Provider>
+      <Router />
+    </Provider>
   );
 };
 

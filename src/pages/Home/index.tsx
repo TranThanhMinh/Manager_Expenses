@@ -219,7 +219,7 @@ const Home = (props) => {
   return (
     <View style={style.container}>
       {/* {addBook()} */}
-      <View style={{ marginTop: 10, marginLeft: 5, flexDirection: 'row' }}>
+      <View style={{ marginTop: 10,marginHorizontal:10, flexDirection: 'row' }}>
         <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>
         <TouchableOpacity onPress={toggleModalFromDate}>
           <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
@@ -229,11 +229,11 @@ const Home = (props) => {
           <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ margin: 5 }}>
+      <View style={{margin:10 }}>
         <TextInput placeholder="tìm kiếm" style={style.borderSearch} onChangeText={(text) => handleSearch(text)} />
       </View>
       <SwipeListView
-        style={{ marginBottom: 80, marginTop: 5 }}
+        style={{ marginBottom: 80, marginTop: 5,marginHorizontal:10 }}
         data={listExpenses}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
@@ -243,8 +243,8 @@ const Home = (props) => {
         previewOpenValue={-40}
         previewOpenDelay={3000}
         onRowDidOpen={onItemOpen} />
-      <View style={{ position: 'absolute', bottom: 10, width: '100%',borderTopWidth:0.5,borderColor:'red' }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10 }}>
+      <View style={{ position: 'absolute', bottom: 20, width: '100%',borderTopWidth:0.5,borderColor:'#50a1e3' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginTop:5 }}>
           <Text style={{ color: 'red' }}>Tổng tiền chi: {numberWithCommas(sumExpenses)} VND</Text>
           <Text style={{ color: 'red' }}>Thu nợ: {numberWithCommas(debtcollection)} VND</Text>
         </View>

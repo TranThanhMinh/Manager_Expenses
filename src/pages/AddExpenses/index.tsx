@@ -137,10 +137,13 @@ const AddExpenses = (props) => {
         <Icon.DollarSign stroke={'#50a1e3'} />
         <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={price} placeholder="Nhâp giá" keyboardType="numeric" onChangeText={(text) => { setPrice(text), setIsPrice(true) }} />
       </View>
+      <View style={{justifyContent:'center',alignItems:'center', width:'100%',marginVertical:10}}> 
       <TouchableOpacity style={style.button} onPress={handleAdd}>
         {id == '' ? <Text style={{ color: 'white' }}>Thêm chi tiêu</Text> :
           <Text style={{ color: 'white' }}>Sửa chi tiêu</Text>}
       </TouchableOpacity>
+      </View>
+
     </View>
   )
 }
