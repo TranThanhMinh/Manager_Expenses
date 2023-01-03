@@ -13,10 +13,8 @@ const style = StyleSheet.create({
     color: '#FFF',
   },
   rowFront: {
-    paddingVertical:5,
+   
     backgroundColor: 'white',
-    borderBottomColor: 'black',
-    borderBottomWidth: 0.5,
     height: 60,
   },
   rowBack: {
@@ -66,7 +64,14 @@ const style = StyleSheet.create({
   },
   text: {
     marginHorizontal: 5,
-    marginTop:5
+    marginTop:5,
+  },
+  text2: {
+    marginHorizontal: 5,
+    marginTop:5,
+    color:'balck',
+    fontWeight:"bold",
+    fontSize:16
   },
   dropdown1BtnStyle: {
     width:'100%',

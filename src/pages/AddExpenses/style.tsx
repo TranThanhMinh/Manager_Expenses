@@ -5,8 +5,11 @@ const style = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
+  },
+  body: {
+    backgroundColor: 'white',
+    flex: 1,
     padding:10,
-
   },
   list: {
     color: '#FFF',
@@ -54,6 +57,16 @@ const style = StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: '#FFF',
   },
+  text: {
+    flex:1,
+    height: 35,
+    borderBottomWidth: 1,
+    borderBottomColor:'#C5C5C5',
+    textAlignVertical:'center',
+    color:'#000',
+    marginVertical: 5,
+    marginHorizontal: 5,
+  },
   button: {
     padding: 5,
     justifyContent: 'center',
@@ -67,9 +80,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  text: {
-    marginHorizontal: 5,
-  },
+
   dropdown1BtnStyle: {
     flex:1,
     height: 35,
@@ -87,7 +98,6 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     width:'100%',
     alignItems: 'center',
-
   }
 })
 

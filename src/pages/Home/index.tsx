@@ -10,7 +10,7 @@ import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { addTask, getListTasks } from "../../data/StorageServices";
 import {
-   removeTask, getListExpensesFromDateToDate,deleteBorrow
+  removeTask, getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
@@ -85,13 +85,27 @@ const Home = (props) => {
     setSelectedFromDate(from)
     setSelectedToDate(toDate)
     getListExpensesFromDateToDate(from, toDate).then(task => {
-      let a = [...task, ...task, ...task, ...task, ...task]
-      setListExpenses(task)
-      setListSearch(task)
+      let list = task.filter(item => item.type != 9 && item.type != 10 && item.type != 11 && item.type != 12)
+      filterDate(list)
     })
     setId('')
     setDescripbe('')
     setPrice('')
+  }
+
+  const filterDate = (list) => {
+    let newList = Object.values(list.reduce((acc, item) => {
+      if (!acc[item.created_date]) acc[item.created_date] = {
+        created_date: item.created_date,
+        list: []
+      };
+      acc[item.created_date].list.push(item);
+      return acc;
+    }, {}))
+    setListExpenses(newList)
+    setListSearch(newList)
+    if (list.length == 0)
+      setSumExpenses(0)
   }
 
 
@@ -100,35 +114,51 @@ const Home = (props) => {
   }
 
   const momentFormatTime = (date) => {
-    return moment(date).format("hh:mm")
+    return moment(date).format("HH:mm")
+  }
+
+  const itemExpenses = ({ item, index }) => {
+    console.log('renderItem', price)
+    let sum2 = 0
+    item.list.map((i) => {
+      sum2 = sum2 + parseFloat(i.price)
+    })
+
+    sum = sum + sum2
+    if (index == listExpenses.length - 1)
+      setSumExpenses(sum)
+
+    return (
+      <View style={{ margin: 5 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{
+            fontSize: 17,
+          }}>Ngày {momentFormat(parseFloat(item.created_date))}</Text>
+          <Text style={{
+            fontSize: 17, color: 'green', fontWeight: 'bold'
+          }}>{Utils.numberWithCommas(sum2)} VND</Text>
+        </View>
+
+        <View style={{ backgroundColor: 'black', width: '100%', height: 0.7, marginVertical: 5 }} />
+        <SwipeListView
+          style={{ marginHorizontal: 10 }}
+          data={item.list}
+          renderItem={renderItem}
+          renderHiddenItem={renderHiddenItem}
+          leftOpenValue={0}
+          rightOpenValue={-75}
+          previewRowKey={'0'}
+          previewOpenValue={-40}
+          previewOpenDelay={3000}
+          onRowDidOpen={onItemOpen} />
+      </View>
+    )
   }
 
 
   const renderItem = ({ item, index }) => {
-    console.log(item)
-    const { title, descripbe, price, type, created_date, created_time, price_borrow } = item
-    if (type != 9 && type != 12)
-      sum = sum + parseFloat(price)
 
-    if (type == 9)
-      sum_borrow = sum_borrow + parseFloat(price)
-
-    if (type == 10)
-      sum_pay = sum_pay + parseFloat(price)
-
-    if (type == 11)
-      sum_lend = sum_lend + parseFloat(price)
-
-    if (type == 12)
-      sum_debt_collection = sum_debt_collection + parseFloat(price)
-
-    if (index == listExpenses.length - 1) {
-      setSumExpenses(sum)
-      setBorrow(sum_borrow)
-      setLend(sum_lend)
-      setPay(sum_pay)
-      setDebtCollection(sum_debt_collection)
-    }
+    const { descripbe, price, type, created_date, created_time, price_borrow } = item
 
     return (
       <TouchableHighlight
@@ -138,14 +168,14 @@ const Home = (props) => {
         style={style.rowFront}
         underlayColor={'#fff'}
       >
-        <View>
+        <View style={{ height: 50 }}>
           <View style={style.itemExpenses}>
-            {/* <Text style={style.text}>{Utils.session[title].name}</Text> */}
-            <Text style={style.text}>{momentFormat(parseFloat(created_date))} {created_time}</Text>
+            <Text style={[style.text2, { color: 'black' }]}>{Utils.TypeExpenses[type].name}</Text>
+            <Text style={style.text}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={style.text}>{descripbe} ({Utils.TypeExpenses[type].name})</Text>
-            <Text style={[style.text, { color: 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND {price_borrow}</Text>
+            <Text style={style.text}>{descripbe}</Text>
+            <Text style={[style.text, { color: 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -155,14 +185,14 @@ const Home = (props) => {
 
 
 
-  const handleRemove = (id,id_borrow,price_borrow,type) => {
+  const handleRemove = (id, id_borrow, price_borrow) => {
     console.log(id, fromDate, toDate)
     removeTask(id).then(task => {
       getListExpensesFromDateToDate(fromDate, toDate).then(task => {
-        setListExpenses(task)
-        setListSearch(task)
-        if(id_borrow != '')
-        deleteBorrow(id_borrow,price_borrow)
+        if (id_borrow != '')
+          deleteBorrow(id_borrow, price_borrow)
+        let list = task.filter(item => item.type != 9 && item.type != 10 && item.type != 11 && item.type != 12)
+        filterDate(list)
       })
     })
   }
@@ -173,7 +203,7 @@ const Home = (props) => {
       <View style={style.rowBack}>
         <TouchableOpacity
           style={[style.actionButton, style.deleteBtn]}
-          onPress={() => handleRemove(data.item.id,data.item.id_borrow,data.item.price_borrow)}
+          onPress={() => handleRemove(data.item.id, data.item.id_borrow, data.item.price_borrow)}
         >
           <Text style={style.btnText}>Xóa</Text>
         </TouchableOpacity>
@@ -205,12 +235,10 @@ const Home = (props) => {
 
   const handleSearch = (search) => {
     if (search != '') {
-      console.log('search', search)
       const list = listSearch.filter(item => item.descripbe.toLowerCase().includes(search.toLowerCase()))
       setListExpenses(list)
     } else {
       setListExpenses(listSearch)
-      console.log('search all', listSearch)
     }
 
   }
@@ -218,8 +246,7 @@ const Home = (props) => {
 
   return (
     <View style={style.container}>
-      {/* {addBook()} */}
-      <View style={{ marginTop: 10,marginHorizontal:10, flexDirection: 'row' }}>
+      <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row' }}>
         <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>
         <TouchableOpacity onPress={toggleModalFromDate}>
           <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
@@ -229,33 +256,17 @@ const Home = (props) => {
           <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
         </TouchableOpacity>
       </View>
-      <View style={{margin:10 }}>
+      <View style={{ margin: 10 }}>
         <TextInput placeholder="tìm kiếm" style={style.borderSearch} onChangeText={(text) => handleSearch(text)} />
       </View>
-      <SwipeListView
-        style={{ marginBottom: 80, marginTop: 5,marginHorizontal:10 }}
+      <FlatList
+        style={{ marginTop: 10 }}
         data={listExpenses}
-        renderItem={renderItem}
-        renderHiddenItem={renderHiddenItem}
-        leftOpenValue={0}
-        rightOpenValue={-75}
-        previewRowKey={'0'}
-        previewOpenValue={-40}
-        previewOpenDelay={3000}
-        onRowDidOpen={onItemOpen} />
-      <View style={{ position: 'absolute', bottom: 20, width: '100%',borderTopWidth:0.5,borderColor:'#50a1e3' }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginTop:5 }}>
-          <Text style={{ color: 'red' }}>Tổng tiền chi: {Utils.numberWithCommas(sumExpenses)} VND</Text>
-          <Text style={{ color: 'red' }}>Thu nợ: {Utils.numberWithCommas(debtcollection)} VND</Text>
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10 }}>
-          <Text style={{ color: 'red' }}>Trả nợ: {Utils.numberWithCommas(pay)} VND</Text>
-          <Text style={{ color: 'red' }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>
-        </View>
-
-        <Text style={{ color: 'red',marginHorizontal:10 }}>Đi vay: {Utils.numberWithCommas(borrow)} VND</Text>
+        renderItem={itemExpenses} />
+      <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
+        <Text style={{ marginTop: 10, marginLeft: 5, color: '#50a1e3', fontSize: 18 }}>Tổng tiền chi: {Utils.numberWithCommas(sumExpenses)} VND</Text>
       </View>
-      <TouchableOpacity style={{ position: 'absolute', bottom: 80, right: 20 }} onPress={() => props.goToAdd()}>
+      <TouchableOpacity style={{ position: 'absolute', bottom: 60, right: 20 }} onPress={() => props.goToAdd()}>
         <ButtonAdd />
       </TouchableOpacity>
       <Modal isVisible={isFromDate}>
