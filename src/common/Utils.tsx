@@ -23,6 +23,10 @@ Utils.formatDateDefault = (timestamp) => {
 }
 Utils.getTimes = () => Math.floor(new Date().getTime() / 1000)
 
+Utils.numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
 Utils.session = [{
   id: 0,
   name: "Buổi sáng"

@@ -18,20 +18,26 @@ export const getListExpensesFromDateToDate = (from_date, to_date) => {
 }
 
 
+export const getListExpensesBorrow = (id) => {
+  const tasks = realm.objects('Expenses').filter(item=>item.type == id && item.price_borrow > 0)
+  return Promise.resolve(tasks)
+}
 
-export const addExpenses = (id, title, created_time, created_date, descripbe, price, type) => {
+export const addExpenses = (id, created_time, created_date, descripbe, price,price_borrow, type,type_borrow,id_borrow) => {
   if (!id) {
     return Promise.reject('Expenses name is empty')
   }
 
   const data = {
     id: id,
-    title: title,
     descripbe: descripbe,
     created_time: created_time,
     created_date: created_date,
     price: price,
+    price_borrow: price_borrow,
     type: type,
+    type_borrow:type_borrow,
+    id_borrow: id_borrow,
   }
 
   const tasks = realm.objects('Expenses')
@@ -55,17 +61,39 @@ export const removeTask = (id) => {
   })
 }
 
-export const updateTask = (id, title, descripbe, price,typeExpenses) => {
+export const updateTask = (id, descripbe, price,price_borrow,typeExpenses) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
-  console.log(id, title, descripbe, price)
+  console.log(id, descripbe, price)
   console.log(puppies)
-  // console.log(puppies)
   return new Promise(resolve => {
     realm.write(() => {
       puppies[0].descripbe = descripbe
-      puppies[0].title = title
       puppies[0].price = price
+      puppies[0].price_borrow = price_borrow
       puppies[0].type = typeExpenses
+      resolve(puppies)
+    })
+  })
+}
+
+export const updateBorrow = (id,price_borrow) => {
+  const puppies = realm.objects("Expenses").filter(item => item.id == id)
+  console.log(puppies)
+  return new Promise(resolve => {
+    realm.write(() => {
+      puppies[0].price_borrow = puppies[0].price_borrow - price_borrow 
+      resolve(puppies)
+    })
+  })
+}
+
+
+
+export const deleteBorrow = (id,price_borrow) => {
+  const puppies = realm.objects("Expenses").filter(item => item.id == id)
+  return new Promise(resolve => {
+    realm.write(() => {
+      puppies[0].price_borrow = puppies[0].price_borrow + price_borrow 
       resolve(puppies)
     })
   })

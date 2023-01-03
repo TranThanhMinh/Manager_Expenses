@@ -13,12 +13,14 @@ const DailyExpenses = {
   name: 'Expenses',
   properties: {
       id:'string',
-      title:'int',
       descripbe: 'string',
       created_time: 'string',
       created_date: 'double',
       price:'string',
-      type:'int',
+      price_borrow:'float',
+      type:'int', 
+      type_borrow:'int',
+      id_borrow:'string',
   }
 }
 

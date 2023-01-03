@@ -10,8 +10,7 @@ import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { addTask, getListTasks } from "../../data/StorageServices";
 import {
-  addExpenses, getListExpenses, removeTask, updateTask, getListExpensesDate,
-  getListExpensesFromDateToDate
+   removeTask, getListExpensesFromDateToDate,deleteBorrow
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
@@ -106,7 +105,8 @@ const Home = (props) => {
 
 
   const renderItem = ({ item, index }) => {
-    const { title, descripbe, price, type, created_date, created_time } = item
+    console.log(item)
+    const { title, descripbe, price, type, created_date, created_time, price_borrow } = item
     if (type != 9 && type != 12)
       sum = sum + parseFloat(price)
 
@@ -140,29 +140,29 @@ const Home = (props) => {
       >
         <View>
           <View style={style.itemExpenses}>
-            <Text style={style.text}>{Utils.session[title].name}</Text>
+            {/* <Text style={style.text}>{Utils.session[title].name}</Text> */}
             <Text style={style.text}>{momentFormat(parseFloat(created_date))} {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
             <Text style={style.text}>{descripbe} ({Utils.TypeExpenses[type].name})</Text>
-            <Text style={[style.text, { color: 'red' }]}>{numberWithCommas(parseFloat(price))} VND</Text>
+            <Text style={[style.text, { color: 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND {price_borrow}</Text>
           </View>
         </View>
       </TouchableHighlight>
     )
   }
 
-  const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
 
-  const handleRemove = (id) => {
+
+  const handleRemove = (id,id_borrow,price_borrow,type) => {
     console.log(id, fromDate, toDate)
     removeTask(id).then(task => {
       getListExpensesFromDateToDate(fromDate, toDate).then(task => {
         setListExpenses(task)
         setListSearch(task)
+        if(id_borrow != '')
+        deleteBorrow(id_borrow,price_borrow)
       })
     })
   }
@@ -173,7 +173,7 @@ const Home = (props) => {
       <View style={style.rowBack}>
         <TouchableOpacity
           style={[style.actionButton, style.deleteBtn]}
-          onPress={() => handleRemove(data != null ? data.item.id : null)}
+          onPress={() => handleRemove(data.item.id,data.item.id_borrow,data.item.price_borrow)}
         >
           <Text style={style.btnText}>Xóa</Text>
         </TouchableOpacity>
@@ -245,15 +245,15 @@ const Home = (props) => {
         onRowDidOpen={onItemOpen} />
       <View style={{ position: 'absolute', bottom: 20, width: '100%',borderTopWidth:0.5,borderColor:'#50a1e3' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginTop:5 }}>
-          <Text style={{ color: 'red' }}>Tổng tiền chi: {numberWithCommas(sumExpenses)} VND</Text>
-          <Text style={{ color: 'red' }}>Thu nợ: {numberWithCommas(debtcollection)} VND</Text>
+          <Text style={{ color: 'red' }}>Tổng tiền chi: {Utils.numberWithCommas(sumExpenses)} VND</Text>
+          <Text style={{ color: 'red' }}>Thu nợ: {Utils.numberWithCommas(debtcollection)} VND</Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10 }}>
-          <Text style={{ color: 'red' }}>Trả nợ: {numberWithCommas(pay)} VND</Text>
-          <Text style={{ color: 'red' }}>Cho vay: {numberWithCommas(lend)} VND</Text>
+          <Text style={{ color: 'red' }}>Trả nợ: {Utils.numberWithCommas(pay)} VND</Text>
+          <Text style={{ color: 'red' }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>
         </View>
 
-        <Text style={{ color: 'red',marginHorizontal:10 }}>Đi vay: {numberWithCommas(borrow)} VND</Text>
+        <Text style={{ color: 'red',marginHorizontal:10 }}>Đi vay: {Utils.numberWithCommas(borrow)} VND</Text>
       </View>
       <TouchableOpacity style={{ position: 'absolute', bottom: 80, right: 20 }} onPress={() => props.goToAdd()}>
         <ButtonAdd />
