@@ -13,7 +13,6 @@ const style = StyleSheet.create({
     color: '#FFF',
   },
   rowFront: {
-   
     backgroundColor: 'white',
     height: 60,
   },

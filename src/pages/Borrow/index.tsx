@@ -21,7 +21,11 @@ import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
 import ButtonAdd from "../../component/ButtonAdd";
 import { Utils } from "@common";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 const Borrow = (props) => {
+  const insets = useSafeAreaInsets();
+
   const isVisible = useIsFocused();
   const { danangReducer } = useSelector(state => state)
   const dispatch = useDispatch();
@@ -214,7 +218,7 @@ const Borrow = (props) => {
 
 
   return (
-    <View style={style.container}>
+    <View style={[style.container,{marginTop:insets.top}]}>
       {/* {addBook()} */}
       <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row' }}>
         <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TextInput, TouchableOpacity, TouchableHighlight } from "react-native"
+import { View, Text, FlatList, TextInput, TouchableOpacity, TouchableHighlight, StatusBar } from "react-native"
 import { useIsFocused } from "@react-navigation/native";
 import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,7 +21,11 @@ import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
 import ButtonAdd from "../../component/ButtonAdd";
 import { Utils } from "@common";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 const Home = (props) => {
+  const insets = useSafeAreaInsets();
+
   const isVisible = useIsFocused();
   const { danangReducer } = useSelector(state => state)
   const dispatch = useDispatch();
@@ -245,54 +249,57 @@ const Home = (props) => {
 
 
   return (
-    <View style={style.container}>
-      <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row' }}>
-        <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>
-        <TouchableOpacity onPress={toggleModalFromDate}>
-          <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
-        </TouchableOpacity>
-        <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}> Đến </Text>
-        <TouchableOpacity onPress={toggleModalToDate}>
-          <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ margin: 10 }}>
-        <TextInput placeholder="tìm kiếm" style={style.borderSearch} onChangeText={(text) => handleSearch(text)} />
-      </View>
-      <FlatList
-        style={{ marginTop: 10 }}
-        data={listExpenses}
-        renderItem={itemExpenses} />
-      <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
-        <Text style={{ marginTop: 10, marginLeft: 5, color: '#50a1e3', fontSize: 18 }}>Tổng tiền chi: {Utils.numberWithCommas(sumExpenses)} VND</Text>
-      </View>
-      <TouchableOpacity style={{ position: 'absolute', bottom: 60, right: 20 }} onPress={() => props.goToAdd()}>
-        <ButtonAdd />
-      </TouchableOpacity>
-      <Modal isVisible={isFromDate}>
-        <View style={{ backgroundColor: 'white' }}>
-          <CalendarPicker
-            previousTitle="Trước"
-            nextTitle="Sau"
-            weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
-            months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-
-            onDateChange={onFromDateChange}
-          />
+    <View style={[style.container]}>
+      <StatusBar backgroundColor={'#50a1e3'} />
+      <View style={[style.container, { marginTop: insets.top }]}>
+        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row' }}>
+          <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>
+          <TouchableOpacity onPress={toggleModalFromDate}>
+            <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+          </TouchableOpacity>
+          <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}> Đến </Text>
+          <TouchableOpacity onPress={toggleModalToDate}>
+            <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-      <Modal isVisible={isToDate}>
-        <View style={{ backgroundColor: 'white' }}>
-          <CalendarPicker
-            previousTitle="Trước"
-            nextTitle="Sau"
-            weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
-            months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-
-            onDateChange={onToDateChange}
-          />
+        <View style={{ margin: 10 }}>
+          <TextInput placeholder="tìm kiếm" style={style.borderSearch} onChangeText={(text) => handleSearch(text)} />
         </View>
-      </Modal>
+        <FlatList
+          style={{ marginTop: 10 }}
+          data={listExpenses}
+          renderItem={itemExpenses} />
+        <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
+          <Text style={{ marginTop: 10, marginLeft: 5, color: '#50a1e3', fontSize: 18 }}>Tổng tiền chi: {Utils.numberWithCommas(sumExpenses)} VND</Text>
+        </View>
+        <TouchableOpacity style={{ position: 'absolute', bottom: 60, right: 20 }} onPress={() => props.goToAdd()}>
+          <ButtonAdd />
+        </TouchableOpacity>
+        <Modal isVisible={isFromDate}>
+          <View style={{ backgroundColor: 'white' }}>
+            <CalendarPicker
+              previousTitle="Trước"
+              nextTitle="Sau"
+              weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
+              months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
+
+              onDateChange={onFromDateChange}
+            />
+          </View>
+        </Modal>
+        <Modal isVisible={isToDate}>
+          <View style={{ backgroundColor: 'white' }}>
+            <CalendarPicker
+              previousTitle="Trước"
+              nextTitle="Sau"
+              weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
+              months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
+
+              onDateChange={onToDateChange}
+            />
+          </View>
+        </Modal>
+      </View>
     </View>
   )
 }

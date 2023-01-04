@@ -11,8 +11,12 @@ import { Utils } from "@common"
 import * as Icon from "react-native-feather"
 import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 const AddExpenses = (props) => {
+  const insets = useSafeAreaInsets();
+
   let item = props.item
   const [type, setType] = useState(0)
   const [typeBorrow, setTypeBorrow] = useState(0)
@@ -124,7 +128,7 @@ const AddExpenses = (props) => {
   }
 
   return (
-    <View style={style.container}>
+    <View style={[style.container,{marginTop:insets.top}]}>
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3',padding:10 }} onPress={() => props.goToBack()}>
         <Icon.ArrowLeft stroke={'white'} />
         <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>

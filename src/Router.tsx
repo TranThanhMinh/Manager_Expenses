@@ -19,7 +19,9 @@ const defaultOptions = {
 const MyTabs = () => {
   return (
     <Tab.Navigator
+    
       screenOptions={({ route }) => ({
+        
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -35,9 +37,10 @@ const MyTabs = () => {
           }
           return <Image source={iconName} style={{ width: 24, height: 24 }} />
         },
-        tabBarActiveTintColor: '#50a1e3',
+        tabBarActiveTintColor: '#fff',
         tabBarInactiveTintColor: '#444',
-        headerShown: false
+        headerShown: false,
+        tabBarStyle:{backgroundColor:'#50a1e3'}
       })} >
       <Tab.Screen name="Home" component={HomeScreen}  options={{ title: "Giao dịc hàng ngày" }}/>
       <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: "Cho vay - Đi vay" }}/>

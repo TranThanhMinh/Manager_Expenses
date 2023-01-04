@@ -10,6 +10,8 @@ import React from 'react';
 import Router from './Router'
 import { Provider } from 'react-redux';
 import { store } from './redux/reducer';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import {
   SafeAreaView,
 
@@ -20,7 +22,9 @@ const App = () => {
   console.disableYellowBox = true
   return (
     <Provider store={store}>
-      <Router />
+      <SafeAreaProvider>
+        <Router />
+      </SafeAreaProvider>
     </Provider>
   );
 };
