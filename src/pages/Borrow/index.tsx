@@ -45,7 +45,7 @@ const Borrow = (props) => {
         let list = task.filter(item => item.type == 9 || item.type == 11 || item.type == 10 || item.type == 12)
         filterDate(list)
       })
-    }else {
+    } else {
       setListExpenses([])
       setBorrow(0)
       setPay(0)
@@ -77,6 +77,7 @@ const Borrow = (props) => {
       acc[item.created_date].list.push(item);
       return acc;
     }, {}))
+    console.log(JSON.stringify(newList))
     setListExpenses(newList.sort(biggestToSmallest))
   }
 
@@ -94,6 +95,7 @@ const Borrow = (props) => {
   }
 
   const itemBorrow = ({ item, index }) => {
+
     item.list.map((i) => {
       if (i.type == 9)
         sum_borrow = sum_borrow + parseFloat(i.price)
@@ -113,19 +115,29 @@ const Borrow = (props) => {
       setDebtCollection(sum_debt_collection)
     }
 
-    return (
-      <View style={{ margin: 5 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
-          <Text style={{
-            fontSize: 17,
-          }}>Ngày {momentFormat(parseFloat(item.created_date))}</Text>
-        </View>
+    let newList = item.list.filter(item => item.type == 9 || item.type == 11)
 
-        <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
-        <FlatList
-          style={{ marginHorizontal: 10 }}
-          data={item.list.filter(item => item.type == 9 || item.type == 11)}
-          renderItem={renderItem} />
+    return (
+      <View>
+        {
+          newList.length > 0 ?
+            (
+              <View style={{ margin: 5 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
+                  <Text style={{
+                    fontSize: 17,
+                  }}>Ngày {momentFormat(parseFloat(item.created_date))}</Text>
+                </View>
+
+                <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
+                <FlatList
+                  style={{ marginHorizontal: 10 }}
+                  data={newList}
+                  renderItem={renderItem} />
+              </View>
+            ) : null
+        }
+
       </View>
     )
   }
@@ -135,17 +147,17 @@ const Borrow = (props) => {
     return (
       <TouchableOpacity
         onPress={() => {
-         props.goToHistory(id)
+          props.goToHistory(id)
         }}
-        style={[style.rowFront,{backgroundColor:price_borrow == 0 ? 'gray':'white'}]}>
+        style={[style.rowFront, { backgroundColor: price_borrow == 0 ? 'gray' : 'white' }]}>
         <View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text,{fontWeight:'bold',color:'black'}]}>{Utils.TypeExpenses[type].name}</Text>
+            <Text style={[style.text, { fontWeight: 'bold', color: 'black' }]}>{Utils.TypeExpenses[type].name}</Text>
             <Text style={style.text}>{descripbe}</Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { color: type == 11 ?  'green' : 'red'}]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
-            <Text style={[style.text, { color: type == 11 ?'red' : 'green' }]}>Còn nợ : {Utils.numberWithCommas(parseFloat(price_borrow))} VND</Text>
+            <Text style={[style.text, { color: type == 11 ? 'green' : 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
+            <Text style={[style.text, { color: type == 11 ? 'red' : 'green' }]}>Còn nợ : {Utils.numberWithCommas(parseFloat(price_borrow))} VND</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -159,10 +171,10 @@ const Borrow = (props) => {
         <Text style={[style.text2, { color: 'white' }]}>Danh sách cho vay - đi vay</Text>
       </View>
       <FlatList
-            style={{ marginTop: 10, marginBottom: 80 }}
-            data={listExpenses}
-            renderItem={itemBorrow}
-          />
+        style={{ marginTop: 10, marginBottom: 80 }}
+        data={listExpenses}
+        renderItem={itemBorrow}
+      />
       <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5 }}>
           <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>
