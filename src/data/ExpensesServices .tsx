@@ -23,7 +23,7 @@ export const getListExpensesBorrow = (id) => {
   return Promise.resolve(tasks)
 }
 
-export const addExpenses = (id, created_time, created_date, descripbe, price,price_borrow, type,type_borrow,id_borrow) => {
+export const addExpenses = (id, created_time, created_date, descripbe, price,price_borrow, type,type_borrow,id_borrow,id_wallet,in_out) => {
   if (!id) {
     return Promise.reject('Expenses name is empty')
   }
@@ -38,6 +38,8 @@ export const addExpenses = (id, created_time, created_date, descripbe, price,pri
     type: type,
     type_borrow:type_borrow,
     id_borrow: id_borrow,
+    id_wallet: id_wallet,
+    in_out:in_out
   }
 
   const tasks = realm.objects('Expenses')

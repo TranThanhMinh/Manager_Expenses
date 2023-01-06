@@ -8,14 +8,12 @@ import { getFloodReports } from "../../redux/actions/danang";
 import { Data } from "../../model/types.d";
 import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
-import { addTask, getListTasks } from "../../data/StorageServices";
+import { getListwallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
   removeTask, getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
-import SelectDropdown from 'react-native-select-dropdown'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
@@ -26,49 +24,48 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Home = (props) => {
   const insets = useSafeAreaInsets();
 
+  const [wallet, setWallet] = useState([]);
   const isVisible = useIsFocused();
   const { danangReducer } = useSelector(state => state)
   const dispatch = useDispatch();
-  const [id, setId] = useState('')
   const [listExpenses, setListExpenses] = useState([])
   const [listSearch, setListSearch] = useState([])
-  const [title, setTitle] = useState('')
-  const [key, setKey] = useState(0)
-  const [descripbe, setDescripbe] = useState('')
-  const [isDescripbe, setIsDescripbe] = useState(true)
-  const [price, setPrice] = useState('')
-  const [isPrice, setIsPrice] = useState(true)
   const [data, setData] = useState<FloodReports>()
   const [sumExpenses, setSumExpenses] = useState(0)
-  const [borrow, setBorrow] = useState(0)
-  const [pay, setPay] = useState(0)
-  const [lend, setLend] = useState(0)
-  const [debtcollection, setDebtCollection] = useState(0)
+  const [sumIN, setSumIN] = useState(0)
+  const [sumOUT, setSumOUT] = useState(0)
   const [fromDate, setSelectedFromDate] = useState(0)
   const [toDate, setSelectedToDate] = useState(0)
   const [isFromDate, setFromDate] = useState(false);
   const [isToDate, setToDate] = useState(false);
 
-  let sum = 0
-  let sum_borrow = 0
-  let sum_lend = 0
-  let sum_pay = 0
-  let sum_debt_collection = 0
+  let collect = 0
+  let payout = 0
+
 
   const session = ["Buổi sáng", "Buổi trưa", "Buổi tối"]
 
   useEffect(() => {
     if (isVisible) {
-      let date = new Date().getTime()
-      getListDate(date, date)
+      const now = new Date();
+      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+      //   console.log(firstDay); // 👉️ Sat Oct 01 2022 ...
+      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
+      let first = new Date(firstDay).getTime()
+      let last = new Date(lastDay).getTime()
+
+      getListDate(first, last)
+      getListwalletDefault(true).then(task => {
+        if (task.length > 0)
+          setWallet(task)
+        else addWalletDefault()
+      })
+
+
     }
 
   }, [isVisible]);
-
-  // useEffect(()=>{
-  //  setListSearch(listExpenses)
-  // },[listExpenses])
-
 
   useEffect(() => {
     const { data, type, message } = danangReducer
@@ -83,18 +80,22 @@ const Home = (props) => {
     }
   }, [danangReducer])
 
+  const addWalletDefault = () => {
+    addWallet(urid(), 'Ví của tôi', 0, new Date().getTime().toString(), true)
+    getListwalletDefault(true).then(task => {
+      setWallet(task)
+    })
+  }
+
   const getListDate = (fromdate, toDate) => {
     console.log('getListDate', moment(momentFormat(fromdate), "DD-MM-YYYY").toDate().getTime(), toDate)
     let from = moment(momentFormat(fromdate), "DD-MM-YYYY").toDate().getTime()
     setSelectedFromDate(from)
     setSelectedToDate(toDate)
     getListExpensesFromDateToDate(from, toDate).then(task => {
-      let list = task.filter(item => item.type != 9 && item.type != 10 && item.type != 11 && item.type != 12)
-      filterDate(list)
+      filterDate(task)
     })
-    setId('')
-    setDescripbe('')
-    setPrice('')
+
   }
 
   const filterDate = (list) => {
@@ -106,12 +107,15 @@ const Home = (props) => {
       acc[item.created_date].list.push(item);
       return acc;
     }, {}))
-    setListExpenses(newList)
-    setListSearch(newList)
+    setListExpenses(newList.sort(biggestToSmallest))
+    setListSearch(newList.sort(biggestToSmallest))
     if (list.length == 0)
       setSumExpenses(0)
   }
 
+  function biggestToSmallest(a, b) {
+    return b.created_date - a.created_date;
+  }
 
   const momentFormat = (date) => {
     return moment(date).format("DD-MM-YYYY")
@@ -122,28 +126,36 @@ const Home = (props) => {
   }
 
   const itemExpenses = ({ item, index }) => {
-    console.log('renderItem', price)
-    let sum2 = 0
+    let sumIn = 0
+    let sumOut = 0
+    let sum = 0
     item.list.map((i) => {
-      sum2 = sum2 + parseFloat(i.price)
+      if (i.in_out == 0)
+        sumOut = sumOut + parseFloat(i.price)
+      else sumIn = sumIn + parseFloat(i.price)
     })
 
-    sum = sum + sum2
-    if (index == listExpenses.length - 1)
+    sum = sumIn - sumOut
+    collect = collect + sumIn
+    payout = payout + sumOut
+    if (index == listExpenses.length - 1) {
       setSumExpenses(sum)
+      setSumIN(collect)
+      setSumOUT(payout)
+    }
 
     return (
       <View style={{ margin: 5 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
           <Text style={{
             fontSize: 17,
           }}>Ngày {momentFormat(parseFloat(item.created_date))}</Text>
           <Text style={{
-            fontSize: 17, color: 'green', fontWeight: 'bold'
-          }}>{Utils.numberWithCommas(sum2)} VND</Text>
+            fontSize: 17, color: sum >= 0 ? 'green' : 'red', fontWeight: 'bold'
+          }}>{Utils.numberWithCommas(sum)} VND</Text>
         </View>
 
-        <View style={{ backgroundColor: 'black', width: '100%', height: 0.7, marginVertical: 5 }} />
+        <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
         <SwipeListView
           style={{ marginHorizontal: 10 }}
           data={item.list}
@@ -159,15 +171,13 @@ const Home = (props) => {
     )
   }
 
-
   const renderItem = ({ item, index }) => {
-
-    const { descripbe, price, type, created_date, created_time, price_borrow } = item
+    const { descripbe, price, type, created_date, created_time, price_borrow, in_out } = item
 
     return (
       <TouchableHighlight
         onPress={() => {
-          props.goToEdit(item)
+          props.goToEdit({ item: item, add: false })
         }}
         style={style.rowFront}
         underlayColor={'#fff'}
@@ -179,15 +189,12 @@ const Home = (props) => {
           </View>
           <View style={style.itemExpenses}>
             <Text style={style.text}>{descripbe}</Text>
-            <Text style={[style.text, { color: 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
+            <Text style={[style.text, { color: in_out == 0 ? 'red' : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
           </View>
         </View>
       </TouchableHighlight>
     )
   }
-
-
-
 
   const handleRemove = (id, id_borrow, price_borrow) => {
     console.log(id, fromDate, toDate)
@@ -195,14 +202,12 @@ const Home = (props) => {
       getListExpensesFromDateToDate(fromDate, toDate).then(task => {
         if (id_borrow != '')
           deleteBorrow(id_borrow, price_borrow)
-        let list = task.filter(item => item.type != 9 && item.type != 10 && item.type != 11 && item.type != 12)
-        filterDate(list)
+        filterDate(task)
       })
     })
   }
 
   const renderHiddenItem = (data, rowMap) => {
-
     return (
       <View style={style.rowBack}>
         <TouchableOpacity
@@ -236,7 +241,6 @@ const Home = (props) => {
     setToDate(!isToDate);
   };
 
-
   const handleSearch = (search) => {
     if (search != '') {
       const list = listSearch.filter(item => item.descripbe.toLowerCase().includes(search.toLowerCase()))
@@ -244,15 +248,19 @@ const Home = (props) => {
     } else {
       setListExpenses(listSearch)
     }
-
   }
-
 
   return (
     <View style={[style.container]}>
       <StatusBar backgroundColor={'#50a1e3'} />
       <View style={[style.container, { marginTop: insets.top }]}>
-        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', alignItems: 'center' }}>
+          <View>
+            <Text style={[style.text2, { color: 'white', borderColor: 'white', borderWidth: 1, borderRadius: 5, padding: 3 }]}>{wallet.length > 0 ? wallet[0].name : 'Chưa có ví'}</Text>
+          </View>
+          <Text style={[style.text2, { color: 'white' }]}>: {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} VND </Text>
+        </View>
+        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
           <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
             <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
@@ -262,17 +270,18 @@ const Home = (props) => {
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ margin: 10 }}>
+        {/* <View style={{ margin: 10 }}>
           <TextInput placeholder="tìm kiếm" style={style.borderSearch} onChangeText={(text) => handleSearch(text)} />
-        </View>
+        </View> */}
         <FlatList
-          style={{ marginTop: 10 }}
+          style={{ marginTop: 10, marginBottom: 80 }}
           data={listExpenses}
           renderItem={itemExpenses} />
         <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
-          <Text style={{ marginTop: 10, marginLeft: 5, color: '#50a1e3', fontSize: 18 }}>Tổng tiền chi: {Utils.numberWithCommas(sumExpenses)} VND</Text>
+          <Text style={{ marginTop: 10, marginLeft: 5, color: 'green', fontSize: 18 }}>Tổng thu: {Utils.numberWithCommas(sumIN)} VND</Text>
+          <Text style={{ marginTop: 10, marginLeft: 5, color: 'red', fontSize: 18 }}>Tổng chi: {Utils.numberWithCommas(sumOUT)} VND</Text>
         </View>
-        <TouchableOpacity style={{ position: 'absolute', bottom: 60, right: 20 }} onPress={() => props.goToAdd()}>
+        <TouchableOpacity style={{ position: 'absolute', bottom: 25, right: 20 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
           <ButtonAdd />
         </TouchableOpacity>
         <Modal isVisible={isFromDate}>

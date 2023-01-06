@@ -2,19 +2,18 @@ import realm from './realm'
 
 export const getListwallet = () => {
   const tasks = realm.objects('wallet')
-
   return Promise.resolve(tasks)
 }
 
 
 
 
-export const getListwalletId = (id) => {
-  const tasks = realm.objects('wallet').filter(item=>item.type == id)
+export const getListwalletDefault = (type) => {
+  const tasks = realm.objects('wallet').filter(item=>item.default == type)
   return Promise.resolve(tasks)
 }
 
-export const addWallet = (id, name, money, created_date) => {
+export const addWallet = (id, name, money, created_date,type) => {
   if (!id) {
     return Promise.reject('Expenses name is empty')
   }
@@ -23,7 +22,8 @@ export const addWallet = (id, name, money, created_date) => {
     id: id,
     name: name,
     money: money,
-    created_date: created_date
+    created_date: created_date,
+    default:type
   }
 
   const tasks = realm.objects('wallet')
@@ -46,16 +46,11 @@ export const removeTask = (id) => {
   })
 }
 
-export const updateTask = (id, descripbe, price,price_borrow,typeExpenses) => {
-  const puppies = realm.objects("Expenses").filter(item => item.id == id)
-  console.log(id, descripbe, price)
-  console.log(puppies)
+export const updateWallet = (type,  money) => {
+  const puppies = realm.objects("wallet").filter(item=>item.default == type)
   return new Promise(resolve => {
     realm.write(() => {
-      puppies[0].descripbe = descripbe
-      puppies[0].price = price
-      puppies[0].price_borrow = price_borrow
-      puppies[0].type = typeExpenses
+      puppies[0].money = money
       resolve(puppies)
     })
   })

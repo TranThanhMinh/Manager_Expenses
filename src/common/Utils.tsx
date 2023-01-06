@@ -41,59 +41,83 @@ Utils.session = [{
 Utils.TypeExpenses = [
   {
     id: 0,
-    name: "Ăn uống"
+    name: "Ăn uống",
+    type:'0'
   },
   {
     id: 1,
-    name: "Cà phê"
+    name: "Cà phê",
+    type:'0'
   },
   {
     id: 2,
-    name: "Hóa đơn điện"
+    name: "Hóa đơn điện",
+    type:'0'
   },
   {
     id: 3,
-    name: "Hóa đơn nước"
+    name: "Hóa đơn nước",
+    type:'0'
   },
   {
     id: 4,
-    name: "Hóa đơn điện thoại"
+    name: "Hóa đơn điện thoại",
+    type:'0'
   },
   {
     id: 5,
-    name: "Quần áo"
+    name: "Quần áo",
+    type:'0'
   },
   {
     id: 6,
-    name: "Xăng dầu"
+    name: "Xăng dầu",
+    type:'0'
   },
   {
     id: 7,
-    name: "Thuê nhà"
+    name: "Thuê nhà",
+    type:'0'
   },
   {
     id: 8,
-    name: "Chi phí"
+    name: "Chi phí",
+    type:'0'
   },
   {
     id: 9,
-    name: "Đi vay"
+    name: "Đi vay",
+    type:'1'
   },
   {
     id: 10,
-    name: "Trả nợ"
+    name: "Trả nợ",
+    type:'0'
   },
   {
     id: 11,
-    name: "Cho vay"
+    name: "Cho vay",
+    type:'0'
   },
   {
     id: 12,
-    name: "Thu nợ"
+    name: "Thu nợ",
+    type:'1'
   },
   {
     id: 13,
-    name: "Khác"
+    name: "Tiền lương",
+    type:'1'
+  },
+  {
+    id: 14,
+    name: "Tiền lãi",
+    type:'1'
+  },
+  {
+    id: 15,
+    name: "Tiền thưởng",
+    type:'1'
   },
 ]
 

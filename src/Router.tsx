@@ -13,18 +13,16 @@ const Tab = createBottomTabNavigator();
 const defaultOptions = {
   headerStyle: { backgroundColor: '#00B0FF' },
   headerTitleStyle: { color: 'white' },
-  headerTintColor: 'white'
+  headerTintColor: 'white',
 }
 
 const MyTabs = () => {
   return (
     <Tab.Navigator
-    
+  
       screenOptions={({ route }) => ({
-        
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === 'Home') {
             iconName = focused
               ? require('./images/ic_expenses.png')
@@ -37,10 +35,9 @@ const MyTabs = () => {
           }
           return <Image source={iconName} style={{ width: 24, height: 24 }} />
         },
-        tabBarActiveTintColor: '#fff',
+        tabBarActiveTintColor: '#50a1e3',
         tabBarInactiveTintColor: '#444',
-        headerShown: false,
-        tabBarStyle:{backgroundColor:'#50a1e3'}
+        headerShown: false
       })} >
       <Tab.Screen name="Home" component={HomeScreen}  options={{ title: "Giao dịc hàng ngày" }}/>
       <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: "Cho vay - Đi vay" }}/>

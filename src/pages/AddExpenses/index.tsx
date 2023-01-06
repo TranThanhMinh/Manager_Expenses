@@ -4,6 +4,9 @@ import style from "./style";
 import {
   addExpenses, getListExpensesBorrow, updateTask, updateBorrow
 } from "../../data/ExpensesServices ";
+import {
+ updateWallet
+} from "../../data/WalletServices";
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown'
 import urid from 'urid';
@@ -32,28 +35,32 @@ const AddExpenses = (props) => {
   const [isDate, setIsDate] = useState(false);
   const [date, setDate] = useState(0);
   const [edit, setEdit] = useState(false);
+  const [idWallet, setIdWallet] = useState('')
+  const [inOut, setInOut] = useState(0)
 
   useEffect(() => {
     setDate(new Date().getTime())
-    if (item != null) {
-      console.log(item.type)
+  
+    if (!item.add) {
       setEdit(true)
-      setId(item.id)
-      setDescripbe(item.descripbe)
-      setPrice(item.price)
-      setPriceBorrow2(item.price_borrow)
-      setPriceBorrow(item.price_borrow)
+      setId(item.item.id)
+      setDescripbe(item.item.descripbe)
+      setPrice(item.item.price)
+      setPriceBorrow2(item.item.price_borrow)
+      setPriceBorrow(item.item.price_borrow)
       setIsDescripbe(true)
       setIsPrice(true)
-      setType(item.type)
-      setTypeBorrow(item.type_borrow)
-      setIdBorrow(item.id_borrow)
-      if (item.type == 12) {
+      setType(item.item.type)
+      setTypeBorrow(item.item.type_borrow)
+      setIdBorrow(item.item.id_borrow)
+      if (item.item.type == 12) {
         getListExpensesBorrow(11).then(stask => {
           setListBorrow(stask)
         })
       }
-
+    }else  {
+      console.log('add',item)
+      setIdWallet(item.wallet.id)
     }
   }, [])
 
@@ -76,7 +83,11 @@ const AddExpenses = (props) => {
       if (id == '') {
         //  console.log(momentFormat(date), moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime())
         addExpenses(urid(), momentFormatTime(datetime),
-          moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime(), descripbe, price, priceBorrow, type, typeBorrow, idBorrow).then(task => {
+          moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime(),
+           descripbe, price, priceBorrow, type, typeBorrow, idBorrow,idWallet,inOut).then(task => {
+            if(inOut==0)
+            updateWallet(item.wallet.default,item.wallet.money - parseFloat(price))
+            else  updateWallet(item.wallet.default,item.wallet.money + parseFloat(price))
             if (type == 10 || type == 12) {
               updateBorrow(idBorrow, priceBorrow).then(task => {
                 props.goToBack()
@@ -147,6 +158,7 @@ const AddExpenses = (props) => {
             defaultButtonText={Utils.TypeExpenses[type].name}
             onSelect={(selectedItem, index) => {
               setType(selectedItem.id)
+              setInOut(parseInt(selectedItem.type))
               if (selectedItem.id == 12) {
                 getListExpensesBorrow(11).then(stask => {
                   setIdBorrow(stask[0].id)
@@ -164,6 +176,7 @@ const AddExpenses = (props) => {
             }}
             buttonTextAfterSelection={(selectedItem, index) => {
               setType(selectedItem.id)
+              setInOut(parseInt(selectedItem.type))
               return selectedItem.name
             }}
             rowTextForSelection={(item, index) => {

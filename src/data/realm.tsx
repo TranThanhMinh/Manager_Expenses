@@ -15,7 +15,8 @@ const Wallet = {
     id: 'string',
     name: 'string',
     money: 'float',
-    created_date: 'string'
+    created_date: 'string',
+    default:'bool'
   }
 }
 
@@ -31,6 +32,8 @@ const DailyExpenses = {
     type: 'int',
     type_borrow: 'int',
     id_borrow: 'string',
+    id_wallet:'string',
+    in_out:'int'
   }
 }
 

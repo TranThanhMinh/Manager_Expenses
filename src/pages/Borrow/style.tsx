@@ -12,11 +12,16 @@ const style = StyleSheet.create({
   btnText: {
     color: '#FFF',
   },
+  text2: {
+    marginHorizontal: 5,
+    marginTop:5,
+    color:'balck',
+    fontWeight:"bold",
+    fontSize:16
+  },
   rowFront: {
     paddingVertical:5,
     backgroundColor: 'white',
-    borderBottomColor: 'black',
-    borderBottomWidth: 0.5,
     height: 60,
   },
   rowBack: {
