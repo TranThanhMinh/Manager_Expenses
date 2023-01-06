@@ -131,13 +131,13 @@ const Borrow = (props) => {
   }
 
   const renderItem = ({ item, index }) => {
-    const { descripbe, price, type, created_date, created_time, price_borrow, in_out } = item
+    const { descripbe, price, type, created_date, created_time, price_borrow, id } = item
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log('chi tiết')
+         props.goToHistory(id)
         }}
-        style={style.rowFront}
+        style={[style.rowFront,{backgroundColor:price_borrow == 0 ? 'gray':'white'}]}
       >
         <View>
           <View style={style.itemExpenses}>

@@ -16,10 +16,10 @@ function Utils() { };
 // }
 
 Utils.formatTimeDefault = (timestamp) => {
-  return moment(timestamp * 1000).format("HH:mm")
+  return moment(timestamp).format("HH:mm")
 }
 Utils.formatDateDefault = (timestamp) => {
-  return moment(timestamp * 1000).format("DD-MM-YYYY")
+  return moment(timestamp).format("DD-MM-YYYY")
 }
 Utils.getTimes = () => Math.floor(new Date().getTime() / 1000)
 

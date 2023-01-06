@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import BorrowScreen from './screens/BorrowScreen';
 import AddExpensesScreen from './screens/AddExpensesScreen';
+import HistoryScreen from './screens/HistoryScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const stack = createNativeStackNavigator();
@@ -56,6 +57,7 @@ const Router = () => {
         }}>
         <stack.Screen name="MyTabs" component={MyTabs} />
         <stack.Screen name="AddExpenses" options={{ title: 'Thêm Chi tiêu hàng ngày' }} component={AddExpensesScreen} />
+        <stack.Screen name="History" options={{ title: 'Danh sách lịch sử' }} component={HistoryScreen} />
       </stack.Navigator>
 
     </NavigationContainer>

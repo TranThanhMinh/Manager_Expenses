@@ -5,8 +5,10 @@ export const getListwallet = () => {
   return Promise.resolve(tasks)
 }
 
-
-
+export const getListHistory = (id) => {
+  const tasks = realm.objects('Expenses').filter(item=>item.id_borrow == id)
+  return Promise.resolve(tasks)
+}
 
 export const getListwalletDefault = (type) => {
   const tasks = realm.objects('wallet').filter(item=>item.default == type)
@@ -47,6 +49,7 @@ export const removeTask = (id) => {
 }
 
 export const updateWallet = (type,  money) => {
+  console.log('updateWallet',type,money)
   const puppies = realm.objects("wallet").filter(item=>item.default == type)
   return new Promise(resolve => {
     realm.write(() => {

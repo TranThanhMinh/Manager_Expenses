@@ -8,7 +8,7 @@ import { getFloodReports } from "../../redux/actions/danang";
 import { Data } from "../../model/types.d";
 import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
-import { getListwallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
+import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
   removeTask, getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
@@ -56,12 +56,8 @@ const Home = (props) => {
       let last = new Date(lastDay).getTime()
 
       getListDate(first, last)
-      getListwalletDefault(true).then(task => {
-        if (task.length > 0)
-          setWallet(task)
-        else addWalletDefault()
-      })
 
+      getWallet()
 
     }
 
@@ -79,6 +75,14 @@ const Home = (props) => {
         break
     }
   }, [danangReducer])
+
+  const getWallet = () => {
+    getListwalletDefault(true).then(task => {
+      if (task.length > 0)
+        setWallet(task)
+      else addWalletDefault()
+    })
+  }
 
   const addWalletDefault = () => {
     addWallet(urid(), 'Ví của tôi', 0, new Date().getTime().toString(), true)
@@ -109,8 +113,12 @@ const Home = (props) => {
     }, {}))
     setListExpenses(newList.sort(biggestToSmallest))
     setListSearch(newList.sort(biggestToSmallest))
-    if (list.length == 0)
+    if (list.length == 0) {
       setSumExpenses(0)
+      setSumIN(0)
+      setSumOUT(0)
+    }
+
   }
 
   function biggestToSmallest(a, b) {
@@ -196,12 +204,23 @@ const Home = (props) => {
     )
   }
 
-  const handleRemove = (id, id_borrow, price_borrow) => {
-    console.log(id, fromDate, toDate)
+  const handleRemove = (data) => {
+    console.log(data)
+    console.log(wallet)
+    const { id, id_borrow, price_borrow, price, in_out } = data.item
     removeTask(id).then(task => {
       getListExpensesFromDateToDate(fromDate, toDate).then(task => {
-        if (id_borrow != '')
+        if (id_borrow != '') {
           deleteBorrow(id_borrow, price_borrow)
+        }
+        if (in_out == 0) {
+          updateWallet(wallet[0].default, wallet[0].money + parseFloat(price))
+        } else {
+          updateWallet(wallet[0].default, wallet[0].money - parseFloat(price))
+        }
+        // setSumIN(0)
+        // setSumOUT(0)
+        getWallet()
         filterDate(task)
       })
     })
@@ -212,7 +231,7 @@ const Home = (props) => {
       <View style={style.rowBack}>
         <TouchableOpacity
           style={[style.actionButton, style.deleteBtn]}
-          onPress={() => handleRemove(data.item.id, data.item.id_borrow, data.item.price_borrow)}
+          onPress={() => handleRemove(data)}
         >
           <Text style={style.btnText}>Xóa</Text>
         </TouchableOpacity>
