@@ -4,8 +4,10 @@ import style from "./style";
 import {
   addExpenses, getListExpensesBorrow, updateTask, updateBorrow
 } from "../../data/ExpensesServices ";
+
+import { getListHistory } from "../../data/WalletServices";
 import {
- updateWallet
+  updateWallet
 } from "../../data/WalletServices";
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown'
@@ -26,6 +28,7 @@ const AddExpenses = (props) => {
   const [descripbe, setDescripbe] = useState('')
   const [isDescripbe, setIsDescripbe] = useState(true)
   const [price, setPrice] = useState('')
+  const [price2, setPrice2] = useState('')
   const [priceBorrow, setPriceBorrow] = useState(0)
   const [priceBorrow2, setPriceBorrow2] = useState(0)
   const [isPrice, setIsPrice] = useState(true)
@@ -40,12 +43,13 @@ const AddExpenses = (props) => {
 
   useEffect(() => {
     setDate(new Date().getTime())
-  
+    console.log('add', item)
     if (!item.add) {
       setEdit(true)
       setId(item.item.id)
       setDescripbe(item.item.descripbe)
       setPrice(item.item.price)
+      setPrice2(item.item.price)
       setPriceBorrow2(item.item.price_borrow)
       setPriceBorrow(item.item.price_borrow)
       setIsDescripbe(true)
@@ -58,8 +62,8 @@ const AddExpenses = (props) => {
           setListBorrow(stask)
         })
       }
-    }else  {
-      console.log('add',item)
+    } else {
+      console.log('add', item)
       setIdWallet(item.wallet.id)
     }
   }, [])
@@ -81,13 +85,12 @@ const AddExpenses = (props) => {
     } else {
       let datetime = new Date().getTime()
       if (id == '') {
-        //  console.log(momentFormat(date), moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime())
         addExpenses(urid(), momentFormatTime(datetime),
           moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime(),
-           descripbe, price, priceBorrow, type, typeBorrow, idBorrow,idWallet,inOut).then(task => {
-            if(inOut==0)
-            updateWallet(item.wallet.default,item.wallet.money - parseFloat(price))
-            else  updateWallet(item.wallet.default,item.wallet.money + parseFloat(price))
+          descripbe, price, priceBorrow, type, typeBorrow, idBorrow, idWallet, inOut).then(task => {
+            if (inOut == 0)
+              updateWallet(item.wallet.default, item.wallet.money - parseFloat(price))
+            else updateWallet(item.wallet.default, item.wallet.money + parseFloat(price))
             if (type == 10 || type == 12) {
               updateBorrow(idBorrow, priceBorrow).then(task => {
                 props.goToBack()
@@ -98,10 +101,25 @@ const AddExpenses = (props) => {
           })
       }
       else {
+        if(item.item.in_out==0)
+        updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price2)- parseFloat(price)))
+        else    updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price)- parseFloat(price2)))
         if (type == 10 || type == 12) {
           updateBorrow(idBorrow, priceBorrow - priceBorrow2)
-        }
-        updateTask(id, descripbe, price, priceBorrow, type).then(task => {
+          updateTask(id, descripbe, price, priceBorrow, type).then(task => {
+            props.goToBack()
+          })
+        } else if (type == 9 || type == 11) {
+          let paid = 0
+          getListHistory(id).then(task => {
+            task.map(item => {
+              paid = paid + parseFloat(item.price)
+            })
+            updateTask(id, descripbe, price, parseFloat(price) - paid, type).then(task => {
+              props.goToBack()
+            })
+          })
+        } else updateTask(id, descripbe, price, priceBorrow, type).then(task => {
           props.goToBack()
         })
 
@@ -139,8 +157,8 @@ const AddExpenses = (props) => {
   }
 
   return (
-    <View style={[style.container,{marginTop:insets.top}]}>
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3',padding:10 }} onPress={() => props.goToBack()}>
+    <View style={[style.container, { marginTop: insets.top }]}>
+      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
         <Icon.ArrowLeft stroke={'white'} />
         <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>
       </TouchableOpacity>
@@ -231,11 +249,11 @@ const AddExpenses = (props) => {
         </View>
         <View style={style.combobox}>
           <Icon.DollarSign stroke={'#50a1e3'} />
-          <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={price} placeholder="Nhâp giá" keyboardType="numeric"
+          <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder="Nhâp giá" keyboardType="numeric"
             onChangeText={(text) => {
-              setPrice(text),
+              setPrice(text.replace(/[^0-9]/g, '')),
                 setIsPrice(true),
-                type == 11 || 12 ? setPriceBorrow(parseFloat(text)) : null
+                type == 11 || 12 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
             }} />
         </View>
         <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', marginVertical: 10 }}>

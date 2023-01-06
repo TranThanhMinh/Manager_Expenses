@@ -185,7 +185,7 @@ const Home = (props) => {
     return (
       <TouchableHighlight
         onPress={() => {
-          props.goToEdit({ item: item, add: false })
+          props.goToEdit({ item: item,wallet: wallet[0], add: false })
         }}
         style={style.rowFront}
         underlayColor={'#fff'}

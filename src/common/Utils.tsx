@@ -51,12 +51,12 @@ Utils.TypeExpenses = [
   },
   {
     id: 2,
-    name: "Hóa đơn điện",
+    name: "Đi chợ",
     type:'0'
   },
   {
     id: 3,
-    name: "Hóa đơn nước",
+    name: "Hóa đơn điện/nước",
     type:'0'
   },
   {

@@ -20,6 +20,7 @@ const style = StyleSheet.create({
     fontSize:16
   },
   rowFront: {
+    marginVertical:2,
     padding:5,
     backgroundColor: 'white',
     height: 60,

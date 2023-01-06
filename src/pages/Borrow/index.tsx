@@ -137,16 +137,15 @@ const Borrow = (props) => {
         onPress={() => {
          props.goToHistory(id)
         }}
-        style={[style.rowFront,{backgroundColor:price_borrow == 0 ? 'gray':'white'}]}
-      >
+        style={[style.rowFront,{backgroundColor:price_borrow == 0 ? 'gray':'white'}]}>
         <View>
           <View style={style.itemExpenses}>
-            <Text style={style.text}>{Utils.TypeExpenses[type].name}</Text>
+            <Text style={[style.text,{fontWeight:'bold',color:'black'}]}>{Utils.TypeExpenses[type].name}</Text>
             <Text style={style.text}>{descripbe}</Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { color: type == 11 ? 'red' : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
-            <Text style={[style.text, { color: type == 11 ? 'green' : 'red' }]}>{type == 11 ? 'Còn thiếu' : 'Còn nợ'} : {Utils.numberWithCommas(parseFloat(price_borrow))} VND</Text>
+            <Text style={[style.text, { color: type == 11 ?  'green' : 'red'}]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
+            <Text style={[style.text, { color: type == 11 ?'red' : 'green' }]}>Còn nợ : {Utils.numberWithCommas(parseFloat(price_borrow))} VND</Text>
           </View>
         </View>
       </TouchableOpacity>

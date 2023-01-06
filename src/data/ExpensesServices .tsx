@@ -65,8 +65,6 @@ export const removeTask = (id) => {
 
 export const updateTask = (id, descripbe, price,price_borrow,typeExpenses) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
-  console.log(id, descripbe, price)
-  console.log(puppies)
   return new Promise(resolve => {
     realm.write(() => {
       puppies[0].descripbe = descripbe
