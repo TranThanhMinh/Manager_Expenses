@@ -54,12 +54,11 @@ const Home = (props) => {
       //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
       let first = new Date(firstDay).getTime()
       let last = new Date(lastDay).getTime()
-
       getListDate(first, last)
-
       getWallet()
-
-    }
+    }else 
+    setListExpenses([])
+    setListSearch([])
 
   }, [isVisible]);
 
@@ -185,14 +184,14 @@ const Home = (props) => {
     return (
       <TouchableHighlight
         onPress={() => {
-          props.goToEdit({ item: item,wallet: wallet[0], add: false })
+          props.goToEdit({ item: item, wallet: wallet[0], add: false })
         }}
         style={style.rowFront}
         underlayColor={'#fff'}
       >
         <View style={{ height: 50 }}>
           <View style={style.itemExpenses}>
-            <Text style={[style.text2, { color: 'black' }]}>{Utils.getName(type)}</Text>
+            <Text style={[style.text2, { color: 'black' }]}>{Utils.TypeExpenses[type].name}</Text>
             <Text style={style.text}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
@@ -205,21 +204,17 @@ const Home = (props) => {
   }
 
   const handleRemove = (data) => {
-    console.log(data)
-    console.log(wallet)
     const { id, id_borrow, price_borrow, price, in_out } = data.item
     removeTask(id).then(task => {
+      if (id_borrow != '') {
+        deleteBorrow(id_borrow, price_borrow)
+      }
+      if (in_out == 0) {
+        updateWallet(wallet[0].default, wallet[0].money + parseFloat(price))
+      } else {
+        updateWallet(wallet[0].default, wallet[0].money - parseFloat(price))
+      }
       getListExpensesFromDateToDate(fromDate, toDate).then(task => {
-        if (id_borrow != '') {
-          deleteBorrow(id_borrow, price_borrow)
-        }
-        if (in_out == 0) {
-          updateWallet(wallet[0].default, wallet[0].money + parseFloat(price))
-        } else {
-          updateWallet(wallet[0].default, wallet[0].money - parseFloat(price))
-        }
-        // setSumIN(0)
-        // setSumOUT(0)
         getWallet()
         filterDate(task)
       })

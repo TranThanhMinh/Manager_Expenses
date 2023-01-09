@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Image, TextInput, TouchableOpacity, Text } from "react-native";
 import style from "./style";
 import {
-  addExpenses, getListExpensesBorrow, updateTask, updateBorrow
+  addExpenses, getListExpensesBorrow, updateTask, updateBorrow,
+  removeTask, getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
-
 import { getListHistory } from "../../data/WalletServices";
 import {
   updateWallet
@@ -41,10 +41,12 @@ const AddExpenses = (props) => {
   const [edit, setEdit] = useState(false);
   const [idWallet, setIdWallet] = useState('')
   const [inOut, setInOut] = useState(0)
+  const [wallet, setWallet] = useState();
 
   useEffect(() => {
     setDate(new Date().getTime())
     if (!item.add) {
+      setWallet(item.wallet)
       setEdit(true)
       setId(item.item.id)
       setDescripbe(item.item.descripbe)
@@ -57,6 +59,7 @@ const AddExpenses = (props) => {
       setType(item.item.type)
       setTypeBorrow(item.item.type_borrow)
       setIdBorrow(item.item.id_borrow)
+      setInOut(item.item.in_out)
       if (item.item.type == 13) {
         getListExpensesBorrow(12).then(stask => {
           setListBorrow(stask)
@@ -73,6 +76,20 @@ const AddExpenses = (props) => {
 
   const momentFormatTime = (date) => {
     return moment(date).format("HH:mm")
+  }
+
+  const handleRemove = () => {
+    removeTask(id).then(task => {
+      if (idBorrow != '') {
+        deleteBorrow(idBorrow, priceBorrow)
+      }
+      if (inOut == 0) {
+        updateWallet(wallet.default, wallet.money + parseFloat(price))
+      } else {
+        updateWallet(wallet.default, wallet.money - parseFloat(price))
+      }
+      props.goToBack()
+    })
   }
 
 
@@ -168,10 +185,11 @@ const AddExpenses = (props) => {
       <View style={style.body}>
         <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
           <Icon.Calendar stroke={'#50a1e3'} />
-          <Text style={[style.text, { borderColor: !isPrice ? 'red' : '#444', height: 20, fontSize: 16 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
+          <Text style={[style.text2, { height: 20, fontSize: 14 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
+          <Icon.Edit stroke={'#50a1e3'} width={20} height={20} />
         </TouchableOpacity>
         <View style={[style.combobox, { marginTop: 5 }]}>
-          <Icon.Sidebar stroke={'#50a1e3'} />
+          <Icon.AlignLeft stroke={'#50a1e3'} />
           <SelectDropdown
             data={Utils.TypeExpenses}
             disabled={edit}
@@ -223,7 +241,7 @@ const AddExpenses = (props) => {
             rowTextForSelection={(item, index) => {
               return item.name
             }}
-            buttonStyle={!isType? style.dropdown1BtnStyleFalse :style.dropdown1BtnStyle}
+            buttonStyle={!isType ? style.dropdown1BtnStyleFalse : style.dropdown1BtnStyle}
             buttonTextStyle={style.dropdown1BtnTxtStyle}
             renderDropdownIcon={isOpened => {
               return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
@@ -291,11 +309,33 @@ const AddExpenses = (props) => {
                 type == 14 || 15 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
             }} />
         </View>
-        <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', marginVertical: 10 }}>
-          <TouchableOpacity style={style.button} onPress={handleAdd}>
-            {id == '' ? <Text style={{ color: 'white' }}>Thêm chi tiêu</Text> :
-              <Text style={{ color: 'white' }}>Sửa chi tiêu</Text>}
-          </TouchableOpacity>
+        <View style={{ alignItems: 'center', marginVertical: 10 }}>
+          {
+            id == '' ? (
+              <TouchableOpacity style={style.btnAdd} onPress={handleAdd}>
+                <Icon.Save stroke={'white'} width={20} height={20} />
+                {id == '' ?
+                  <Text style={{ color: 'white' }}> Thêm </Text>
+                  :
+                  <Text style={{ color: 'white' }}> Sửa </Text>
+                }
+              </TouchableOpacity>
+            ) :
+              (
+                <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
+                  <TouchableOpacity style={style.btnDelete} onPress={handleRemove}>
+                    <Icon.Trash2 stroke={'red'} width={20} height={20} />
+                    <Text style={{ color: 'red' }}> Xóa </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={style.btnUpdate} onPress={handleAdd}>
+                    <Icon.Save stroke={'white'} width={20} height={20} />
+                    <Text style={{ color: 'white' }}> Sửa </Text>
+                  </TouchableOpacity>
+                </View>
+              )
+          }
+
         </View>
         {selectDate()}
       </View>

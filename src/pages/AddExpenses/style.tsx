@@ -54,9 +54,17 @@ const style = StyleSheet.create({
     borderBottomWidth: 0.5,
     marginVertical: 5,
     paddingHorizontal: 10,
-    fontSize:16,
+    fontSize:14,
     marginHorizontal: 5,
     backgroundColor: '#FFF',
+  },
+  text2: {
+    flex:1,
+    height: 35,
+    textAlignVertical:'center',
+    color:'#000',
+    marginVertical: 5,
+    marginHorizontal: 5,
   },
   text: {
     flex:1,
@@ -68,14 +76,37 @@ const style = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 5,
   },
-  button: {
+  btnAdd: {
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#50a1e3',
-    width: 150,
+    width:'100%',
+    borderRadius: 5,
+    flexDirection:'row'
+  },
+
+  btnUpdate: {
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#50a1e3',
+    width:'50%',
+    borderRadius: 5,
+    flexDirection:'row'
+  },
+
+  btnDelete: {
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    width:'50%',
+    borderColor:'red',
+    borderWidth:0.5,
     marginHorizontal: 5,
-    borderRadius: 5
+    borderRadius: 5,
+    flexDirection:'row'
   },
   itemExpenses: {
     flexDirection: 'row',
@@ -101,7 +132,7 @@ const style = StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: '#FFF',
   },
-  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left' },
+  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left',fontSize:14 },
   dropdown1DropdownStyle: { backgroundColor: '#EFEFEF'},
   dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
   dropdown1RowTxtStyle2: { color: 'black', textAlign: 'left', fontSize:16,marginHorizontal:5},
@@ -111,7 +142,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     width:'100%',
     alignItems: 'center',
-  }
+  },
 })
 
 export default style;
