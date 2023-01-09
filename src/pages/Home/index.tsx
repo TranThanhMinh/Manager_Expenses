@@ -192,7 +192,7 @@ const Home = (props) => {
       >
         <View style={{ height: 50 }}>
           <View style={style.itemExpenses}>
-            <Text style={[style.text2, { color: 'black' }]}>{Utils.TypeExpenses[type].name}</Text>
+            <Text style={[style.text2, { color: 'black' }]}>{Utils.getName(type)}</Text>
             <Text style={style.text}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>

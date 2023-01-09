@@ -42,7 +42,7 @@ const Borrow = (props) => {
   useEffect(() => {
     if (isVisible) {
       getListExpenses().then(task => {
-        let list = task.filter(item => item.type == 9 || item.type == 11 || item.type == 10 || item.type == 12)
+        let list = task.filter(item => item.type == 12 || item.type == 13 || item.type == 14 || item.type == 15)
         filterDate(list)
       })
     } else {
@@ -97,14 +97,14 @@ const Borrow = (props) => {
   const itemBorrow = ({ item, index }) => {
 
     item.list.map((i) => {
-      if (i.type == 9)
+      if (i.type == 12)
         sum_borrow = sum_borrow + parseFloat(i.price)
-      else if (i.type == 10)
+      else if (i.type == 13)
         sum_pay = sum_pay + parseFloat(i.price)
-      else if (i.type == 11)
+      else if (i.type == 14)
         sum_lend = sum_lend + parseFloat(i.price)
 
-      else if (i.type == 12)
+      else if (i.type == 15)
         sum_debt_collection = sum_debt_collection + parseFloat(i.price)
     })
 
@@ -115,7 +115,7 @@ const Borrow = (props) => {
       setDebtCollection(sum_debt_collection)
     }
 
-    let newList = item.list.filter(item => item.type == 9 || item.type == 11)
+    let newList = item.list.filter(item => item.type == 12 || item.type == 14)
 
     return (
       <View>
@@ -156,8 +156,8 @@ const Borrow = (props) => {
             <Text style={style.text}>{descripbe}</Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { color: type == 11 ? 'green' : 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
-            <Text style={[style.text, { color: type == 11 ? 'red' : 'green' }]}>Còn nợ : {Utils.numberWithCommas(parseFloat(price_borrow))} VND</Text>
+            <Text style={[style.text, { color: type == 13 ? 'green' : 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
+            <Text style={[style.text, { color: type == 13 ? 'red' : 'green' }]}>Còn nợ : {Utils.numberWithCommas(parseFloat(price_borrow))} VND</Text>
           </View>
         </View>
       </TouchableOpacity>

@@ -23,8 +23,9 @@ const AddExpenses = (props) => {
   const insets = useSafeAreaInsets();
 
   let item = props.item
-  const [type, setType] = useState(0)
-  const [typeBorrow, setTypeBorrow] = useState(0)
+  const [type, setType] = useState(1)
+  const [isType, setIsType] = useState(true)
+  const [typeBorrow, setTypeBorrow] = useState(1)
   const [descripbe, setDescripbe] = useState('')
   const [isDescripbe, setIsDescripbe] = useState(true)
   const [price, setPrice] = useState('')
@@ -43,7 +44,6 @@ const AddExpenses = (props) => {
 
   useEffect(() => {
     setDate(new Date().getTime())
-    console.log('add', item)
     if (!item.add) {
       setEdit(true)
       setId(item.item.id)
@@ -57,13 +57,12 @@ const AddExpenses = (props) => {
       setType(item.item.type)
       setTypeBorrow(item.item.type_borrow)
       setIdBorrow(item.item.id_borrow)
-      if (item.item.type == 12) {
-        getListExpensesBorrow(11).then(stask => {
+      if (item.item.type == 13) {
+        getListExpensesBorrow(12).then(stask => {
           setListBorrow(stask)
         })
       }
     } else {
-      console.log('add', item)
       setIdWallet(item.wallet.id)
     }
   }, [])
@@ -78,7 +77,10 @@ const AddExpenses = (props) => {
 
 
   const handleAdd = () => {
-    if (descripbe == '') {
+    if (type == 0 || type == 11 || type == 16) {
+      setIsType(false)
+    }
+    else if (descripbe == '') {
       setIsDescripbe(false)
     } else if (price == '') {
       setIsPrice(false)
@@ -91,7 +93,7 @@ const AddExpenses = (props) => {
             if (inOut == 0)
               updateWallet(item.wallet.default, item.wallet.money - parseFloat(price))
             else updateWallet(item.wallet.default, item.wallet.money + parseFloat(price))
-            if (type == 10 || type == 12) {
+            if (type == 13 || type == 15) {
               updateBorrow(idBorrow, priceBorrow).then(task => {
                 props.goToBack()
               })
@@ -101,15 +103,15 @@ const AddExpenses = (props) => {
           })
       }
       else {
-        if(item.item.in_out==0)
-        updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price2)- parseFloat(price)))
-        else    updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price)- parseFloat(price2)))
-        if (type == 10 || type == 12) {
+        if (item.item.in_out == 0)
+          updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price2) - parseFloat(price)))
+        else updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price) - parseFloat(price2)))
+        if (type == 13 || type == 15) {
           updateBorrow(idBorrow, priceBorrow - priceBorrow2)
           updateTask(id, descripbe, price, priceBorrow, type).then(task => {
             props.goToBack()
           })
-        } else if (type == 9 || type == 11) {
+        } else if (type == 12 || type == 14) {
           let paid = 0
           getListHistory(id).then(task => {
             task.map(item => {
@@ -166,31 +168,52 @@ const AddExpenses = (props) => {
       <View style={style.body}>
         <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
           <Icon.Calendar stroke={'#50a1e3'} />
-          <Text style={[style.text, { borderColor: !isPrice ? 'red' : '#444' }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
+          <Text style={[style.text, { borderColor: !isPrice ? 'red' : '#444', height: 20, fontSize: 16 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
         </TouchableOpacity>
-        <View style={style.combobox}>
+        <View style={[style.combobox, { marginTop: 5 }]}>
           <Icon.Sidebar stroke={'#50a1e3'} />
           <SelectDropdown
             data={Utils.TypeExpenses}
             disabled={edit}
+            disableAutoScroll={false}
             defaultButtonText={Utils.TypeExpenses[type].name}
             onSelect={(selectedItem, index) => {
+              setIsType(true)
               setType(selectedItem.id)
               setInOut(parseInt(selectedItem.type))
-              if (selectedItem.id == 12) {
-                getListExpensesBorrow(11).then(stask => {
+              if (selectedItem.id == 15) {
+                getListExpensesBorrow(14).then(stask => {
                   setIdBorrow(stask[0].id)
                   setTypeBorrow(0)
                   setListBorrow(stask)
                 })
               }
-              else if (selectedItem.id == 10) {
-                getListExpensesBorrow(9).then(stask => {
+
+              else if (selectedItem.id == 13) {
+                getListExpensesBorrow(12).then(stask => {
                   setIdBorrow(stask[0].id)
                   setTypeBorrow(0)
                   setListBorrow(stask)
                 })
-              }
+              } else setListBorrow([])
+            }}
+            // renderCustomizedButtonChild={(selectedItem, index) => {
+            //   return (
+            //     <View>
+            //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem ? selectedItem.name : 'Chọn danh mục'}</Text>
+            //     </View>
+            //   );
+            // }}
+            renderCustomizedRowChild={(item, index) => {
+              return (
+                <View>
+                  {
+                    item.id != 0 && item.id != 11 && item.id != 16 ?
+                      <Text style={style.dropdown1RowTxtStyle}>{item.name}</Text>
+                      : <Text style={style.dropdown1RowTxtStyleTitle}>{item.name}</Text>
+                  }
+                </View>
+              );
             }}
             buttonTextAfterSelection={(selectedItem, index) => {
               setType(selectedItem.id)
@@ -200,10 +223,10 @@ const AddExpenses = (props) => {
             rowTextForSelection={(item, index) => {
               return item.name
             }}
-            buttonStyle={style.dropdown1BtnStyle}
+            buttonStyle={!isType? style.dropdown1BtnStyleFalse :style.dropdown1BtnStyle}
             buttonTextStyle={style.dropdown1BtnTxtStyle}
             renderDropdownIcon={isOpened => {
-              return isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} />
+              return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
             }}
             dropdownIconPosition={'right'}
             dropdownStyle={style.dropdown1DropdownStyle}
@@ -224,21 +247,33 @@ const AddExpenses = (props) => {
                   setTypeBorrow(index)
                 }}
                 buttonTextAfterSelection={(selectedItem, index) => {
-
                   return (selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND')
                 }}
                 rowTextForSelection={(item, index) => {
                   return (item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND')
                 }}
+                // renderCustomizedButtonChild={(selectedItem, index) => {
+                //   return (
+                //     <View>
+                //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND'}</Text>
+                //     </View>
+                //   );
+                // }}
+                renderCustomizedRowChild={(item, index) => {
+                  return (
+                    <View><Text style={style.dropdown1RowTxtStyle}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND'}</Text>
+                    </View>
+                  );
+                }}
                 buttonStyle={style.dropdown1BtnStyle}
                 buttonTextStyle={style.dropdown1BtnTxtStyle}
                 renderDropdownIcon={isOpened => {
-                  return isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} />
+                  return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
                 }}
                 dropdownIconPosition={'right'}
                 dropdownStyle={style.dropdown1DropdownStyle}
                 rowStyle={style.dropdown1RowStyle}
-                rowTextStyle={style.dropdown1RowTxtStyle}
+                rowTextStyle={style.dropdown1RowTxtStyle2}
               />
             </View>
           ) : null
@@ -253,7 +288,7 @@ const AddExpenses = (props) => {
             onChangeText={(text) => {
               setPrice(text.replace(/[^0-9]/g, '')),
                 setIsPrice(true),
-                type == 11 || 12 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
+                type == 14 || 15 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
             }} />
         </View>
         <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', marginVertical: 10 }}>

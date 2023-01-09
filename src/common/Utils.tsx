@@ -38,85 +38,115 @@ Utils.session = [{
   name: "Buổi tối"
 }]
 
+Utils.getName =(id)=>{
+ let item = Utils.TypeExpenses.filter(item => item.id == id)
+  return item[0].name
+}
+
 Utils.TypeExpenses = [
   {
     id: 0,
-    name: "Ăn uống",
+    name: "-----Chi tiền-----",
     type:'0'
   },
   {
     id: 1,
-    name: "Cà phê",
+    name: "Ăn uống",
     type:'0'
   },
   {
     id: 2,
-    name: "Đi chợ",
+    name: "Cà phê",
     type:'0'
   },
   {
     id: 3,
-    name: "Hóa đơn điện/nước",
+    name: "Đi chợ",
     type:'0'
   },
   {
     id: 4,
-    name: "Hóa đơn điện thoại",
+    name: "Hóa đơn điện/nước",
     type:'0'
   },
   {
     id: 5,
-    name: "Quần áo",
+    name: "Hóa đơn điện thoại",
     type:'0'
   },
   {
     id: 6,
-    name: "Xăng dầu",
+    name: "Quần áo",
     type:'0'
   },
   {
     id: 7,
-    name: "Thuê nhà",
+    name: "Xăng dầu",
     type:'0'
   },
   {
     id: 8,
-    name: "Chi phí",
+    name: "Thuê nhà",
     type:'0'
   },
   {
     id: 9,
-    name: "Đi vay",
-    type:'1'
+    name: "Chi phí",
+    type:'0'
   },
   {
     id: 10,
-    name: "Trả nợ",
+    name: "Khác",
     type:'0'
   },
   {
     id: 11,
-    name: "Cho vay",
+    name: "-----Vay Nợ-----",
     type:'0'
   },
   {
     id: 12,
-    name: "Thu nợ",
+    name: "Đi vay",
     type:'1'
   },
   {
     id: 13,
+    name: "Trả nợ",
+    type:'0'
+  },
+  {
+    id: 14,
+    name: "Cho vay",
+    type:'0'
+  },
+  {
+    id: 15,
+    name: "Thu nợ",
+    type:'1'
+  },
+  {
+    id: 16,
+    name: "-----Thu Tiền-----",
+    type:'0'
+  },
+  {
+    id: 17,
     name: "Tiền lương",
     type:'1'
   },
   {
-    id: 14,
+    id: 18,
     name: "Tiền lãi",
     type:'1'
   },
   {
-    id: 15,
+    id: 19,
     name: "Tiền thưởng",
+    type:'1'
+  },
+  {
+    id: 20,
+    name: "Khác",
     type:'1'
   },
 ]
