@@ -164,7 +164,6 @@ const Borrow = (props) => {
     )
   }
 
-
   return (
     <View style={[style.container, { marginTop: insets.top }]}>
       <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', justifyContent: 'center', alignItems: 'center' }}>
@@ -177,13 +176,13 @@ const Borrow = (props) => {
       />
       <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5 }}>
-          <Text style={{ marginTop: 10, color: 'green', fontSize: 15 }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>
-          <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Thu nợ: {Utils.numberWithCommas(debtcollection)} VND</Text>
+          <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>
+          <Text style={{ marginTop: 10, color: 'green', fontSize: 15 }}>Thu nợ: {Utils.numberWithCommas(debtcollection)} VND</Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10 }}>
-          <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Đi vay: {Utils.numberWithCommas(borrow)} VND</Text>
+          <Text style={{ marginTop: 10, color: 'green', fontSize: 15 }}>Đi vay: {Utils.numberWithCommas(borrow)} VND</Text>
 
-          <Text style={{ marginTop: 10, color: 'green', fontSize: 15 }}>Trả nợ: {Utils.numberWithCommas(pay)} VND</Text>
+          <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Trả nợ: {Utils.numberWithCommas(pay)} VND</Text>
         </View>
 
 
