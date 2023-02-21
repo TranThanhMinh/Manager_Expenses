@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TextInput, TouchableOpacity, TouchableHighlight } from "react-native"
+import { View, Text, FlatList, TextInput, TouchableOpacity, Image, Animated, StyleSheet } from "react-native"
 import { useIsFocused } from "@react-navigation/native";
 import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +22,7 @@ import Modal from "react-native-modal";
 import ButtonAdd from "../../component/ButtonAdd";
 import { Utils } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 const Borrow = (props) => {
   const insets = useSafeAreaInsets();
@@ -77,14 +78,12 @@ const Borrow = (props) => {
       acc[item.created_date].list.push(item);
       return acc;
     }, {}))
-    console.log(JSON.stringify(newList))
     setListExpenses(newList.sort(biggestToSmallest))
   }
 
   function biggestToSmallest(a, b) {
     return b.created_date - a.created_date;
   }
-
 
   const momentFormat = (date) => {
     return moment(date).format("DD-MM-YYYY")
@@ -134,6 +133,7 @@ const Borrow = (props) => {
                   style={{ marginHorizontal: 10 }}
                   data={newList}
                   renderItem={renderItem} />
+
               </View>
             ) : null
         }
@@ -144,23 +144,35 @@ const Borrow = (props) => {
 
   const renderItem = ({ item, index }) => {
     const { descripbe, price, type, created_date, created_time, price_borrow, id } = item
+    let prencent = 100 - (parseFloat(price_borrow) / parseFloat(price)) * 100
+    let borrow = parseFloat(price) - parseFloat(price_borrow)
     return (
-      <TouchableOpacity
-        onPress={() => {
-          props.goToHistory(id)
-        }}
-        style={[style.rowFront, { backgroundColor: price_borrow == 0 ? 'gray' : 'white' }]}>
+      <View
+        style={[style.rowFront]}>
         <View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { fontWeight: 'bold', color: 'black' }]}>{Utils.TypeExpenses[type].name}</Text>
-            <Text style={style.text}>{descripbe}</Text>
+
+            <Text style={[style.text, { fontWeight: 'bold', color: 'black' }]}>{descripbe} ({Utils.TypeExpenses[type].name})</Text>
+            <TouchableOpacity
+              onPress={() => {
+                props.goToHistory(id)
+              }}>
+              <Text style={style.text5}>Chi tiết</Text>
+            </TouchableOpacity>
+
           </View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { color: type == 13 ? 'green' : 'red' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
-            <Text style={[style.text, { color: type == 13 ? 'red' : 'green' }]}>Còn nợ : {Utils.numberWithCommas(parseFloat(price_borrow))} VND</Text>
+            <Text style={[style.text, { color: 'black' }]}>{type == 12 ? 'Tổng đi vay trả:' : 'Tổng cho vay:'} {Utils.numberWithCommas(parseFloat(price))} VND</Text>
+          </View>
+          <View style={style.itemExpenses}>
+            <Text style={[style.text, { color: type == 13 ? 'green' : 'red' }]}>{type == 12 ? 'Phải trả:' : 'Cần thu:'} {Utils.numberWithCommas(price_borrow)} VND</Text>
+            <Text style={[style.text, { color: type == 13 ? 'red' : 'green' }]}>{type == 12 ? 'Đã trả:' : 'Đã thu:'} {Utils.numberWithCommas(borrow)} VND</Text>
+          </View>
+          <View style={style.progressBar}>
+            <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: "green", width: `${prencent}%` }]} />
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     )
   }
 

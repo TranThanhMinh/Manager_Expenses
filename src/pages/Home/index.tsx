@@ -91,7 +91,6 @@ const Home = (props) => {
   }
 
   const getListDate = (fromdate, toDate) => {
-    console.log('getListDate', moment(momentFormat(fromdate), "DD-MM-YYYY").toDate().getTime(), toDate)
     let from = moment(momentFormat(fromdate), "DD-MM-YYYY").toDate().getTime()
     setSelectedFromDate(from)
     setSelectedToDate(toDate)

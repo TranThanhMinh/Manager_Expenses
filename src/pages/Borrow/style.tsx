@@ -23,7 +23,7 @@ const style = StyleSheet.create({
     marginVertical:2,
     padding:5,
     backgroundColor: 'white',
-    height: 60,
+    height: 90,
   },
   rowBack: {
     alignItems: 'center',
@@ -68,11 +68,17 @@ const style = StyleSheet.create({
   },
   itemExpenses: {
     flexDirection: 'row',
-    justifyContent:'space-between'
+    justifyContent:'space-between',
   },
   text: {
     marginHorizontal: 5,
     marginTop:5
+  },
+  text5: {
+    marginHorizontal: 5,
+    marginTop:5,
+    color:'blue',
+    textDecorationLine:'underline'
   },
   dropdown1BtnStyle: {
     width:'100%',
@@ -95,6 +101,17 @@ const style = StyleSheet.create({
     borderColor :'#444',
     borderWidth:0.5,
     paddingHorizontal:10
+  },
+  progressBar:{
+    margin:5,
+    height: 5,
+    flexDirection: "row",
+    backgroundColor: 'white',
+    borderColor: 'red',
+    borderWidth: 0.4,
+    borderRadius: 2
+ 
+
   }
 })
 
