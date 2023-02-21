@@ -131,6 +131,12 @@ const style = StyleSheet.create({
     paddingHorizontal: 0,
     marginHorizontal: 5,
     backgroundColor: '#FFF',
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 2,
   },
   dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left',fontSize:14 },
   dropdown1DropdownStyle: { backgroundColor: '#EFEFEF'},
