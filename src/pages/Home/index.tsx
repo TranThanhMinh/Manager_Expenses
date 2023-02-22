@@ -265,9 +265,8 @@ const Home = (props) => {
 
   return (
     <View style={[style.container]}>
-      <StatusBar backgroundColor={'#50a1e3'} />
-      <View style={[style.container, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', alignItems: 'center' }}>
+      <View style={[style.container2, { marginTop: insets.top }]}>
+        <View style={{ flexDirection: 'row',padding : 5, backgroundColor: '#50a1e3', alignItems: 'center' }}>
           <View>
             <Text style={[style.text2, { color: 'white', borderColor: 'white', borderWidth: 1, borderRadius: 5, padding: 3 }]}>{wallet.length > 0 ? wallet[0].name : 'Chưa có ví'}</Text>
           </View>

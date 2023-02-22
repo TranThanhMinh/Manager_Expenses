@@ -3,6 +3,10 @@ import { StyleSheet } from "react-native";
 
 const style = StyleSheet.create({
   container: {
+    backgroundColor: '#50a1e3',
+    flex: 1,
+  },
+  container2: {
     backgroundColor: 'white',
     flex: 1,
   },
@@ -83,7 +87,8 @@ const style = StyleSheet.create({
     backgroundColor: '#50a1e3',
     width:'100%',
     borderRadius: 5,
-    flexDirection:'row'
+    flexDirection:'row',
+    height:40
   },
 
   btnUpdate: {
@@ -93,7 +98,8 @@ const style = StyleSheet.create({
     backgroundColor: '#50a1e3',
     width:'50%',
     borderRadius: 5,
-    flexDirection:'row'
+    flexDirection:'row',
+    height:40
   },
 
   btnDelete: {
@@ -106,7 +112,8 @@ const style = StyleSheet.create({
     borderWidth:0.5,
     marginHorizontal: 5,
     borderRadius: 5,
-    flexDirection:'row'
+    flexDirection:'row',
+    height:40
   },
   itemExpenses: {
     flexDirection: 'row',

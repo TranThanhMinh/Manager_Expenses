@@ -32,7 +32,8 @@ const History = (props) => {
   }
 
   return (
-    <View style={[style.container, { marginTop: insets.top }]}>
+    <View style={style.container}>
+    <View style={[style.container2, { marginTop: insets.top }]}>
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
         <Icon.ArrowLeft stroke={'white'} />
         <Text style={{ marginLeft: 10, color: 'white' }}>Danh sách lịch sử</Text>
@@ -42,6 +43,7 @@ const History = (props) => {
           data={list}
           renderItem={renderItem} />
       </View>
+    </View>
     </View>
   )
 }

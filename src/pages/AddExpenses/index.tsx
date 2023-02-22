@@ -176,7 +176,8 @@ const AddExpenses = (props) => {
   }
 
   return (
-    <View style={[style.container, { marginTop: insets.top }]}>
+    <View style={style.container}>
+    <View style={[style.container2, { marginTop: insets.top }]}>
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
         <Icon.ArrowLeft stroke={'white'} />
         <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>
@@ -298,7 +299,7 @@ const AddExpenses = (props) => {
         }
         <View style={style.combobox}>
           <Icon.Edit3 stroke={'#50a1e3'} />
-          <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder="Mô tả" onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
+          <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444'}]} value={descripbe} placeholder="Mô tả" onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
         </View>
         <View style={style.combobox}>
           <Icon.DollarSign stroke={'#50a1e3'} />
@@ -309,7 +310,7 @@ const AddExpenses = (props) => {
                 type == 14 || 15 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
             }} />
         </View>
-        <View style={{ alignItems: 'center', marginVertical: 10 }}>
+        <View style={{ alignItems: 'center', marginVertical: 10}}>
           {
             id == '' ? (
               <TouchableOpacity style={style.btnAdd} onPress={handleAdd}>
@@ -339,6 +340,7 @@ const AddExpenses = (props) => {
         </View>
         {selectDate()}
       </View>
+    </View>
     </View>
   )
 }

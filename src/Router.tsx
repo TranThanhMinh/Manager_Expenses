@@ -55,7 +55,7 @@ const Router = () => {
           headerShown: false,
           ...defaultOptions,
         }}>
-        <stack.Screen name="MyTabs" component={MyTabs} />
+        <stack.Screen name="MyTabs" component={MyTabs}  />
         <stack.Screen name="AddExpenses" options={{ title: 'Thêm Chi tiêu hàng ngày' }} component={AddExpensesScreen} />
         <stack.Screen name="History" options={{ title: 'Danh sách lịch sử' }} component={HistoryScreen} />
       </stack.Navigator>
