@@ -12,11 +12,6 @@ import { Provider } from 'react-redux';
 import { store } from './redux/reducer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import {
-  SafeAreaView,
-
-} from 'react-native';
-
 
 const App = () => {
   console.disableYellowBox = true

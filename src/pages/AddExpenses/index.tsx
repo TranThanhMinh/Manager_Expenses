@@ -177,170 +177,170 @@ const AddExpenses = (props) => {
 
   return (
     <View style={style.container}>
-    <View style={[style.container2, { marginTop: insets.top }]}>
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
-        <Icon.ArrowLeft stroke={'white'} />
-        <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>
-      </TouchableOpacity>
-
-      <View style={style.body}>
-        <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
-          <Icon.Calendar stroke={'#50a1e3'} />
-          <Text style={[style.text2, { height: 20, fontSize: 14 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
-          <Icon.Edit stroke={'#50a1e3'} width={20} height={20} />
+      <View style={[style.container2, { marginTop: insets.top }]}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
+          <Icon.ArrowLeft stroke={'white'} />
+          <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>
         </TouchableOpacity>
-        <View style={[style.combobox, { marginTop: 5 }]}>
-          <Icon.AlignLeft stroke={'#50a1e3'} />
-          <SelectDropdown
-            data={Utils.TypeExpenses}
-            disabled={edit}
-            disableAutoScroll={false}
-            defaultButtonText={Utils.TypeExpenses[type].name}
-            onSelect={(selectedItem, index) => {
-              setIsType(true)
-              setType(selectedItem.id)
-              setInOut(parseInt(selectedItem.type))
-              if (selectedItem.id == 15) {
-                getListExpensesBorrow(14).then(stask => {
-                  setIdBorrow(stask[0].id)
-                  setTypeBorrow(0)
-                  setListBorrow(stask)
-                })
-              }
 
-              else if (selectedItem.id == 13) {
-                getListExpensesBorrow(12).then(stask => {
-                  setIdBorrow(stask[0].id)
-                  setTypeBorrow(0)
-                  setListBorrow(stask)
-                })
-              } else setListBorrow([])
-            }}
-            // renderCustomizedButtonChild={(selectedItem, index) => {
-            //   return (
-            //     <View>
-            //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem ? selectedItem.name : 'Chọn danh mục'}</Text>
-            //     </View>
-            //   );
-            // }}
-            renderCustomizedRowChild={(item, index) => {
-              return (
-                <View>
-                  {
-                    item.id != 0 && item.id != 11 && item.id != 16 ?
-                      <Text style={style.dropdown1RowTxtStyle}>{item.name}</Text>
-                      : <Text style={style.dropdown1RowTxtStyleTitle}>{item.name}</Text>
-                  }
-                </View>
-              );
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              setType(selectedItem.id)
-              setInOut(parseInt(selectedItem.type))
-              return selectedItem.name
-            }}
-            rowTextForSelection={(item, index) => {
-              return item.name
-            }}
-            buttonStyle={!isType ? style.dropdown1BtnStyleFalse : style.dropdown1BtnStyle}
-            buttonTextStyle={style.dropdown1BtnTxtStyle}
-            renderDropdownIcon={isOpened => {
-              return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
-            }}
-            dropdownIconPosition={'right'}
-            dropdownStyle={style.dropdown1DropdownStyle}
-            rowStyle={style.dropdown1RowStyle}
-            rowTextStyle={style.dropdown1RowTxtStyle}
-          />
-        </View>
-        {
-          listBorrow.length > 0 ? (
-            <View style={style.combobox}>
-              <Icon.Sidebar stroke={'#50a1e3'} />
-              <SelectDropdown
-                data={listBorrow}
-                disabled={edit}
-                defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(listBorrow[typeBorrow].price_borrow) + ' VND'}
-                onSelect={(selectedItem, index) => {
-                  setIdBorrow(selectedItem.id)
-                  setTypeBorrow(index)
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return (selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND')
-                }}
-                rowTextForSelection={(item, index) => {
-                  return (item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND')
-                }}
-                // renderCustomizedButtonChild={(selectedItem, index) => {
-                //   return (
-                //     <View>
-                //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND'}</Text>
-                //     </View>
-                //   );
-                // }}
-                renderCustomizedRowChild={(item, index) => {
-                  return (
-                    <View><Text style={style.dropdown1RowTxtStyle}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND'}</Text>
-                    </View>
-                  );
-                }}
-                buttonStyle={style.dropdown1BtnStyle}
-                buttonTextStyle={style.dropdown1BtnTxtStyle}
-                renderDropdownIcon={isOpened => {
-                  return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
-                }}
-                dropdownIconPosition={'right'}
-                dropdownStyle={style.dropdown1DropdownStyle}
-                rowStyle={style.dropdown1RowStyle}
-                rowTextStyle={style.dropdown1RowTxtStyle2}
-              />
-            </View>
-          ) : null
-        }
-        <View style={style.combobox}>
-          <Icon.Edit3 stroke={'#50a1e3'} />
-          <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444'}]} value={descripbe} placeholder="Mô tả" onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
-        </View>
-        <View style={style.combobox}>
-          <Icon.DollarSign stroke={'#50a1e3'} />
-          <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder="Nhâp giá" keyboardType="numeric"
-            onChangeText={(text) => {
-              setPrice(text.replace(/[^0-9]/g, '')),
-                setIsPrice(true),
-                type == 14 || 15 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
-            }} />
-        </View>
-        <View style={{ alignItems: 'center', marginVertical: 10}}>
-          {
-            id == '' ? (
-              <TouchableOpacity style={style.btnAdd} onPress={handleAdd}>
-                <Icon.Save stroke={'white'} width={20} height={20} />
-                {id == '' ?
-                  <Text style={{ color: 'white' }}> Thêm </Text>
-                  :
-                  <Text style={{ color: 'white' }}> Sửa </Text>
+        <View style={style.body}>
+          <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
+            <Icon.Calendar stroke={'#50a1e3'} />
+            <Text style={[style.text2, { height: 20, fontSize: 14 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
+            <Icon.Edit stroke={'#50a1e3'} width={20} height={20} />
+          </TouchableOpacity>
+          <View style={[style.combobox, { marginTop: 5 }]}>
+            <Icon.AlignLeft stroke={'#50a1e3'} />
+            <SelectDropdown
+              data={Utils.TypeExpenses}
+              disabled={edit}
+              disableAutoScroll={false}
+              defaultButtonText={Utils.TypeExpenses[type].name}
+              onSelect={(selectedItem, index) => {
+                setIsType(true)
+                setType(selectedItem.id)
+                setInOut(parseInt(selectedItem.type))
+                if (selectedItem.id == 15) {
+                  getListExpensesBorrow(14).then(stask => {
+                    setIdBorrow(stask[0].id)
+                    setTypeBorrow(0)
+                    setListBorrow(stask)
+                  })
                 }
-              </TouchableOpacity>
-            ) :
-              (
-                <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-                  <TouchableOpacity style={style.btnDelete} onPress={handleRemove}>
-                    <Icon.Trash2 stroke={'red'} width={20} height={20} />
-                    <Text style={{ color: 'red' }}> Xóa </Text>
-                  </TouchableOpacity>
 
-                  <TouchableOpacity style={style.btnUpdate} onPress={handleAdd}>
-                    <Icon.Save stroke={'white'} width={20} height={20} />
-                    <Text style={{ color: 'white' }}> Sửa </Text>
-                  </TouchableOpacity>
-                </View>
-              )
+                else if (selectedItem.id == 13) {
+                  getListExpensesBorrow(12).then(stask => {
+                    setIdBorrow(stask[0].id)
+                    setTypeBorrow(0)
+                    setListBorrow(stask)
+                  })
+                } else setListBorrow([])
+              }}
+              // renderCustomizedButtonChild={(selectedItem, index) => {
+              //   return (
+              //     <View>
+              //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem ? selectedItem.name : 'Chọn danh mục'}</Text>
+              //     </View>
+              //   );
+              // }}
+              renderCustomizedRowChild={(item, index) => {
+                return (
+                  <View>
+                    {
+                      item.id != 0 && item.id != 11 && item.id != 16 ?
+                        <Text style={style.dropdown1RowTxtStyle}>{item.name}</Text>
+                        : <Text style={style.dropdown1RowTxtStyleTitle}>{item.name}</Text>
+                    }
+                  </View>
+                );
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                setType(selectedItem.id)
+                setInOut(parseInt(selectedItem.type))
+                return selectedItem.name
+              }}
+              rowTextForSelection={(item, index) => {
+                return item.name
+              }}
+              buttonStyle={!isType ? style.dropdown1BtnStyleFalse : style.dropdown1BtnStyle}
+              buttonTextStyle={style.dropdown1BtnTxtStyle}
+              renderDropdownIcon={isOpened => {
+                return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={style.dropdown1DropdownStyle}
+              rowStyle={style.dropdown1RowStyle}
+              rowTextStyle={style.dropdown1RowTxtStyle}
+            />
+          </View>
+          {
+            listBorrow.length > 0 ? (
+              <View style={style.combobox}>
+                <Icon.Sidebar stroke={'#50a1e3'} />
+                <SelectDropdown
+                  data={listBorrow}
+                  disabled={edit}
+                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(listBorrow[typeBorrow].price_borrow) + ' VND'}
+                  onSelect={(selectedItem, index) => {
+                    setIdBorrow(selectedItem.id)
+                    setTypeBorrow(index)
+                  }}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return (selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND')
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return (item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND')
+                  }}
+                  // renderCustomizedButtonChild={(selectedItem, index) => {
+                  //   return (
+                  //     <View>
+                  //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND'}</Text>
+                  //     </View>
+                  //   );
+                  // }}
+                  renderCustomizedRowChild={(item, index) => {
+                    return (
+                      <View><Text style={style.dropdown1RowTxtStyle}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND'}</Text>
+                      </View>
+                    );
+                  }}
+                  buttonStyle={style.dropdown1BtnStyle}
+                  buttonTextStyle={style.dropdown1BtnTxtStyle}
+                  renderDropdownIcon={isOpened => {
+                    return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
+                  }}
+                  dropdownIconPosition={'right'}
+                  dropdownStyle={style.dropdown1DropdownStyle}
+                  rowStyle={style.dropdown1RowStyle}
+                  rowTextStyle={style.dropdown1RowTxtStyle2}
+                />
+              </View>
+            ) : null
           }
+          <View style={style.combobox}>
+            <Icon.Edit3 stroke={'#50a1e3'} />
+            <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder="Mô tả" onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
+          </View>
+          <View style={style.combobox}>
+            <Icon.DollarSign stroke={'#50a1e3'} />
+            <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder="Nhâp giá" keyboardType="numeric"
+              onChangeText={(text) => {
+                setPrice(text.replace(/[^0-9]/g, '')),
+                  setIsPrice(true),
+                  type == 14 || 15 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
+              }} />
+          </View>
+          <View style={{ alignItems: 'center', marginVertical: 10 }}>
+            {
+              id == '' ? (
+                <TouchableOpacity style={style.btnAdd} onPress={handleAdd}>
+                  <Icon.Save stroke={'white'} width={20} height={20} />
+                  {id == '' ?
+                    <Text style={{ color: 'white' }}> Thêm </Text>
+                    :
+                    <Text style={{ color: 'white' }}> Sửa </Text>
+                  }
+                </TouchableOpacity>
+              ) :
+                (
+                  <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
+                    <TouchableOpacity style={style.btnDelete} onPress={handleRemove}>
+                      <Icon.Trash2 stroke={'red'} width={20} height={20} />
+                      <Text style={{ color: 'red' }}> Xóa </Text>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity style={style.btnUpdate} onPress={handleAdd}>
+                      <Icon.Save stroke={'white'} width={20} height={20} />
+                      <Text style={{ color: 'white' }}> Sửa </Text>
+                    </TouchableOpacity>
+                  </View>
+                )
+            }
+
+          </View>
+          {selectDate()}
         </View>
-        {selectDate()}
       </View>
-    </View>
     </View>
   )
 }

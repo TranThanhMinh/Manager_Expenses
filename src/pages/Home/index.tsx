@@ -286,13 +286,13 @@ const Home = (props) => {
           <TextInput placeholder="tìm kiếm" style={style.borderSearch} onChangeText={(text) => handleSearch(text)} />
         </View> */}
         <FlatList
-          style={{ marginTop: 10, marginBottom: 80 }}
+          style={{ marginTop: 10}}
           data={listExpenses}
           renderItem={itemExpenses} />
-        <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
+        {/* <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
           <Text style={{ marginTop: 10, marginLeft: 5, color: 'green', fontSize: 18 }}>Tổng thu: {Utils.numberWithCommas(sumIN)} VND</Text>
           <Text style={{ marginTop: 10, marginLeft: 5, color: 'red', fontSize: 18 }}>Tổng chi: {Utils.numberWithCommas(sumOUT)} VND</Text>
-        </View>
+        </View> */}
         <TouchableOpacity style={{ position: 'absolute', bottom: 25, right: 20 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
           <ButtonAdd />
         </TouchableOpacity>
