@@ -97,22 +97,17 @@ const Report = (props) => {
   }
 
   const isFound = (val) => {
-    if (!list1.some(item => val.name == item.name)) {
-      list1.push(val);
-    } else {
+    if (list1.some(item => val.name == item.name)) {
       list1 = list1.filter(item => val.name != item.name);
-      list1.push(val);
     }
+    list1.push(val);
   }
 
   const isFound2 = (val) => {
-    if (!list2.some(item => val.name == item.name)) {
-      list2.push(val);
-    } else {
-      list2.filter(item => val.name != item.name);
-      list2.push(val);
+    if (list2.some(item => val.name == item.name)) {
+      list2 = list2.filter(item => val.name != item.name);
     }
-
+    list2.push(val);
   }
 
   const filterDate = (list) => {
@@ -139,6 +134,21 @@ const Report = (props) => {
     if (list.length == 0) {
       setSumIN(0)
       setSumOUT(0)
+      setListCt([])
+      setListTt([])
+      setPrecentCt1(0)
+      setPrecentCt2(0)
+      setPrecentCt3(0)
+      setPrecentCt4(0)
+      setPrecentCt5(0)
+      setPrecentCt6(0)
+      setPrecentCt7(0)
+
+      setPrecentTt1(0)
+      setPrecentTt2(0)
+      setPrecentTt3(0)
+      setPrecentTt4(0)
+      setPrecentTt5(0)
     } else {
       list.map((i) => {
         if (i.in_out == 0)
@@ -260,7 +270,8 @@ const Report = (props) => {
         }
 
       })
-
+      setSumIN(sumIn)
+      setSumOUT(sumOut)
 
       setListCt(list1)
       setListTt(list2)
@@ -283,8 +294,7 @@ const Report = (props) => {
       let prencent_tt4 = (tt4 / sumIn) * 100
       let prencent_tt5 = (tt5 / sumIn) * 100
 
-      setSumIN(sumIn)
-      setSumOUT(sumOut)
+
       //setPrecentSumOUT(prencent_Out)
       setPrecentMoney(prencent_money)
       setPrecentCt1(prencent_ct1)
@@ -311,14 +321,36 @@ const Report = (props) => {
 
   const renderItem2 = ({ item }) => {
     const { name, color, price } = item
+    let prencent = (price / sumOUT) * 100
     return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+          <Text style={{ fontSize: 12, color: 'black' }}>{name}</Text>
+          <Text style={{ fontSize: 12 }}> ({prencent.toFixed(2)})%</Text>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}>
-        <Text style={{ fontSize: 12, width: 170 }}>{name}</Text>
-        <Text style={{ fontSize: 15 }}>{Utils.numberWithCommas(price)} VND</Text>
+        </View>
+        <Text style={{ fontSize: 15, color: 'red' }}>{Utils.numberWithCommas(price)} VND</Text>
       </View>
+
     )
   }
+
+  const renderItem3 = ({ item }) => {
+    const { name, color, price } = item
+    let prencent = (price / sumIN) * 100
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+          <Text style={{ fontSize: 12, color: 'black' }}>{name}</Text>
+          <Text style={{ fontSize: 12 }}> ({prencent.toFixed(2)})%</Text>
+
+        </View>
+        <Text style={{ fontSize: 15, color: 'green' }}>{Utils.numberWithCommas(price)} VND</Text>
+      </View>
+
+    )
+  }
+
 
   const renderItem = ({ item }) => {
     const { name, color, price } = item
@@ -377,135 +409,136 @@ const Report = (props) => {
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <Text style={{ fontWeight: 'bold', color: 'red', margin: 10 }}>CHI TIỀN: {Utils.numberWithCommas(sumOUT)} VND</Text>
-          {
-            listCT.length > 0 ?
-              <View style={{
-                backgroundColor: 'white',
-                paddingHorizontal: 10,
-              }}>
-                <View
-                  style={{
-                    paddingVertical: 20,
-                    flexDirection: 'row',
+          <View>
+            <Text style={{ fontWeight: 'bold', color: 'red', margin: 10 }}>CHI TIỀN: {Utils.numberWithCommas(sumOUT)} VND</Text>
+            {
+               precent_ct1 != null && precent_ct2 != null && precent_ct3 != null && precent_ct4 != null && precent_ct5 != null  && precent_ct6 != null && precent_ct7 != null ?
+                <View style={{
+                  backgroundColor: 'white',
+                  paddingHorizontal: 10,
+                }}>
+                  <View
+                    style={{
+                      paddingVertical: 20,
+                      flexDirection: 'row',
 
-                    backgroundColor: 'white'
-                  }}
-                >
-                  <Pie
-                    radius={80}
-                    innerRadius={50}
-                    sections={[
-                      {
-                        percentage: precent_ct1,
-                        color: 'green',
-                      },
-                      {
-                        percentage: precent_ct2,
-                        color: 'red',
-                      },
-                      {
-                        percentage: precent_ct3,
-                        color: '#EBD22F',
-                      },
-                      {
-                        percentage: precent_ct4,
-                        color: '#3B3538',
-                      },
-                      {
-                        percentage: precent_ct5,
-                        color: 'blue',
-                      },
-                      {
-                        percentage: precent_ct6,
-                        color: '#4A6BED',
-                      },
+                      backgroundColor: 'white'
+                    }}
+                  >
+                    <Pie
+                      radius={80}
+                      innerRadius={50}
+                      sections={[
+                        {
+                          percentage: precent_ct1,
+                          color: 'green',
+                        },
+                        {
+                          percentage: precent_ct2,
+                          color: 'red',
+                        },
+                        {
+                          percentage: precent_ct3,
+                          color: '#EBD22F',
+                        },
+                        {
+                          percentage: precent_ct4,
+                          color: '#3B3538',
+                        },
+                        {
+                          percentage: precent_ct5,
+                          color: 'blue',
+                        },
+                        {
+                          percentage: precent_ct6,
+                          color: '#4A6BED',
+                        },
 
-                      {
-                        percentage: precent_ct7,
-                        color: '#56B332',
-                      },
-                    ]}
-                    strokeCap={'butt'}
-                  />
-                  <View style={{ marginLeft: 10 }}>
+                        {
+                          percentage: precent_ct7,
+                          color: '#56B332',
+                        },
+                      ]}
+                      strokeCap={'butt'}
+                    />
+                    <View style={{ marginLeft: 10 }}>
+                      <FlatList
+                        data={listCT}
+                        renderItem={renderItem}
+                      />
+                    </View>
+                  </View>
+                  <View>
                     <FlatList
                       data={listCT}
-                      renderItem={renderItem}
-                    />
+                      renderItem={renderItem2}
+                      ItemSeparatorComponent={ItemDivider} />
                   </View>
-                </View>
-                <View>
-                  <FlatList
-                    data={listCT}
-                    renderItem={renderItem2}
-                    ItemSeparatorComponent={ItemDivider} />
-                </View>
-              </View> : null
+                </View> : null
 
-          }
-          <Text style={{ fontWeight: 'bold', color: 'green', margin: 10 }}>THU TIỀN: {Utils.numberWithCommas(sumIN)} VND</Text>
-          {
-            listTT.length > 0 ?
-              <View style={{
-                backgroundColor: 'white',
-                paddingHorizontal: 10,
-              }}>
-                <View
-                  style={{
-                    paddingVertical: 20,
-                    flexDirection: 'row',
-                  }}
-                >
-                  <Pie
-                    radius={80}
-                    innerRadius={50}
+            }
+            <Text style={{ fontWeight: 'bold', color: 'green', margin: 10 }}>THU TIỀN: {Utils.numberWithCommas(sumIN)} VND</Text>
+            {
+              precent_tt1 != null && precent_tt2 != null && precent_tt3 != null && precent_tt4 != null && precent_tt5 != null ?
+                <View style={{
+                  backgroundColor: 'white',
+                  paddingHorizontal: 10,
+                }}>
+                  <View
+                    style={{
+                      paddingVertical: 20,
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Pie
+                      radius={80}
+                      innerRadius={50}
 
-                    sections={[
-                      {
-                        percentage: precent_tt1,
-                        color: 'green',
-                      },
-                      {
-                        percentage: precent_tt2,
-                        color: 'red',
-                      },
-                      {
-                        percentage: precent_tt3,
-                        color: '#EBD22F',
-                      },
-                      {
-                        percentage: precent_tt4,
-                        color: '#3B3538',
-                      },
-                      {
-                        percentage: precent_tt5,
-                        color: 'blue',
-                      },
+                      sections={[
+                        {
+                          percentage: precent_tt1,
+                          color: 'green',
+                        },
+                        {
+                          percentage: precent_tt2,
+                          color: 'red',
+                        },
+                        {
+                          percentage: precent_tt3,
+                          color: '#EBD22F',
+                        },
+                        {
+                          percentage: precent_tt4,
+                          color: '#3B3538',
+                        },
+                        {
+                          percentage: precent_tt5,
+                          color: 'blue',
+                        },
 
-                    ]}
-                    strokeCap={'butt'}
+                      ]}
+                      strokeCap={'butt'}
 
-                  />
+                    />
 
 
-                  <View style={{ marginLeft: 10 }}>
+                    <View style={{ marginLeft: 10 }}>
+                      <FlatList
+                        data={listTT}
+                        renderItem={renderItem}
+                      />
+                    </View>
+                  </View>
+                  <View>
                     <FlatList
                       data={listTT}
-                      renderItem={renderItem}
-                    />
+                      renderItem={renderItem3}
+                      ItemSeparatorComponent={ItemDivider} />
                   </View>
                 </View>
-                <View>
-                  <FlatList
-                    data={listTT}
-                    renderItem={renderItem2}
-                    ItemSeparatorComponent={ItemDivider} />
-                </View>
-              </View> : null
-          }
-        </View>
+                : null
+            }
+          </View>
         </ScrollView>
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
