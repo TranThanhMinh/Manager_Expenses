@@ -18,6 +18,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
+        
         <Router />
       </SafeAreaProvider>
     </Provider>

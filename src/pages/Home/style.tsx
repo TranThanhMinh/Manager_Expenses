@@ -76,28 +76,47 @@ const style = StyleSheet.create({
     fontWeight:"bold",
     fontSize:16
   },
-  dropdown1BtnStyle: {
-    width:'100%',
-    marginTop:10,
-    height: 35,
-    backgroundColor: '#FFF',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#444',
-  
-  },
-  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left' },
-  dropdown1DropdownStyle: { backgroundColor: '#EFEFEF' },
-  dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5' },
-  dropdown1RowTxtStyle: { color: '#444', textAlign: 'left' },
+
   borderSearch:{
-    width:'100%',
+    flex:1,
     height:35,
     borderRadius: 5,
     borderColor :'#444',
     borderWidth:0.5,
     paddingHorizontal:10
-  }
+  },
+  dropdown1BtnStyle: {
+    width:150,
+    height: 35,
+    borderBottomWidth: 0.5,
+    marginVertical: 5,
+    paddingHorizontal: 0,
+    marginHorizontal: 5,
+    backgroundColor: '#FFF',
+  },
+  dropdown1BtnStyleFalse: {
+    width:150,
+    height: 35,
+    borderWidth:0.5,
+    marginVertical: 5,
+    borderRadius:5,
+    paddingHorizontal: 0,
+    marginHorizontal: 5,
+    backgroundColor: '#FFF',
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 2,
+  },
+  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'center',fontSize:14 },
+  dropdown1DropdownStyle: { backgroundColor: '#EFEFEF'},
+  dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
+  dropdown1RowTxtStyle2: { color: 'black', textAlign: 'center', fontSize:16,marginHorizontal:5},
+  dropdown1RowTxtStyle: { color: 'black', textAlign: 'center', fontSize:16,marginHorizontal:5},
+  dropdown1RowTxtStyleTitle: { color: 'black', textAlign: 'center', fontSize:16,marginHorizontal:5,fontWeight:'bold'},
+
 })
 
 export default style;

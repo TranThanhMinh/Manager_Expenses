@@ -46,7 +46,7 @@ Utils.getName =(id)=>{
 Utils.TypeExpenses = [
   {
     id: 0,
-    name: "-----Chi tiền-----",
+    name: "---Chi tiền---",
     type:'0'
   },
   {
@@ -101,7 +101,7 @@ Utils.TypeExpenses = [
   },
   {
     id: 11,
-    name: "-----Vay Nợ-----",
+    name: "---Vay Nợ---",
     type:'0'
   },
   {
@@ -126,7 +126,7 @@ Utils.TypeExpenses = [
   },
   {
     id: 16,
-    name: "-----Thu Tiền-----",
+    name: "---Thu Tiền---",
     type:'0'
   },
   {

@@ -21,8 +21,17 @@ import ButtonAdd from "../../component/ButtonAdd";
 import { Utils } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import SelectDropdown from 'react-native-select-dropdown'
+
+import * as Icon from "react-native-feather"
 const Home = (props) => {
   const insets = useSafeAreaInsets();
+  let fisrt = {
+    id: -1,
+    name: 'Tất cả',
+    type: '0'
+  }
+  const addfirst = [fisrt, ...Utils.TypeExpenses]
 
   const [wallet, setWallet] = useState([]);
   const isVisible = useIsFocused();
@@ -30,6 +39,7 @@ const Home = (props) => {
   const dispatch = useDispatch();
   const [listExpenses, setListExpenses] = useState([])
   const [listSearch, setListSearch] = useState([])
+  const [selectDropdown, setSelectDropdown] = useState(addfirst)
   const [data, setData] = useState<FloodReports>()
   const [sumExpenses, setSumExpenses] = useState(0)
   const [sumIN, setSumIN] = useState(0)
@@ -38,12 +48,18 @@ const Home = (props) => {
   const [toDate, setSelectedToDate] = useState(0)
   const [isFromDate, setFromDate] = useState(false);
   const [isToDate, setToDate] = useState(false);
+  const [textSearch, setTextSearch] = useState('');
 
+  const [isType, setIsType] = useState(true)
+
+  const [type, setType] = useState(0)
+  const [edit, setEdit] = useState(false);
   let collect = 0
   let payout = 0
 
-
+ 
   const session = ["Buổi sáng", "Buổi trưa", "Buổi tối"]
+
 
   useEffect(() => {
     if (isVisible) {
@@ -56,11 +72,13 @@ const Home = (props) => {
       let last = new Date(lastDay).getTime()
       getListDate(first, last)
       getWallet()
-    }else 
-    setListExpenses([])
+
+    } else
+      setListExpenses([])
     setListSearch([])
 
   }, [isVisible]);
+
 
   useEffect(() => {
     const { data, type, message } = danangReducer
@@ -96,6 +114,7 @@ const Home = (props) => {
     setSelectedToDate(toDate)
     getListExpensesFromDateToDate(from, toDate).then(task => {
       filterDate(task)
+      setListSearch(task)
     })
 
   }
@@ -110,7 +129,6 @@ const Home = (props) => {
       return acc;
     }, {}))
     setListExpenses(newList.sort(biggestToSmallest))
-    setListSearch(newList.sort(biggestToSmallest))
     if (list.length == 0) {
       setSumExpenses(0)
       setSumIN(0)
@@ -190,7 +208,7 @@ const Home = (props) => {
       >
         <View style={{ height: 50 }}>
           <View style={style.itemExpenses}>
-            <Text style={[style.text2, { color: 'black' }]}>{Utils.TypeExpenses[type].name}</Text>
+            <Text style={[style.text2, { color: 'black' }]}>{selectDropdown[(type + 1)].name}</Text>
             <Text style={style.text}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
@@ -255,18 +273,31 @@ const Home = (props) => {
   };
 
   const handleSearch = (search) => {
-    if (search != '') {
-      const list = listSearch.filter(item => item.descripbe.toLowerCase().includes(search.toLowerCase()))
-      setListExpenses(list)
+    if (search > -1) {
+      const list = listSearch.filter(item => item.type == search)
+      filterDate(list)
     } else {
-      setListExpenses(listSearch)
+      filterDate(listSearch)
     }
+
   }
+
+  const onSearch = (search) => {
+    console.log(search)
+    if (search !='') {
+     const list = listSearch.filter(item => item.descripbe.toLowerCase().includes(search.toLowerCase()))
+      filterDate(list)
+    } else {
+      filterDate(listSearch)
+    }
+
+  }
+  
 
   return (
     <View style={[style.container]}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row',padding : 5, backgroundColor: '#50a1e3', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', alignItems: 'center' }}>
           <View>
             <Text style={[style.text2, { color: 'white', borderColor: 'white', borderWidth: 1, borderRadius: 5, padding: 3 }]}>{wallet.length > 0 ? wallet[0].name : 'Chưa có ví'}</Text>
           </View>
@@ -281,18 +312,60 @@ const Home = (props) => {
           <TouchableOpacity onPress={toggleModalToDate}>
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
+
         </View>
-        {/* <View style={{ margin: 10 }}>
-          <TextInput placeholder="tìm kiếm" style={style.borderSearch} onChangeText={(text) => handleSearch(text)} />
-        </View> */}
+        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row',alignItems:'center', justifyContent: 'center' }}>
+        <TextInput
+        style={style.borderSearch}
+        placeholderTextColor={'#E1E1E1'}
+        placeholder="tìm kiếm theo mô tả"
+        onChangeText={text => onSearch(text)}
+        />
+          <SelectDropdown
+            data={selectDropdown}
+            disabled={edit}
+            disableAutoScroll={false}
+            defaultButtonText={selectDropdown[type].name}
+            onSelect={(selectedItem, index) => {
+              setIsType(true)
+              handleSearch(selectedItem.id)
+            }}
+
+            renderCustomizedRowChild={(item, index) => {
+              return (
+                <View>
+                  {
+                    item.id != 0 && item.id != 11 && item.id != 16 ?
+                      <Text style={style.dropdown1RowTxtStyle}>{item.name}</Text>
+                      : <Text style={style.dropdown1RowTxtStyleTitle}>{item.name}</Text>
+                  }
+                </View>
+              );
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+
+              return selectedItem.name
+            }}
+            rowTextForSelection={(item, index) => {
+              return item.name
+            }}
+            buttonStyle={style.dropdown1BtnStyleFalse}
+            buttonTextStyle={style.dropdown1BtnTxtStyle}
+            renderDropdownIcon={isOpened => {
+              return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
+            }}
+            dropdownIconPosition={'right'}
+            dropdownStyle={style.dropdown1DropdownStyle}
+            rowStyle={style.dropdown1RowStyle}
+            rowTextStyle={style.dropdown1RowTxtStyle}
+          />
+        </View>
+
         <FlatList
-          style={{ marginTop: 10}}
+          style={{ marginTop: 10 }}
           data={listExpenses}
           renderItem={itemExpenses} />
-        {/* <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
-          <Text style={{ marginTop: 10, marginLeft: 5, color: 'green', fontSize: 18 }}>Tổng thu: {Utils.numberWithCommas(sumIN)} VND</Text>
-          <Text style={{ marginTop: 10, marginLeft: 5, color: 'red', fontSize: 18 }}>Tổng chi: {Utils.numberWithCommas(sumOUT)} VND</Text>
-        </View> */}
+
         <TouchableOpacity style={{ position: 'absolute', bottom: 25, right: 20 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
           <ButtonAdd />
         </TouchableOpacity>
