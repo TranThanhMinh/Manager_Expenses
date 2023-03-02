@@ -49,7 +49,6 @@ export const removeTask = (id) => {
 }
 
 export const updateWallet = (type,  money) => {
-  console.log('updateWallet',type,money)
   const puppies = realm.objects("wallet").filter(item=>item.default == type)
   return new Promise(resolve => {
     realm.write(() => {

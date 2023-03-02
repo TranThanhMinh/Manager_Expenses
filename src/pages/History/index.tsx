@@ -31,17 +31,30 @@ const History = (props) => {
     )
   }
 
+  const ItemDivider = () => {
+    return (
+      <View
+        style={{
+          height: 0.5,
+          marginHorizontal:10,
+          backgroundColor: "#607D8B",
+        }}
+      />
+    );
+  }
+
   return (
     <View style={style.container}>
     <View style={[style.container2, { marginTop: insets.top }]}>
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
         <Icon.ArrowLeft stroke={'white'} />
-        <Text style={{ marginLeft: 10, color: 'white' }}>Danh sách lịch sử</Text>
+        <Text style={[style.text2, { color: 'white' }]}>Danh sách lịch sử</Text>
       </TouchableOpacity>
       <View>
         <FlatList
           data={list}
-          renderItem={renderItem} />
+          renderItem={renderItem}
+          ItemSeparatorComponent={ItemDivider} />
       </View>
     </View>
     </View>

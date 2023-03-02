@@ -19,6 +19,11 @@ export const getListExpensesFromDateToDate = (from_date, to_date) => {
 
 
 export const getListExpensesBorrow = (id) => {
+  const tasks = realm.objects('Expenses').filter(item=>item.type == id)
+  return Promise.resolve(tasks)
+}
+
+export const getListExpensesBorrow2 = (id) => {
   const tasks = realm.objects('Expenses').filter(item=>item.type == id && item.price_borrow > 0)
   return Promise.resolve(tasks)
 }
@@ -58,7 +63,19 @@ export const removeTask = (id) => {
   return new Promise(resolve => {
     realm.write(() => {
       realm.delete(puppies);
-      resolve(puppies)
+      const puppies2 = realm.objects("Expenses").filter(item => item.id_borrow == id)
+      resolve(puppies2)
+    })
+  })
+}
+
+export const removeTask2 = (id) => {
+  const puppies = realm.objects("Expenses").filtered('id = $0', id)
+  return new Promise(resolve => {
+    realm.write(() => {
+      realm.delete(puppies);
+      const puppies2 = realm.objects("Expenses").filter(item => item.id_borrow == id)
+      resolve(puppies2)
     })
   })
 }
@@ -78,7 +95,6 @@ export const updateTask = (id, descripbe, price,price_borrow,typeExpenses) => {
 
 export const updateBorrow = (id,price_borrow) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
-  console.log(puppies)
   return new Promise(resolve => {
     realm.write(() => {
       puppies[0].price_borrow = puppies[0].price_borrow - price_borrow 
@@ -87,13 +103,23 @@ export const updateBorrow = (id,price_borrow) => {
   })
 }
 
-
-
-export const deleteBorrow = (id,price_borrow) => {
+export const updateBorrow2 = (id,price_borrow) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   return new Promise(resolve => {
     realm.write(() => {
       puppies[0].price_borrow = puppies[0].price_borrow + price_borrow 
+      resolve(puppies)
+    })
+  })
+}
+
+
+
+export const deleteBorrow = (id) => {
+  const puppies = realm.objects("Expenses").filter(item => item.id_borrow == id)
+  return new Promise(resolve => {
+    realm.write(() => {
+      realm.delete(puppies);
       resolve(puppies)
     })
   })

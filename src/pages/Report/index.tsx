@@ -394,7 +394,7 @@ const Report = (props) => {
       <View
         style={{
           height: 0.5,
-          width: "100%",
+          flex:1,
           backgroundColor: "#607D8B",
         }}
       />

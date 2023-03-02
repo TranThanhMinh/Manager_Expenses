@@ -14,7 +14,13 @@ const style = StyleSheet.create({
   textPrice:{
     fontWeight:'bold',
     textAlign:'right'
-  }
+  },
+  text2: {
+    marginLeft: 10,
+    color:'balck',
+    fontWeight:"bold",
+    fontSize:16
+  },
 })
 
 export default style

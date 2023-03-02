@@ -10,7 +10,7 @@ import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
-  removeTask, getListExpensesFromDateToDate, deleteBorrow
+  removeTask2, getListExpensesFromDateToDate, deleteBorrow,updateBorrow2
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
@@ -120,6 +120,7 @@ const Home = (props) => {
   }
 
   const filterDate = (list) => {
+    
     let newList = Object.values(list.reduce((acc, item) => {
       if (!acc[item.created_date]) acc[item.created_date] = {
         created_date: item.created_date,
@@ -168,6 +169,10 @@ const Home = (props) => {
       setSumOUT(payout)
     }
 
+    const {list} = item
+
+    let lis =[...list].reverse()
+
     return (
       <View style={{ margin: 5 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
@@ -182,7 +187,7 @@ const Home = (props) => {
         <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
         <SwipeListView
           style={{ marginHorizontal: 10 }}
-          data={item.list}
+          data={lis}  
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           leftOpenValue={0}
@@ -196,6 +201,7 @@ const Home = (props) => {
   }
 
   const renderItem = ({ item, index }) => {
+   
     const { descripbe, price, type, created_date, created_time, price_borrow, in_out } = item
 
     return (
@@ -221,11 +227,27 @@ const Home = (props) => {
   }
 
   const handleRemove = (data) => {
-    const { id, id_borrow, price_borrow, price, in_out } = data.item
-    removeTask(id).then(task => {
-      if (id_borrow != '') {
-        deleteBorrow(id_borrow, price_borrow)
+    const { id, id_borrow, price_borrow, price,type, in_out } = data.item
+    removeTask2(id).then(task => {
+        task.map(item => {
+        if (item.in_out == 0) {
+          updateWallet(wallet[0].default, wallet[0].money + parseFloat(item.price))
+        } else {
+          updateWallet(wallet[0].default, wallet[0].money - parseFloat(item.price))
+        }
+      })
+
+      if (task.length > 0) {
+        deleteBorrow(task[0].id_borrow)
       }
+
+
+      if (type == 13) {
+        updateBorrow2(id_borrow, price_borrow)
+      }else if (type == 15) {
+        updateBorrow2(id_borrow, price_borrow)
+      }
+
       if (in_out == 0) {
         updateWallet(wallet[0].default, wallet[0].money + parseFloat(price))
       } else {

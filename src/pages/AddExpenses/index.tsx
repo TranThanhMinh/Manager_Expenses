@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, Image, TextInput, TouchableOpacity, Text } from "react-native";
 import style from "./style";
 import {
-  addExpenses, getListExpensesBorrow, updateTask, updateBorrow,
-  removeTask, getListExpensesFromDateToDate, deleteBorrow
+  addExpenses, getListExpensesBorrow,getListExpensesBorrow2, updateTask, updateBorrow,updateBorrow2,
+  removeTask, deleteBorrow
 } from "../../data/ExpensesServices ";
 import { getListHistory } from "../../data/WalletServices";
 import {
@@ -23,6 +23,7 @@ const AddExpenses = (props) => {
   const insets = useSafeAreaInsets();
 
   let item = props.item
+  //console.log(item)
   const [type, setType] = useState(1)
   const [isType, setIsType] = useState(true)
   const [typeBorrow, setTypeBorrow] = useState(1)
@@ -42,6 +43,7 @@ const AddExpenses = (props) => {
   const [idWallet, setIdWallet] = useState('')
   const [inOut, setInOut] = useState(0)
   const [wallet, setWallet] = useState();
+  const [money, setMoney] = useState(0);
 
   useEffect(() => {
     setDate(new Date().getTime())
@@ -52,6 +54,7 @@ const AddExpenses = (props) => {
       setDescripbe(item.item.descripbe)
       setPrice(item.item.price)
       setPrice2(item.item.price)
+
       setPriceBorrow2(item.item.price_borrow)
       setPriceBorrow(item.item.price_borrow)
       setIsDescripbe(true)
@@ -63,6 +66,16 @@ const AddExpenses = (props) => {
       if (item.item.type == 13) {
         getListExpensesBorrow(12).then(stask => {
           setListBorrow(stask)
+          console.log(stask[item.item.type_borrow].price_borrow, item.item.price)
+          let price = parseFloat(stask[item.item.type_borrow].price_borrow) + parseFloat(item.item.price)
+          setMoney(price)
+        })
+      }else if (item.item.type == 15) {
+        getListExpensesBorrow(14).then(stask => {
+          setListBorrow(stask)
+          console.log(stask[item.item.type_borrow].price_borrow, item.item.price)
+          let price = parseFloat(stask[item.item.type_borrow].price_borrow) + parseFloat(item.item.price)
+          setMoney(price)
         })
       }
     } else {
@@ -80,9 +93,26 @@ const AddExpenses = (props) => {
 
   const handleRemove = () => {
     removeTask(id).then(task => {
-      if (idBorrow != '') {
-        deleteBorrow(idBorrow, priceBorrow)
+      task.map(item => {
+        if (item.in_out == 0) {
+          updateWallet(wallet.default, wallet.money + parseFloat(item.price))
+        } else {
+          updateWallet(wallet.default, wallet.money - parseFloat(item.price))
+        }
+      })
+
+     
+      if (task.length > 0) {
+        deleteBorrow(task[0].id_borrow)
       }
+
+
+      if (type == 13) {
+        updateBorrow2(idBorrow, priceBorrow)
+      }else if (type == 15) {
+        updateBorrow2(idBorrow, priceBorrow)
+      }
+
       if (inOut == 0) {
         updateWallet(wallet.default, wallet.money + parseFloat(price))
       } else {
@@ -200,29 +230,31 @@ const AddExpenses = (props) => {
                 setIsType(true)
                 setType(selectedItem.id)
                 setInOut(parseInt(selectedItem.type))
+                setPrice('')
                 if (selectedItem.id == 15) {
-                  getListExpensesBorrow(14).then(stask => {
+                  getListExpensesBorrow2(14).then(stask => {
                     setIdBorrow(stask[0].id)
                     setTypeBorrow(0)
                     setListBorrow(stask)
+                    setMoney(stask[0].price_borrow)
+
                   })
                 }
 
                 else if (selectedItem.id == 13) {
-                  getListExpensesBorrow(12).then(stask => {
+                  getListExpensesBorrow2(12).then(stask => {
                     setIdBorrow(stask[0].id)
                     setTypeBorrow(0)
                     setListBorrow(stask)
+                    setMoney(stask[0].price_borrow)
                   })
-                } else setListBorrow([])
+                } else {
+                  setMoney(0)
+                  setListBorrow([])
+                }
+
               }}
-              // renderCustomizedButtonChild={(selectedItem, index) => {
-              //   return (
-              //     <View>
-              //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem ? selectedItem.name : 'Chọn danh mục'}</Text>
-              //     </View>
-              //   );
-              // }}
+
               renderCustomizedRowChild={(item, index) => {
                 return (
                   <View>
@@ -260,10 +292,11 @@ const AddExpenses = (props) => {
                 <SelectDropdown
                   data={listBorrow}
                   disabled={edit}
-                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(listBorrow[typeBorrow].price_borrow) + ' VND'}
+                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money:listBorrow[typeBorrow].price_borrow ) + ' VND'}
                   onSelect={(selectedItem, index) => {
                     setIdBorrow(selectedItem.id)
                     setTypeBorrow(index)
+                    setMoney(selectedItem.price_borrow)
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
                     return (selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND')
@@ -271,13 +304,7 @@ const AddExpenses = (props) => {
                   rowTextForSelection={(item, index) => {
                     return (item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND')
                   }}
-                  // renderCustomizedButtonChild={(selectedItem, index) => {
-                  //   return (
-                  //     <View>
-                  //       <Text style={style.dropdown1RowTxtStyle2}>{selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND'}</Text>
-                  //     </View>
-                  //   );
-                  // }}
+
                   renderCustomizedRowChild={(item, index) => {
                     return (
                       <View><Text style={style.dropdown1RowTxtStyle}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND'}</Text>
@@ -299,15 +326,21 @@ const AddExpenses = (props) => {
           }
           <View style={style.combobox}>
             <Icon.Edit3 stroke={'#50a1e3'} />
-            <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder="Mô tả" placeholderTextColor={'#E1E1E1'}  onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
+            <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder="Mô tả" placeholderTextColor={'#E1E1E1'} onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
           </View>
           <View style={style.combobox}>
             <Icon.DollarSign stroke={'#50a1e3'} />
             <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder="Nhâp giá" placeholderTextColor={'#E1E1E1'} keyboardType="numeric"
               onChangeText={(text) => {
-                setPrice(text.replace(/[^0-9]/g, '')),
-                  setIsPrice(true),
-                  type == 14 || 15 ? setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))) : null
+                setIsPrice(true),
+                  type == 13 || type == 15 ?
+                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? null : setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, '')))
+                    :
+                    setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))),
+                  type == 13 || type == 15 ?
+                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? console.log('haha',text,money) : setPrice(text.replace(/[^0-9]/g, ''))
+                    :
+                    setPrice(text.replace(/[^0-9]/g, ''))
               }} />
           </View>
           <View style={{ alignItems: 'center', marginVertical: 10 }}>
