@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Image, TextInput, TouchableOpacity, Text } from "react-native";
 import style from "./style";
 import {
-  addExpenses, getListExpensesBorrow,getListExpensesBorrow2, updateTask, updateBorrow,updateBorrow2,
+  addExpenses, getListExpensesBorrow, getListExpensesBorrow2, updateTask, updateBorrow, updateBorrow2,
   removeTask, deleteBorrow
 } from "../../data/ExpensesServices ";
 import { getListHistory } from "../../data/WalletServices";
@@ -70,7 +70,7 @@ const AddExpenses = (props) => {
           let price = parseFloat(stask[item.item.type_borrow].price_borrow) + parseFloat(item.item.price)
           setMoney(price)
         })
-      }else if (item.item.type == 15) {
+      } else if (item.item.type == 15) {
         getListExpensesBorrow(14).then(stask => {
           setListBorrow(stask)
           console.log(stask[item.item.type_borrow].price_borrow, item.item.price)
@@ -101,7 +101,7 @@ const AddExpenses = (props) => {
         }
       })
 
-     
+
       if (task.length > 0) {
         deleteBorrow(task[0].id_borrow)
       }
@@ -109,7 +109,7 @@ const AddExpenses = (props) => {
 
       if (type == 13) {
         updateBorrow2(idBorrow, priceBorrow)
-      }else if (type == 15) {
+      } else if (type == 15) {
         updateBorrow2(idBorrow, priceBorrow)
       }
 
@@ -208,10 +208,19 @@ const AddExpenses = (props) => {
   return (
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
+        {/* <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
           <Icon.ArrowLeft stroke={'white'} />
-          <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>
-        </TouchableOpacity>
+          <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={[style.text3, { color: 'white' }]}>Giao dịch hàng ngày</Text>
+          </View>
+        </TouchableOpacity> */}
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} >
+          <TouchableOpacity onPress={() => props.goToBack()}>
+            <Icon.ArrowLeft stroke={'white'} />
+          </TouchableOpacity>
+          <Text style={[style.text3, { color: 'white' }]}>Giao dịch hàng ngày</Text>
+        </View>
 
         <View style={style.body}>
           <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
@@ -292,7 +301,7 @@ const AddExpenses = (props) => {
                 <SelectDropdown
                   data={listBorrow}
                   disabled={edit}
-                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money:listBorrow[typeBorrow].price_borrow ) + ' VND'}
+                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money : listBorrow[typeBorrow].price_borrow) + ' VND'}
                   onSelect={(selectedItem, index) => {
                     setIdBorrow(selectedItem.id)
                     setTypeBorrow(index)
@@ -338,7 +347,7 @@ const AddExpenses = (props) => {
                     :
                     setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))),
                   type == 13 || type == 15 ?
-                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? console.log('haha',text,money) : setPrice(text.replace(/[^0-9]/g, ''))
+                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? console.log('haha', text, money) : setPrice(text.replace(/[^0-9]/g, ''))
                     :
                     setPrice(text.replace(/[^0-9]/g, ''))
               }} />

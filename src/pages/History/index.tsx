@@ -46,10 +46,12 @@ const History = (props) => {
   return (
     <View style={style.container}>
     <View style={[style.container2, { marginTop: insets.top }]}>
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
-        <Icon.ArrowLeft stroke={'white'} />
-        <Text style={[style.text2, { color: 'white' }]}>Danh sách lịch sử</Text>
-      </TouchableOpacity>
+    <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} >
+          <TouchableOpacity onPress={() => props.goToBack()}>
+            <Icon.ArrowLeft stroke={'white'} />
+          </TouchableOpacity>
+          <Text style={[style.text2, { color: 'white' }]}>Lịch sử giao dịch</Text>
+        </View>
       <View>
         <FlatList
           data={list}

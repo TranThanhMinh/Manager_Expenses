@@ -80,6 +80,12 @@ const style = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 5,
   },
+  text3: {
+    marginLeft: 10,
+    color:'balck',
+    fontWeight:"bold",
+    fontSize:16
+  },
   btnAdd: {
     padding: 5,
     justifyContent: 'center',
