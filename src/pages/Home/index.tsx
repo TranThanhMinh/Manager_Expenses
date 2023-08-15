@@ -56,6 +56,7 @@ const Home = (props) => {
   const [edit, setEdit] = useState(false);
   let collect = 0
   let payout = 0
+  let first = 0
 
  
   const session = ["Buổi sáng", "Buổi trưa", "Buổi tối"]
@@ -68,7 +69,8 @@ const Home = (props) => {
       //   console.log(firstDay); // 👉️ Sat Oct 01 2022 ...
       const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
       //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
-      let first = new Date(firstDay).getTime()
+      if(first == 0)
+       first = new Date(firstDay).getTime()
       let last = new Date(lastDay).getTime()
       getListDate(first, last)
       getWallet()

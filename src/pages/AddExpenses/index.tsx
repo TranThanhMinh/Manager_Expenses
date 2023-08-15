@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Image, TextInput, TouchableOpacity, Text } from "react-native";
 import style from "./style";
 import {
-  addExpenses, getListExpensesBorrow, getListExpensesBorrow2, updateTask, updateBorrow, updateBorrow2,
+  addExpenses, getListExpensesBorrow,getListExpensesBorrow2, updateTask, updateBorrow,updateBorrow2,
   removeTask, deleteBorrow
 } from "../../data/ExpensesServices ";
 import { getListHistory } from "../../data/WalletServices";
@@ -23,7 +23,6 @@ const AddExpenses = (props) => {
   const insets = useSafeAreaInsets();
 
   let item = props.item
-  //console.log(item)
   const [type, setType] = useState(1)
   const [isType, setIsType] = useState(true)
   const [typeBorrow, setTypeBorrow] = useState(1)
@@ -46,7 +45,7 @@ const AddExpenses = (props) => {
   const [money, setMoney] = useState(0);
 
   useEffect(() => {
-    setDate(new Date().getTime())
+   
     if (!item.add) {
       setWallet(item.wallet)
       setEdit(true)
@@ -63,6 +62,7 @@ const AddExpenses = (props) => {
       setTypeBorrow(item.item.type_borrow)
       setIdBorrow(item.item.id_borrow)
       setInOut(item.item.in_out)
+      setDate(item.item.created_date)
       if (item.item.type == 13) {
         getListExpensesBorrow(12).then(stask => {
           setListBorrow(stask)
@@ -70,7 +70,7 @@ const AddExpenses = (props) => {
           let price = parseFloat(stask[item.item.type_borrow].price_borrow) + parseFloat(item.item.price)
           setMoney(price)
         })
-      } else if (item.item.type == 15) {
+      }else if (item.item.type == 15) {
         getListExpensesBorrow(14).then(stask => {
           setListBorrow(stask)
           console.log(stask[item.item.type_borrow].price_borrow, item.item.price)
@@ -79,6 +79,7 @@ const AddExpenses = (props) => {
         })
       }
     } else {
+      setDate(new Date().getTime())
       setIdWallet(item.wallet.id)
     }
   }, [])
@@ -101,7 +102,7 @@ const AddExpenses = (props) => {
         }
       })
 
-
+     
       if (task.length > 0) {
         deleteBorrow(task[0].id_borrow)
       }
@@ -109,7 +110,7 @@ const AddExpenses = (props) => {
 
       if (type == 13) {
         updateBorrow2(idBorrow, priceBorrow)
-      } else if (type == 15) {
+      }else if (type == 15) {
         updateBorrow2(idBorrow, priceBorrow)
       }
 
@@ -150,12 +151,13 @@ const AddExpenses = (props) => {
           })
       }
       else {
+       let updatedate = moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime()
         if (item.item.in_out == 0)
           updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price2) - parseFloat(price)))
         else updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price) - parseFloat(price2)))
         if (type == 13 || type == 15) {
           updateBorrow(idBorrow, priceBorrow - priceBorrow2)
-          updateTask(id, descripbe, price, priceBorrow, type).then(task => {
+          updateTask(id, descripbe, price, priceBorrow, type,updatedate).then(task => {
             props.goToBack()
           })
         } else if (type == 12 || type == 14) {
@@ -164,11 +166,11 @@ const AddExpenses = (props) => {
             task.map(item => {
               paid = paid + parseFloat(item.price)
             })
-            updateTask(id, descripbe, price, parseFloat(price) - paid, type).then(task => {
+            updateTask(id, descripbe, price, parseFloat(price) - paid, type,updatedate).then(task => {
               props.goToBack()
             })
           })
-        } else updateTask(id, descripbe, price, priceBorrow, type).then(task => {
+        } else updateTask(id, descripbe, price, priceBorrow, type,updatedate).then(task => {
           props.goToBack()
         })
 
@@ -181,6 +183,7 @@ const AddExpenses = (props) => {
   const onDateChange = (date) => {
     setDate(date)
     toggleModalToDate()
+    console.log('onDateChange',date)
   }
 
   const toggleModalToDate = () => {
@@ -208,19 +211,10 @@ const AddExpenses = (props) => {
   return (
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        {/* <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
           <Icon.ArrowLeft stroke={'white'} />
-          <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={[style.text3, { color: 'white' }]}>Giao dịch hàng ngày</Text>
-          </View>
-        </TouchableOpacity> */}
-
-        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} >
-          <TouchableOpacity onPress={() => props.goToBack()}>
-            <Icon.ArrowLeft stroke={'white'} />
-          </TouchableOpacity>
-          <Text style={[style.text3, { color: 'white' }]}>Giao dịch hàng ngày</Text>
-        </View>
+          <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>
+        </TouchableOpacity>
 
         <View style={style.body}>
           <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
@@ -301,7 +295,7 @@ const AddExpenses = (props) => {
                 <SelectDropdown
                   data={listBorrow}
                   disabled={edit}
-                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money : listBorrow[typeBorrow].price_borrow) + ' VND'}
+                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money:listBorrow[typeBorrow].price_borrow ) + ' VND'}
                   onSelect={(selectedItem, index) => {
                     setIdBorrow(selectedItem.id)
                     setTypeBorrow(index)
@@ -347,7 +341,7 @@ const AddExpenses = (props) => {
                     :
                     setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))),
                   type == 13 || type == 15 ?
-                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? console.log('haha', text, money) : setPrice(text.replace(/[^0-9]/g, ''))
+                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? console.log('haha',text,money) : setPrice(text.replace(/[^0-9]/g, ''))
                     :
                     setPrice(text.replace(/[^0-9]/g, ''))
               }} />

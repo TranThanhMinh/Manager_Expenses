@@ -80,7 +80,7 @@ export const removeTask2 = (id) => {
   })
 }
 
-export const updateTask = (id, descripbe, price,price_borrow,typeExpenses) => {
+export const updateTask = (id, descripbe, price,price_borrow,typeExpenses,created_date) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   return new Promise(resolve => {
     realm.write(() => {
@@ -88,6 +88,7 @@ export const updateTask = (id, descripbe, price,price_borrow,typeExpenses) => {
       puppies[0].price = price
       puppies[0].price_borrow = price_borrow
       puppies[0].type = typeExpenses
+      puppies[0].created_date = created_date
       resolve(puppies)
     })
   })
