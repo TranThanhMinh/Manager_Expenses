@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native'
 import * as Icon from "react-native-feather"
 import { getListHistory } from "../../data/WalletServices";
 import { Utils } from "../../common";
@@ -15,6 +15,14 @@ import { updateWallet, addWallet, getListwalletDefault } from "../../data/Wallet
 import {
   removeTask, getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
 
 const Report = (props) => {
   const insets = useSafeAreaInsets();
@@ -37,6 +45,29 @@ const Report = (props) => {
 
   let list1 = []
   let list2 = []
+
+  const { width } = Dimensions.get("window");
+  const height = 256;
+
+
+  const chartConfig = {
+    backgroundGradientFrom: "#50a1e3",
+    backgroundGradientTo: "#50a1e3",
+    color: (opacity = 1) => `white`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.3,
+    useShadowColorFromDataset: false // optional
+  };
+
+
+  const data = {
+    labels: ["18/8/2023", "20/8/2023"],
+    datasets: [
+      {
+        data: [-10,-2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+      }
+    ]
+  };
 
   useEffect(() => {
     if (isVisible) {
@@ -512,6 +543,43 @@ const Report = (props) => {
                 </View>
                 : null
             }
+
+               <View>
+                <BarChart
+                  width={width}
+                  height={height}
+                  data={data}
+                  chartConfig={chartConfig}
+
+                  fromZero={false}
+                  verticalLabelRotation={0}
+                  withInnerLines={true}
+                  showValuesOnTopOfBars={true}
+                  showBarTops={true}
+                />
+               </View>
+               <View>
+               <LineChart
+                bezier
+                data={data}
+                width={width}
+                height={height}
+                yAxisLabel="$"
+                yAxisSuffix="k"
+                chartConfig={chartConfig}
+               
+                verticalLabelRotation={20}
+                onDataPointClick={({ value, getColor }) =>
+                  // showMessage({
+                  //   message: `${value}`,
+                  //   description: "You selected this value",
+                  //   backgroundColor: getColor(0.9)
+                  // })
+                  console.log(value)
+                }
+                formatXLabel={label => label.toUpperCase()}
+              />
+               </View>
           </View>
         </ScrollView>
         <Modal isVisible={isFromDate}>
