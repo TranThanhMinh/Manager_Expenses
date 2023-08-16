@@ -350,9 +350,9 @@ const Home = (props) => {
           </TouchableOpacity>
 
         </View>
-        <View >
+        {/* <View >
       <Button title="Create Alarm at 1:55PM" onPress={() => create()} />
-    </View>
+    </View> */}
         <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
           <TextInput
             style={style.borderSearch}

@@ -4,22 +4,13 @@ import { useIsFocused } from "@react-navigation/native";
 import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
 import style from "./style";
-import { getFloodReports } from "../../redux/actions/danang";
-import { Data } from "../../model/types.d";
 import { FloodReports } from "../../model/types.d";
-import urid from 'urid';
 import { addTask, getListTasks } from "../../data/StorageServices";
 import {
   removeTask, getListExpenses, deleteBorrow
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
-import SelectDropdown from 'react-native-select-dropdown'
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { SwipeListView } from 'react-native-swipe-list-view';
-import CalendarPicker from 'react-native-calendar-picker';
-import Modal from "react-native-modal";
-import ButtonAdd from "../../component/ButtonAdd";
 import { Utils } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
