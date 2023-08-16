@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TextInput, TouchableOpacity, TouchableHighlight, StatusBar } from "react-native"
+import { View, Text, FlatList, TextInput, TouchableOpacity, TouchableHighlight, Button } from "react-native"
 import { useIsFocused } from "@react-navigation/native";
 import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
-  removeTask2, getListExpensesFromDateToDate, deleteBorrow,updateBorrow2
+  removeTask2, getListExpensesFromDateToDate, deleteBorrow, updateBorrow2
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
@@ -20,7 +20,7 @@ import Modal from "react-native-modal";
 import ButtonAdd from "../../component/ButtonAdd";
 import { Utils } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import AlarmClock from "react-native-alarm-clock";
 import SelectDropdown from 'react-native-select-dropdown'
 
 import * as Icon from "react-native-feather"
@@ -58,9 +58,13 @@ const Home = (props) => {
   let payout = 0
   let first = 0
 
- 
+
   const session = ["Buổi sáng", "Buổi trưa", "Buổi tối"]
 
+  // let date = new Date();
+  // date.setDate(date.getDate() + 1);
+  // date.setHours(13, 55);
+  // AlarmClock.createAlarm(date.toISOString(), 'My Custom Alarm');
 
   useEffect(() => {
     if (isVisible) {
@@ -69,8 +73,8 @@ const Home = (props) => {
       //   console.log(firstDay); // 👉️ Sat Oct 01 2022 ...
       const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
       //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
-      if(first == 0)
-       first = new Date(firstDay).getTime()
+      if (first == 0)
+        first = new Date(firstDay).getTime()
       let last = new Date(lastDay).getTime()
       getListDate(first, last)
       getWallet()
@@ -122,7 +126,7 @@ const Home = (props) => {
   }
 
   const filterDate = (list) => {
-    
+
     let newList = Object.values(list.reduce((acc, item) => {
       if (!acc[item.created_date]) acc[item.created_date] = {
         created_date: item.created_date,
@@ -171,9 +175,9 @@ const Home = (props) => {
       setSumOUT(payout)
     }
 
-    const {list} = item
+    const { list } = item
 
-    let lis =[...list].reverse()
+    let lis = [...list].reverse()
 
     return (
       <View style={{ margin: 5 }}>
@@ -189,7 +193,7 @@ const Home = (props) => {
         <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
         <SwipeListView
           style={{ marginHorizontal: 10 }}
-          data={lis}  
+          data={lis}
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
           leftOpenValue={0}
@@ -203,7 +207,7 @@ const Home = (props) => {
   }
 
   const renderItem = ({ item, index }) => {
-   
+
     const { descripbe, price, type, created_date, created_time, price_borrow, in_out } = item
 
     return (
@@ -229,9 +233,9 @@ const Home = (props) => {
   }
 
   const handleRemove = (data) => {
-    const { id, id_borrow, price_borrow, price,type, in_out } = data.item
+    const { id, id_borrow, price_borrow, price, type, in_out } = data.item
     removeTask2(id).then(task => {
-        task.map(item => {
+      task.map(item => {
         if (item.in_out == 0) {
           updateWallet(wallet[0].default, wallet[0].money + parseFloat(item.price))
         } else {
@@ -246,7 +250,7 @@ const Home = (props) => {
 
       if (type == 13) {
         updateBorrow2(id_borrow, price_borrow)
-      }else if (type == 15) {
+      } else if (type == 15) {
         updateBorrow2(id_borrow, price_borrow)
       }
 
@@ -276,6 +280,14 @@ const Home = (props) => {
   }
 
   const onItemOpen = data => {
+  };
+
+  const create = () => {
+    let date = new Date();
+    date.setDate(date.getDate() );
+    date.setHours(16, 37);
+  
+    AlarmClock.createAlarm(date.toDateString(), 'My Custom Alarm');
   };
 
   const onFromDateChange = (date) => {
@@ -308,15 +320,15 @@ const Home = (props) => {
 
   const onSearch = (search) => {
     console.log(search)
-    if (search !='') {
-     const list = listSearch.filter(item => item.descripbe.toLowerCase().includes(search.toLowerCase()))
+    if (search != '') {
+      const list = listSearch.filter(item => item.descripbe.toLowerCase().includes(search.toLowerCase()))
       filterDate(list)
     } else {
       filterDate(listSearch)
     }
 
   }
-  
+
 
   return (
     <View style={[style.container]}>
@@ -338,13 +350,16 @@ const Home = (props) => {
           </TouchableOpacity>
 
         </View>
-        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row',alignItems:'center', justifyContent: 'center' }}>
-        <TextInput
-        style={style.borderSearch}
-        placeholderTextColor={'#E1E1E1'}
-        placeholder="tìm kiếm theo mô tả"
-        onChangeText={text => onSearch(text)}
-        />
+        <View >
+      <Button title="Create Alarm at 1:55PM" onPress={() => create()} />
+    </View>
+        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <TextInput
+            style={style.borderSearch}
+            placeholderTextColor={'#E1E1E1'}
+            placeholder="tìm kiếm theo mô tả"
+            onChangeText={text => onSearch(text)}
+          />
           <SelectDropdown
             data={selectDropdown}
             disabled={edit}

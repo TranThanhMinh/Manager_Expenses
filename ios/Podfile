@@ -19,6 +19,10 @@ target 'managerexpenses' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+
+pod 'SwiftyJSON', git: 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+pod 'Charts', git: 'https://github.com/danielgindi/Charts.git'
+
   target 'managerexpensesTests' do
     inherit! :complete
     # Pods for testing

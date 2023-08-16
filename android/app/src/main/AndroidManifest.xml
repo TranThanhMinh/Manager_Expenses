@@ -2,7 +2,8 @@
   package="com.managerexpenses">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"

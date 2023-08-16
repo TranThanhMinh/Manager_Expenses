@@ -8,21 +8,14 @@ import { useIsFocused } from "@react-navigation/native";
 import Pie from 'react-native-pie'
 import moment from 'moment';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import { Rect, Text as TextSVG, Svg } from "react-native-svg";
 import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
 import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
   removeTask, getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
+import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 
 const Report = (props) => {
   const insets = useSafeAreaInsets();
@@ -39,6 +32,7 @@ const Report = (props) => {
 
   const [isFromDate, setFromDate] = useState(false);
   const [isToDate, setToDate] = useState(false);
+  const [isInfo, setInfo] = useState(false);
 
   const [listCT, setListCt] = React.useState([]);
   const [listTT, setListTt] = React.useState([]);
@@ -54,20 +48,32 @@ const Report = (props) => {
     backgroundGradientFrom: "#50a1e3",
     backgroundGradientTo: "#50a1e3",
     color: (opacity = 1) => `white`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.3,
+    strokeWidth: 5, // optional, default 3
+    barPercentage: 0.5,
     useShadowColorFromDataset: false // optional
   };
 
+  let [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, visible: false, value: 0 })
 
-  const data = {
-    labels: ["18/8/2023", "20/8/2023"],
-    datasets: [
-      {
-        data: [-10,-2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
-      }
-    ]
-  };
+  // const data = {
+  //   labels: ["18/8/2023", "20/8/2023"],
+  //   datasets: [
+  //     {
+  //       data: [-10, -2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+  //     }
+  //   ]
+  // };
+
+  const ptData = [
+    { value: 1700000, date: '1 Apr 2022' },
+    { value: 1800000, date: '2 Apr 2022' },
+    { value: 50000, date: '3 Apr 2022' },
+    { value: 300000, date: '3 Apr 2022' },
+    { value: 20000000, date: '3 Apr 2022' },
+
+  ];
+
+
 
   useEffect(() => {
     if (isVisible) {
@@ -163,7 +169,7 @@ const Report = (props) => {
         if (i.in_out == 0)
           sumOut = sumOut + parseFloat(i.price)
         else sumIn = sumIn + parseFloat(i.price)
-       
+
         if (i.price > 0) {
           if (i.type == 1) {
             ct1 = ct1 + parseFloat(i.price)
@@ -291,7 +297,7 @@ const Report = (props) => {
               price: ct72,
               percentage: (ct72 / sumOut) * 100,
             }
-            console.log('14',i.price)
+            console.log('14', i.price)
             isFound(item)
           }
           else if (i.type == 12) {
@@ -384,7 +390,7 @@ const Report = (props) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
           <Text style={{ fontSize: 12, color: 'black' }}>{name}</Text>
-          <Text style={{ fontSize: 12 ,color: color}}> ({prencent.toFixed(2)})%</Text>
+          <Text style={{ fontSize: 12, color: color }}> ({prencent.toFixed(2)})%</Text>
 
         </View>
         <Text style={{ fontSize: 15, color: 'red' }}>{Utils.numberWithCommas(price)} VND</Text>
@@ -400,7 +406,7 @@ const Report = (props) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
           <Text style={{ fontSize: 12, color: 'black' }}>{name}</Text>
-          <Text style={{ fontSize: 12 ,color: color}}> ({prencent.toFixed(2)})%</Text>
+          <Text style={{ fontSize: 12, color: color }}> ({prencent.toFixed(2)})%</Text>
 
         </View>
         <Text style={{ fontSize: 15, color: 'green' }}>{Utils.numberWithCommas(price)} VND</Text>
@@ -425,7 +431,7 @@ const Report = (props) => {
       <View
         style={{
           height: 0.5,
-          flex:1,
+          flex: 1,
           backgroundColor: "#607D8B",
         }}
       />
@@ -544,22 +550,80 @@ const Report = (props) => {
                 : null
             }
 
-               <View>
-                <BarChart
-                  width={width}
-                  height={height}
-                  data={data}
-                  chartConfig={chartConfig}
+            <View>
+              <LineChart
+                areaChart
+                data={ptData}
+                width={width}
+                hideDataPoints
+                spacing={20}
+                color="#50a1e3"
 
-                  fromZero={false}
-                  verticalLabelRotation={0}
-                  withInnerLines={true}
-                  showValuesOnTopOfBars={true}
-                  showBarTops={true}
-                />
-               </View>
-               <View>
-               <LineChart
+                startFillColor="#50a1e3"
+                endFillColor="#50a1e3"
+             //   startOpacity={1}
+               // endOpacity={0.2}
+                //initialSpacing={0}
+                noOfSections={6}
+
+                height={300}
+
+                yAxisColor="white"
+                yAxisThickness={0}
+                rulesType="solid"
+                rulesColor="gray"
+                yAxisTextStyle={{ color: 'gray' }}
+               // yAxisTextNumberOfLines={1}
+                // yAxisLabelWidth={40}
+                yAxisSide='right'
+                xAxisColor="lightgray"
+                pointerConfig={{
+                  //   pointerStripHeight: 160,
+                  pointerStripColor: 'lightgray',
+                  pointerStripWidth: 2,
+                  pointerColor: 'lightgray',
+                  radius: 6,
+                  pointerLabelWidth: 100,
+                  pointerLabelHeight: 90,
+                  // activatePointersOnLongPress: true,
+                  // autoAdjustPointerLabelPosition: false,
+                  pointerLabelComponent: items => {
+                    return (
+                      <View
+                        style={{
+
+                          width: 120,
+                          justifyContent: 'center',
+                          paddingVertical:5,
+                          borderRadius: 16,
+                          backgroundColor: 'white',
+                          // marginTop: -30,
+                          // marginLeft: -40,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginBottom: 6,
+                            textAlign: 'center',
+                         
+                          }}>
+                          {items[0].date}
+                        </Text>
+
+                        <View
+                         >
+                          <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                            {'$' + Utils.numberWithCommas(items[0].value)}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  },
+                }}
+              />
+            </View>
+            <View>
+              {/* <LineChart
                 bezier
                 data={data}
                 width={width}
@@ -567,19 +631,66 @@ const Report = (props) => {
                 yAxisLabel="$"
                 yAxisSuffix="k"
                 chartConfig={chartConfig}
-               
-                verticalLabelRotation={20}
-                onDataPointClick={({ value, getColor }) =>
-                  // showMessage({
-                  //   message: `${value}`,
-                  //   description: "You selected this value",
-                  //   backgroundColor: getColor(0.9)
-                  // })
-                  console.log(value)
+             
+                verticalLabelRotation={10}
+                decorator={()=>{
+                  return tooltipPos.visible ? <View>
+                        <Svg>
+                            <Rect x={tooltipPos.x - 15} 
+                                y={tooltipPos.y + 10} 
+                                strokeWidth="3"
+                                width="40" 
+                                height="60"
+                             
+                            
+                                fill="rgb(0,0,255)"
+                            
+                                stroke="rgb(0,0,0)"
+                             />
+                                <TextSVG
+                                    x={tooltipPos.x + 5}
+                                    y={tooltipPos.y + 30}
+                                    fill="white"
+                                    fontSize="16"
+                                    fontWeight="bold"
+                                    textAnchor="middle">
+                                    {tooltipPos.value}
+                                </TextSVG>
+
+                                <TextSVG
+                                    x={tooltipPos.x + 5}
+                                    y={tooltipPos.y + 60}
+                                    fill="white"
+                                    fontSize="16"
+                                    fontWeight="bold"
+                                    textAnchor="middle">
+                                    {tooltipPos.value}
+                                </TextSVG>
+                        </Svg>
+                    </View> : null
                 }
+                }
+                onDataPointClick={(data) => {
+
+                  let isSamePoint = (tooltipPos.x === data.x 
+                                      && tooltipPos.y === data.y)
+
+                  isSamePoint ? setTooltipPos((previousState) => {
+                      return { 
+                                ...previousState,
+                                value: data.value,
+                                visible: !previousState.visible
+                             }
+                  })
+                      : 
+                  setTooltipPos({ x: data.x, value: data.value, y: data.y, visible: true });
+
+              }}
+               
                 formatXLabel={label => label.toUpperCase()}
-              />
-               </View>
+              /> */}
+
+            </View>
           </View>
         </ScrollView>
         <Modal isVisible={isFromDate}>
@@ -606,6 +717,8 @@ const Report = (props) => {
             />
           </View>
         </Modal>
+
+
       </View>
     </View>
   )
