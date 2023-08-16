@@ -110,9 +110,8 @@ const style = StyleSheet.create({
     margin:5,
     height: 5,
     flexDirection: "row",
-    backgroundColor: 'white',
-    borderColor: 'red',
-    borderWidth: 0.4,
+    backgroundColor: '#e1e1e1',
+
     borderRadius: 2
  
 

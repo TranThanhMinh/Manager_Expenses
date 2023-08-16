@@ -65,7 +65,7 @@ const Report = (props) => {
   // };
 
   const ptData = [
-    { value: 1700000, date: '1 Apr 2022' },
+    { value: -17000000, date: '1 Apr 2022' },
     { value: 1800000, date: '2 Apr 2022' },
     { value: 50000, date: '3 Apr 2022' },
     { value: 300000, date: '3 Apr 2022' },
@@ -549,6 +549,8 @@ const Report = (props) => {
                 </View>
                 : null
             }
+            <Text style={{ fontWeight: 'bold', color: 'white', padding: 10, backgroundColor:'#50a1e3' }}>Biểu đồ theo dõi mỗi ngày</Text>
+
 
             <View>
               <LineChart
@@ -561,8 +563,8 @@ const Report = (props) => {
 
                 startFillColor="#50a1e3"
                 endFillColor="#50a1e3"
-             //   startOpacity={1}
-               // endOpacity={0.2}
+                //   startOpacity={1}
+                // endOpacity={0.2}
                 //initialSpacing={0}
                 noOfSections={6}
 
@@ -573,8 +575,8 @@ const Report = (props) => {
                 rulesType="solid"
                 rulesColor="gray"
                 yAxisTextStyle={{ color: 'gray' }}
-               // yAxisTextNumberOfLines={1}
-                // yAxisLabelWidth={40}
+                yAxisTextNumberOfLines={1}
+                //  yAxisLabelWidth={40}
                 yAxisSide='right'
                 xAxisColor="lightgray"
                 pointerConfig={{
@@ -594,25 +596,23 @@ const Report = (props) => {
 
                           width: 120,
                           justifyContent: 'center',
-                          paddingVertical:5,
+                          paddingVertical: 5,
                           borderRadius: 16,
                           backgroundColor: 'white',
-                          // marginTop: -30,
-                          // marginLeft: -40,
                         }}>
                         <Text
                           style={{
                             fontSize: 14,
                             marginBottom: 6,
                             textAlign: 'center',
-                         
+
                           }}>
                           {items[0].date}
                         </Text>
 
                         <View
-                         >
-                          <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                        >
+                          <Text style={{ fontWeight: 'bold', textAlign: 'center',color:items[0].value>=0? 'green':'red' }}>
                             {'$' + Utils.numberWithCommas(items[0].value)}
                           </Text>
                         </View>
@@ -623,72 +623,7 @@ const Report = (props) => {
               />
             </View>
             <View>
-              {/* <LineChart
-                bezier
-                data={data}
-                width={width}
-                height={height}
-                yAxisLabel="$"
-                yAxisSuffix="k"
-                chartConfig={chartConfig}
              
-                verticalLabelRotation={10}
-                decorator={()=>{
-                  return tooltipPos.visible ? <View>
-                        <Svg>
-                            <Rect x={tooltipPos.x - 15} 
-                                y={tooltipPos.y + 10} 
-                                strokeWidth="3"
-                                width="40" 
-                                height="60"
-                             
-                            
-                                fill="rgb(0,0,255)"
-                            
-                                stroke="rgb(0,0,0)"
-                             />
-                                <TextSVG
-                                    x={tooltipPos.x + 5}
-                                    y={tooltipPos.y + 30}
-                                    fill="white"
-                                    fontSize="16"
-                                    fontWeight="bold"
-                                    textAnchor="middle">
-                                    {tooltipPos.value}
-                                </TextSVG>
-
-                                <TextSVG
-                                    x={tooltipPos.x + 5}
-                                    y={tooltipPos.y + 60}
-                                    fill="white"
-                                    fontSize="16"
-                                    fontWeight="bold"
-                                    textAnchor="middle">
-                                    {tooltipPos.value}
-                                </TextSVG>
-                        </Svg>
-                    </View> : null
-                }
-                }
-                onDataPointClick={(data) => {
-
-                  let isSamePoint = (tooltipPos.x === data.x 
-                                      && tooltipPos.y === data.y)
-
-                  isSamePoint ? setTooltipPos((previousState) => {
-                      return { 
-                                ...previousState,
-                                value: data.value,
-                                visible: !previousState.visible
-                             }
-                  })
-                      : 
-                  setTooltipPos({ x: data.x, value: data.value, y: data.y, visible: true });
-
-              }}
-               
-                formatXLabel={label => label.toUpperCase()}
-              /> */}
 
             </View>
           </View>
