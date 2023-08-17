@@ -11,7 +11,7 @@ const Calendar =(props)=>{
               nextTitle={String.affter}
               weekdays={Utils.listDay}
               months={Utils.listMonths}
-              onDateChange={props.onFromDateChange}
+              onDateChange={props.onDateChange}
             />
         </View>
     )

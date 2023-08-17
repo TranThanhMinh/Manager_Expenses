@@ -12,9 +12,10 @@ import {
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown'
 import urid from 'urid';
-import { Utils,Color } from "@common"
+import { Utils,Color,String } from "@common"
 import * as Icon from "react-native-feather"
 import CalendarPicker from 'react-native-calendar-picker';
+import Calendar from "../../component/Calendar";
 import Modal from "react-native-modal";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -183,7 +184,6 @@ const AddExpenses = (props) => {
   const onDateChange = (date) => {
     setDate(date)
     toggleModalToDate()
-    console.log('onDateChange',date)
   }
 
   const toggleModalToDate = () => {
@@ -195,14 +195,15 @@ const AddExpenses = (props) => {
     return (
       <Modal isVisible={isDate}>
         <View style={{ backgroundColor: 'white' }}>
-          <CalendarPicker
+          {/* <CalendarPicker
             previousTitle="Trước"
             nextTitle="Sau"
             weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
             months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
 
             onDateChange={onDateChange}
-          />
+          /> */}
+            <Calendar onDateChange={onDateChange} />
         </View>
       </Modal>
     )
@@ -211,19 +212,19 @@ const AddExpenses = (props) => {
   return (
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }} onPress={() => props.goToBack()}>
           <Icon.ArrowLeft stroke={'white'} />
-          <Text style={{ marginLeft: 10, color: 'white' }}>Giao dịch hàng ngày</Text>
+          <Text style={{ marginLeft: 10, color: 'white' }}>{String.daily_transaction}</Text>
         </TouchableOpacity>
 
         <View style={style.body}>
           <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
-            <Icon.Calendar stroke={'#50a1e3'} />
+            <Icon.Calendar stroke={Color.blue} />
             <Text style={[style.text2, { height: 20, fontSize: 14 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
-            <Icon.Edit stroke={'#50a1e3'} width={20} height={20} />
+            <Icon.Edit stroke={Color.blue} width={20} height={20} />
           </TouchableOpacity>
           <View style={[style.combobox, { marginTop: 5 }]}>
-            <Icon.AlignLeft stroke={'#50a1e3'} />
+            <Icon.AlignLeft stroke={Color.blue} />
             <SelectDropdown
               data={Utils.TypeExpenses}
               disabled={edit}
@@ -280,7 +281,7 @@ const AddExpenses = (props) => {
               buttonStyle={!isType ? style.dropdown1BtnStyleFalse : style.dropdown1BtnStyle}
               buttonTextStyle={style.dropdown1BtnTxtStyle}
               renderDropdownIcon={isOpened => {
-                return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
+                return !edit ? isOpened ? <Icon.ChevronUp stroke={Color.blue} /> : <Icon.ChevronDown stroke={Color.blue} /> : null
               }}
               dropdownIconPosition={'right'}
               dropdownStyle={style.dropdown1DropdownStyle}
@@ -291,7 +292,7 @@ const AddExpenses = (props) => {
           {
             listBorrow.length > 0 ? (
               <View style={style.combobox}>
-                <Icon.Sidebar stroke={'#50a1e3'} />
+                <Icon.Sidebar stroke={Color.blue} />
                 <SelectDropdown
                   data={listBorrow}
                   disabled={edit}
@@ -328,11 +329,11 @@ const AddExpenses = (props) => {
             ) : null
           }
           <View style={style.combobox}>
-            <Icon.Edit3 stroke={'#50a1e3'} />
+            <Icon.Edit3 stroke={Color.blue} />
             <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder="Mô tả" placeholderTextColor={'#E1E1E1'} onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
           </View>
           <View style={style.combobox}>
-            <Icon.DollarSign stroke={'#50a1e3'} />
+            <Icon.DollarSign stroke={Color.blue} />
             <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder="Nhâp giá" placeholderTextColor={'#E1E1E1'} keyboardType="numeric"
               onChangeText={(text) => {
                 setIsPrice(true),

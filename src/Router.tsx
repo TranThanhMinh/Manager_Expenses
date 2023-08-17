@@ -9,6 +9,7 @@ import HistoryScreen from './screens/HistoryScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SlashScreen from './screens/SlashScreen';
 import ReportScreen from './screens/ReportScreen';
+import { String } from '@common';
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,9 +48,9 @@ const MyTabs = () => {
         tabBarInactiveTintColor: '#444',
         headerShown: false
       })} >
-      <Tab.Screen name="Home" component={HomeScreen}  options={{ title: "Giao dịc hàng ngày" }}/>
-      <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: "Cho vay - Đi vay" }}/>
-      <Tab.Screen name="Report" component={ReportScreen}  options={{ title: "Báo cáo" }}/>
+      <Tab.Screen name="Home" component={HomeScreen}  options={{ title:String.tab_1 }}/>
+      <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: String.tab_2 }}/>
+      <Tab.Screen name="Report" component={ReportScreen}  options={{ title: String.tab_3 }}/>
     </Tab.Navigator>
   );
 }

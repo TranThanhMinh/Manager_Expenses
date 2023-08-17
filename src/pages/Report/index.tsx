@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native'
 
-import { Utils, String } from "../../common";
+import { Utils, String, Color } from "../../common";
 import style from "./style";
 import { useIsFocused } from "@react-navigation/native";
 import Pie from 'react-native-pie'
@@ -449,15 +449,15 @@ const Report = (props) => {
   return (
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={[style.text2, { color: 'white' }]}>Báo cáo</Text>
+        <View style={{ flexDirection: 'row', padding: 5, backgroundColor:  Color.blue, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={[style.text2, { color: 'white' }]}>{String.tab_3}</Text>
         </View>
         <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white' }}>
-          <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>
+          <Text style={{ fontWeight: 'bold', color:  Color.blue }}>{String.from}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
             <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}> Đến </Text>
+          <Text style={{ fontWeight: 'bold', color:  Color.blue }}> {String.to} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
@@ -468,7 +468,7 @@ const Report = (props) => {
             {
               listCT.length > 0 ?
                 <View style={{
-                  backgroundColor: 'white',
+                  backgroundColor: Color.white,
                   paddingHorizontal: 10,
                 }}>
                   <View
@@ -476,7 +476,7 @@ const Report = (props) => {
                       paddingVertical: 20,
                       flexDirection: 'row',
 
-                      backgroundColor: 'white'
+                      backgroundColor:  Color.white
                     }}
                   >
                     <Pie
@@ -603,7 +603,7 @@ const Report = (props) => {
         </ScrollView>
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
-          <Calendar onToDateChange={onFromDateChange} />
+          <Calendar onDateChange={onFromDateChange} />
             {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"
@@ -615,7 +615,7 @@ const Report = (props) => {
         </Modal>
         <Modal isVisible={isToDate}>
           <View style={{ backgroundColor: 'white' }}>
-            <Calendar onToDateChange={onToDateChange} />
+            <Calendar onDateChange={onToDateChange} />
             {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"

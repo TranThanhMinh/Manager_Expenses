@@ -418,13 +418,13 @@ const Home = (props) => {
 
               onDateChange={onFromDateChange}
             /> */}
-            <Calendar onToDateChange={onFromDateChange} />
+            <Calendar onDateChange={onFromDateChange} />
           </View>
 
         </Modal>
         <Modal isVisible={isToDate}>
           <View style={{ backgroundColor: 'white' }}>
-            <Calendar onToDateChange={onToDateChange} />
+            <Calendar onDateChange={onToDateChange} />
             {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"
