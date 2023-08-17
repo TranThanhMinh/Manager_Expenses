@@ -10,4 +10,6 @@ export default {
     tab_1: 'Giao dịch hàng ngày',
     tab_2: 'Cho vay - Đi vay',
     tab_3: 'Báo cáo',
+    date:'Ngày',
+    listHistory:'Danh sách lịch sử'
 }

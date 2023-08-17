@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TextInput, TouchableOpacity, Image, Animated, StyleSheet } from "react-native"
+import { View, Text, FlatList, TouchableOpacity, Animated, StyleSheet } from "react-native"
 import { useIsFocused } from "@react-navigation/native";
-import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
 import style from "./style";
 import { FloodReports } from "../../model/types.d";
-import { addTask, getListTasks } from "../../data/StorageServices";
 import {
-  removeTask, getListExpenses, deleteBorrow
+   getListExpenses
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
-import { Utils } from "@common";
+import { Utils, Color, String } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
@@ -116,7 +114,7 @@ const Borrow = (props) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
                   <Text style={{
                     fontSize: 17,
-                  }}>Ngày {momentFormat(parseFloat(item.created_date))}</Text>
+                  }}>{String.date} {momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
                 <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
@@ -178,7 +176,7 @@ const Borrow = (props) => {
           data={listExpenses}
           renderItem={itemBorrow}
         />
-        <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
+        {/* <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5 }}>
             <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>
             <Text style={{ marginTop: 10, color: 'green', fontSize: 15 }}>Thu nợ: {Utils.numberWithCommas(debtcollection)} VND</Text>
@@ -188,9 +186,7 @@ const Borrow = (props) => {
 
             <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Trả nợ: {Utils.numberWithCommas(pay)} VND</Text>
           </View>
-
-
-        </View>
+        </View> */}
       </View>
     </View>
   )

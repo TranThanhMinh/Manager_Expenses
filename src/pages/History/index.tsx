@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import * as Icon from "react-native-feather"
 import { getListHistory } from "../../data/WalletServices";
-import { Utils } from "../../common";
+import { Utils, String } from "@common";
 import style from "./style";
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -48,7 +48,7 @@ const History = (props) => {
     <View style={[style.container2, { marginTop: insets.top }]}>
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#50a1e3', padding: 10 }} onPress={() => props.goToBack()}>
         <Icon.ArrowLeft stroke={'white'} />
-        <Text style={[style.text2, { color: 'white' }]}>Danh sách lịch sử</Text>
+        <Text style={[style.text2, { color: 'white' }]}>{String.listHistory}</Text>
       </TouchableOpacity>
       <View>
         <FlatList
