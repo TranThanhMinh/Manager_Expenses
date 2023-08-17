@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native'
 
-import { Utils, String, Color } from "../../common";
+import { Utils, Color } from "../../common";
 import style from "./style";
 import { useIsFocused } from "@react-navigation/native";
 import Pie from 'react-native-pie'
@@ -15,8 +15,10 @@ import {
   getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
 import { LineChart } from "react-native-gifted-charts";
+import { useTranslation, initReactI18next } from "react-i18next"
 
 const Report = (props) => {
+  const {t} = useTranslation()
   const insets = useSafeAreaInsets();
   const [wallet, setWallet] = useState([]);
   const isVisible = useIsFocused();
@@ -315,7 +317,7 @@ const Report = (props) => {
           else if (i.type == 17) {
             tt3 = tt3 + parseFloat(i.price)
             let item = {
-              name: String.ponus,
+              name: t('ponus'),
               color: '#EBD22F',
               price: tt3,
               percentage: (tt3 / sumIn) * 100,
@@ -358,7 +360,6 @@ const Report = (props) => {
       })
       setSumIN(sumIn)
       setSumOUT(sumOut)
-
       setListCt(list1)
       setListTt(list2)
       let prencent_money = 100 - (sumOut / sumIn) * 100
@@ -405,7 +406,6 @@ const Report = (props) => {
     )
   }
 
-
   const renderItem = ({ item }) => {
     const { name, color, price } = item
     return (
@@ -450,14 +450,14 @@ const Report = (props) => {
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
         <View style={{ flexDirection: 'row', padding: 5, backgroundColor:  Color.blue, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={[style.text2, { color: 'white' }]}>{String.tab_3}</Text>
+          <Text style={[style.text2, { color: 'white' }]}>{t('tab_3')}</Text>
         </View>
         <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white' }}>
-          <Text style={{ fontWeight: 'bold', color:  Color.blue }}>{String.from}</Text>
+          <Text style={{ fontWeight: 'bold', color:  Color.blue }}>{t('from')}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
             <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color:  Color.blue }}> {String.to} </Text>
+          <Text style={{ fontWeight: 'bold', color:  Color.blue }}> {t('to')} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>

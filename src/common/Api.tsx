@@ -10,5 +10,4 @@ export const create_reports = BASE_API_FLOOD + 'flood/reports'
 export const get_flood_report_detail = BASE_API_FLOOD + 'flood/reports/'
 export const create_reports_sos = BASE_API_FLOOD + 'flood/reports-sos'
 export const street = BASE_API_FLOOD + 'flood/area/streets'
-
 export const up_image = BASE_API_FLOOD+'flood/upload'

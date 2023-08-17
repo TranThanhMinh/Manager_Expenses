@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React, {useState} from 'react';
 import { Image, } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,7 +10,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SlashScreen from './screens/SlashScreen';
 import ReportScreen from './screens/ReportScreen';
 import { String } from '@common';
-
+import './common/i18n'
+import i18n from "i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -21,9 +23,12 @@ const defaultOptions = {
 }
 
 const MyTabs = () => {
+
+  const { t } = useTranslation();
+  const [multilanguge, setMultilanguge] = useState('en')
+  global.multilanguge =  multilanguge
   return (
     <Tab.Navigator
-  
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -48,9 +53,9 @@ const MyTabs = () => {
         tabBarInactiveTintColor: '#444',
         headerShown: false
       })} >
-      <Tab.Screen name="Home" component={HomeScreen}  options={{ title:String.tab_1 }}/>
-      <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: String.tab_2 }}/>
-      <Tab.Screen name="Report" component={ReportScreen}  options={{ title: String.tab_3 }}/>
+      <Tab.Screen name="Home" component={HomeScreen}  options={{ title:t('tab_1') }}/>
+      <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: t('tab_2') }}/>
+      <Tab.Screen name="Report" component={ReportScreen}  options={{ title: t('tab_3') }}/>
     </Tab.Navigator>
   );
 }

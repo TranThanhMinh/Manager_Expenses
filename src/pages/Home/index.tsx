@@ -24,7 +24,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AlarmClock from "react-native-alarm-clock";
 import SelectDropdown from 'react-native-select-dropdown'
 import * as Icon from "react-native-feather"
+import i18n from "i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+
 const Home = (props) => {
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets();
   let fisrt = {
     id: -1,
@@ -108,7 +112,7 @@ const Home = (props) => {
   }
 
   const addWalletDefault = () => {
-    addWallet(urid(), String.mywallet, 0, new Date().getTime().toString(), true)
+    addWallet(urid(), t('mywallet'), 0, new Date().getTime().toString(), true)
     getListwalletDefault(true).then(task => {
       setWallet(task)
     })
@@ -340,11 +344,11 @@ const Home = (props) => {
           <Text style={[style.text2, { color: 'white' }]}>: {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} VND </Text>
         </View>
         <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={{ fontWeight: 'bold', color: Color.blue }}>{String.from}</Text>
+          <Text style={{ fontWeight: 'bold', color: Color.blue }}>{t('from')}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
             <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color:  Color.blue  }}> {String.to} </Text>
+          <Text style={{ fontWeight: 'bold', color:  Color.blue  }}> {t('to')} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
@@ -357,7 +361,7 @@ const Home = (props) => {
           <TextInput
             style={style.borderSearch}
             placeholderTextColor={'#E1E1E1'}
-            placeholder={String.txt_search}
+            placeholder={t('txt_search')}
             onChangeText={text => onSearch(text)}
           />
           <SelectDropdown

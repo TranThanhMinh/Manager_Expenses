@@ -46,7 +46,6 @@ const AddExpenses = (props) => {
   const [money, setMoney] = useState(0);
 
   useEffect(() => {
-   
     if (!item.add) {
       setWallet(item.wallet)
       setEdit(true)
@@ -54,7 +53,6 @@ const AddExpenses = (props) => {
       setDescripbe(item.item.descripbe)
       setPrice(item.item.price)
       setPrice2(item.item.price)
-
       setPriceBorrow2(item.item.price_borrow)
       setPriceBorrow(item.item.price_borrow)
       setIsDescripbe(true)
@@ -107,7 +105,6 @@ const AddExpenses = (props) => {
       if (task.length > 0) {
         deleteBorrow(task[0].id_borrow)
       }
-
 
       if (type == 13) {
         updateBorrow2(idBorrow, priceBorrow)

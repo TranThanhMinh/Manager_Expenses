@@ -9,13 +9,14 @@ import {
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
-import { Utils, Color, String } from "@common";
+import { Utils, Color } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import { useTranslation, initReactI18next } from "react-i18next"
 
 const Borrow = (props) => {
   const insets = useSafeAreaInsets();
   const isVisible = useIsFocused();
+  const {t} = useTranslation()
   const { danangReducer } = useSelector(state => state)
   const [listExpenses, setListExpenses] = useState([])
   const [data, setData] = useState<FloodReports>()
@@ -114,7 +115,7 @@ const Borrow = (props) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
                   <Text style={{
                     fontSize: 17,
-                  }}>{String.date} {momentFormat(parseFloat(item.created_date))}</Text>
+                  }}>{t('date')} {momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
                 <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
