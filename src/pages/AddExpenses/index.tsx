@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { View, Image, TextInput, TouchableOpacity, Text } from "react-native";
 import style from "./style";
 import {
@@ -12,14 +12,14 @@ import {
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown'
 import urid from 'urid';
-import { Utils,Color,String } from "@common"
+import { Utils,Color,String } from "../../common"
 import * as Icon from "react-native-feather"
 import CalendarPicker from 'react-native-calendar-picker';
 import Calendar from "../../component/Calendar";
 import Modal from "react-native-modal";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-
+import i18n from "i18next";
+import Dialog from "react-native-dialog";
 const AddExpenses = (props) => {
   const insets = useSafeAreaInsets();
 
@@ -44,8 +44,9 @@ const AddExpenses = (props) => {
   const [inOut, setInOut] = useState(0)
   const [wallet, setWallet] = useState();
   const [money, setMoney] = useState(0);
-
+  const [visible, setVisible] = useState(true);
   useEffect(() => {
+
     if (!item.add) {
       setWallet(item.wallet)
       setEdit(true)
@@ -177,6 +178,33 @@ const AddExpenses = (props) => {
     }
 
   }
+
+  function changeLanguge() {
+    return (
+      <Dialog.Container visible={visible}>
+        <Dialog.Title>Account delete</Dialog.Title>
+        <Dialog.Description>
+          Do you want to delete this account? You cannot undo this action.
+        </Dialog.Description>
+        <Dialog.Button label="Viet nam" onPress={handleCancel} />
+        <Dialog.Button label="English" onPress={handleDelete} />
+      </Dialog.Container>
+    )
+  }
+
+  const handleDelete = () => {
+    // The user has pressed the "Delete" button, so here you can do your own logic.
+    // ...Your logic
+    global.multilanguge = 'en'
+    setVisible(false)
+   i18n.changeLanguage(global.multilanguge)
+  };
+
+   const handleCancel = () => {
+    global.multilanguge = 'vi';
+   i18n.changeLanguage(global.multilanguge)
+  setVisible(false)
+  };
 
   const onDateChange = (date) => {
     setDate(date)
@@ -375,6 +403,7 @@ const AddExpenses = (props) => {
           {selectDate()}
         </View>
       </View>
+      {    changeLanguge() }
     </View>
   )
 }

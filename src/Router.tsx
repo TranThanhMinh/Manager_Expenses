@@ -23,10 +23,10 @@ const defaultOptions = {
 }
 
 const MyTabs = () => {
-
   const { t } = useTranslation();
-  const [multilanguge, setMultilanguge] = useState('en')
+  const [multilanguge, setMultilanguge] = useState('vn')
   global.multilanguge =  multilanguge
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
