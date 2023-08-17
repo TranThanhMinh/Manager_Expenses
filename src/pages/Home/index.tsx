@@ -18,11 +18,11 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
 import ButtonAdd from "../../component/ButtonAdd";
-import { Utils } from "@common";
+import { Utils, String } from "@common";
+import Calendar from "../../component/Calendar";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AlarmClock from "react-native-alarm-clock";
 import SelectDropdown from 'react-native-select-dropdown'
-
 import * as Icon from "react-native-feather"
 const Home = (props) => {
   const insets = useSafeAreaInsets();
@@ -108,7 +108,7 @@ const Home = (props) => {
   }
 
   const addWalletDefault = () => {
-    addWallet(urid(), 'Ví của tôi', 0, new Date().getTime().toString(), true)
+    addWallet(urid(), String.mywallet, 0, new Date().getTime().toString(), true)
     getListwalletDefault(true).then(task => {
       setWallet(task)
     })
@@ -284,9 +284,9 @@ const Home = (props) => {
 
   const create = () => {
     let date = new Date();
-    date.setDate(date.getDate() );
+    date.setDate(date.getDate());
     date.setHours(16, 37);
-  
+
     AlarmClock.createAlarm(date.toDateString(), 'My Custom Alarm');
   };
 
@@ -333,18 +333,18 @@ const Home = (props) => {
   return (
     <View style={[style.container]}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', padding: 5, backgroundColor:  Color.blue , alignItems: 'center' }}>
           <View>
             <Text style={[style.text2, { color: 'white', borderColor: 'white', borderWidth: 1, borderRadius: 5, padding: 3 }]}>{wallet.length > 0 ? wallet[0].name : 'Chưa có ví'}</Text>
           </View>
           <Text style={[style.text2, { color: 'white' }]}>: {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} VND </Text>
         </View>
         <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}>Từ</Text>
+          <Text style={{ fontWeight: 'bold', color: Color.blue }}>{String.from}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
             <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color: '#50a1e3' }}> Đến </Text>
+          <Text style={{ fontWeight: 'bold', color:  Color.blue  }}> {String.to} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
@@ -357,7 +357,7 @@ const Home = (props) => {
           <TextInput
             style={style.borderSearch}
             placeholderTextColor={'#E1E1E1'}
-            placeholder="tìm kiếm theo mô tả"
+            placeholder={String.txt_search}
             onChangeText={text => onSearch(text)}
           />
           <SelectDropdown
@@ -410,26 +410,29 @@ const Home = (props) => {
         </TouchableOpacity>
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
-            <CalendarPicker
+            {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"
               weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
               months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
 
               onDateChange={onFromDateChange}
-            />
+            /> */}
+            <Calendar onToDateChange={onFromDateChange} />
           </View>
+
         </Modal>
         <Modal isVisible={isToDate}>
           <View style={{ backgroundColor: 'white' }}>
-            <CalendarPicker
+            <Calendar onToDateChange={onToDateChange} />
+            {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"
               weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
               months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
 
               onDateChange={onToDateChange}
-            />
+            /> */}
           </View>
         </Modal>
       </View>

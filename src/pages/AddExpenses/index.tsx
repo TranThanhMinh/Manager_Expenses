@@ -12,7 +12,7 @@ import {
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown'
 import urid from 'urid';
-import { Utils } from "@common"
+import { Utils,Color } from "@common"
 import * as Icon from "react-native-feather"
 import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";

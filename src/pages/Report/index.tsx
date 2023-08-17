@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native'
-import * as Icon from "react-native-feather"
-import { getListHistory } from "../../data/WalletServices";
-import { Utils } from "../../common";
+
+import { Utils, String } from "../../common";
 import style from "./style";
 import { useIsFocused } from "@react-navigation/native";
 import Pie from 'react-native-pie'
 import moment from 'moment';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Rect, Text as TextSVG, Svg } from "react-native-svg";
 import CalendarPicker from 'react-native-calendar-picker';
+import Calendar from '../../component/Calendar'
 import Modal from "react-native-modal";
-import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
+import { getListwalletDefault } from "../../data/WalletServices";
 import {
-  removeTask, getListExpensesFromDateToDate, deleteBorrow
+  getListExpensesFromDateToDate, deleteBorrow
 } from "../../data/ExpensesServices ";
-import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
+import { LineChart } from "react-native-gifted-charts";
 
 const Report = (props) => {
   const insets = useSafeAreaInsets();
@@ -54,15 +53,6 @@ const Report = (props) => {
   };
 
   let [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, visible: false, value: 0 })
-
-  // const data = {
-  //   labels: ["18/8/2023", "20/8/2023"],
-  //   datasets: [
-  //     {
-  //       data: [-10, -2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-  //     }
-  //   ]
-  // };
 
   const ptData = [
     { value: -17000000, date: '1 Apr 2022' },
@@ -325,7 +315,7 @@ const Report = (props) => {
           else if (i.type == 17) {
             tt3 = tt3 + parseFloat(i.price)
             let item = {
-              name: 'Tiền lương',
+              name: String.ponus,
               color: '#EBD22F',
               price: tt3,
               percentage: (tt3 / sumIn) * 100,
@@ -528,10 +518,7 @@ const Report = (props) => {
                       radius={80}
                       innerRadius={50}
                       sections={listTT}
-                      strokeCap={'butt'}
-
-                    />
-
+                      strokeCap={'butt'} />
 
                     <View style={{ marginLeft: 10 }}>
                       <FlatList
@@ -549,7 +536,7 @@ const Report = (props) => {
                 </View>
                 : null
             }
-            <Text style={{ fontWeight: 'bold', color: 'white', padding: 10, backgroundColor:'#50a1e3' }}>Biểu đồ theo dõi mỗi ngày</Text>
+            <Text style={{ fontWeight: 'bold', color: 'white', padding: 10, backgroundColor: '#50a1e3' }}>Biểu đồ theo dõi mỗi ngày</Text>
 
 
             <View>
@@ -567,9 +554,7 @@ const Report = (props) => {
                 // endOpacity={0.2}
                 //initialSpacing={0}
                 noOfSections={6}
-
                 height={300}
-
                 yAxisColor="white"
                 yAxisThickness={0}
                 rulesType="solid"
@@ -592,27 +577,15 @@ const Report = (props) => {
                   pointerLabelComponent: items => {
                     return (
                       <View
-                        style={{
-
-                          width: 120,
-                          justifyContent: 'center',
-                          paddingVertical: 5,
-                          borderRadius: 16,
-                          backgroundColor: 'white',
-                        }}>
+                        style={style.detailinfo}>
                         <Text
-                          style={{
-                            fontSize: 14,
-                            marginBottom: 6,
-                            textAlign: 'center',
-
-                          }}>
+                          style={style.textdetail}>
                           {items[0].date}
                         </Text>
 
                         <View
                         >
-                          <Text style={{ fontWeight: 'bold', textAlign: 'center',color:items[0].value>=0? 'green':'red' }}>
+                          <Text style={[style.textPrive, { color: items[0].value >= 0 ? 'green' : 'red' }]}>
                             {'$' + Utils.numberWithCommas(items[0].value)}
                           </Text>
                         </View>
@@ -623,33 +596,34 @@ const Report = (props) => {
               />
             </View>
             <View>
-             
+
 
             </View>
           </View>
         </ScrollView>
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
-            <CalendarPicker
+          <Calendar onToDateChange={onFromDateChange} />
+            {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"
               weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
               months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-
               onDateChange={onFromDateChange}
-            />
+            /> */}
           </View>
         </Modal>
         <Modal isVisible={isToDate}>
           <View style={{ backgroundColor: 'white' }}>
-            <CalendarPicker
+            <Calendar onToDateChange={onToDateChange} />
+            {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"
               weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
               months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
 
               onDateChange={onToDateChange}
-            />
+            /> */}
           </View>
         </Modal>
 
