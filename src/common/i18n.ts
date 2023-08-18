@@ -20,11 +20,16 @@ i18n
                     'from': 'From',
                     'to': 'To',
                     'daily_transaction': 'Daily transaction',
-                    'tab_1': 'Daily transaction',
+                    'tab_1': 'Home',
                     'tab_2': 'Lend - borrow',
                     'tab_3': 'Report',
+                    'tab_4': 'Setting',
                     'date': 'Day',
-                    'listHistory': 'History List'
+                    'listHistory': 'History List',
+                    'change_languge':'Select Languge',
+                    'language':'EN',
+                    'vietnam':'VietNamese',
+                    'english':'English'
                 }
             },
             vi: {
@@ -38,11 +43,16 @@ i18n
                     'from': 'Từ',
                     'to': 'Đến',
                     'daily_transaction': 'Giao dịch hàng ngày',
-                    'tab_1': 'Giao dịch hàng ngày',
+                    'tab_1': 'Tổng quan',
                     'tab_2': 'Cho vay - Đi vay',
                     'tab_3': 'Báo cáo',
+                    'tab_4': 'Cài đặt',
                     'date': 'Ngày',
-                    'listHistory': 'Danh sách lịch sử'
+                    'listHistory': 'Danh sách lịch sử',
+                    'change_languge':'Thay đổi ngôn ngữ',
+                    'language':'VN',
+                    'vietnam':'Việt Nam',
+                    'english':'Tiếng Anh'
                 }
             }
         },

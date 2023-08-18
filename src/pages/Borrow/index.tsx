@@ -115,7 +115,7 @@ const Borrow = (props) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
                   <Text style={{
                     fontSize: 17,
-                  }}>{t('date')} {momentFormat(parseFloat(item.created_date))}</Text>
+                  }}>{momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
                 <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />

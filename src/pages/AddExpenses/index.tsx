@@ -44,7 +44,6 @@ const AddExpenses = (props) => {
   const [inOut, setInOut] = useState(0)
   const [wallet, setWallet] = useState();
   const [money, setMoney] = useState(0);
-  const [visible, setVisible] = useState(true);
   useEffect(() => {
 
     if (!item.add) {
@@ -179,32 +178,7 @@ const AddExpenses = (props) => {
 
   }
 
-  function changeLanguge() {
-    return (
-      <Dialog.Container visible={visible}>
-        <Dialog.Title>Account delete</Dialog.Title>
-        <Dialog.Description>
-          Do you want to delete this account? You cannot undo this action.
-        </Dialog.Description>
-        <Dialog.Button label="Viet nam" onPress={handleCancel} />
-        <Dialog.Button label="English" onPress={handleDelete} />
-      </Dialog.Container>
-    )
-  }
-
-  const handleDelete = () => {
-    // The user has pressed the "Delete" button, so here you can do your own logic.
-    // ...Your logic
-    global.multilanguge = 'en'
-    setVisible(false)
-   i18n.changeLanguage(global.multilanguge)
-  };
-
-   const handleCancel = () => {
-    global.multilanguge = 'vi';
-   i18n.changeLanguage(global.multilanguge)
-  setVisible(false)
-  };
+  
 
   const onDateChange = (date) => {
     setDate(date)
@@ -403,7 +377,6 @@ const AddExpenses = (props) => {
           {selectDate()}
         </View>
       </View>
-      {    changeLanguge() }
     </View>
   )
 }

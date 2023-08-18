@@ -9,6 +9,7 @@ import HistoryScreen from './screens/HistoryScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SlashScreen from './screens/SlashScreen';
 import ReportScreen from './screens/ReportScreen';
+import SettingScreen from './screens/SettingScreen';
 import { String } from '@common';
 import './common/i18n'
 import i18n from "i18next";
@@ -56,6 +57,7 @@ const MyTabs = () => {
       <Tab.Screen name="Home" component={HomeScreen}  options={{ title:t('tab_1') }}/>
       <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: t('tab_2') }}/>
       <Tab.Screen name="Report" component={ReportScreen}  options={{ title: t('tab_3') }}/>
+      <Tab.Screen name="Setting" component={SettingScreen}  options={{ title: t('tab_4') }}/>
     </Tab.Navigator>
   );
 }

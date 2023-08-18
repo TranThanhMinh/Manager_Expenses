@@ -18,12 +18,13 @@ import { LineChart } from "react-native-gifted-charts";
 import { useTranslation, initReactI18next } from "react-i18next"
 
 const Report = (props) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets();
   const [wallet, setWallet] = useState([]);
   const isVisible = useIsFocused();
 
   const [listExpenses, setListExpenses] = useState([])
+  const [listDaily, setListDaily] = useState([])
   const [sumIN, setSumIN] = useState(0)
   const [sumOUT, setSumOUT] = useState(0)
 
@@ -37,7 +38,7 @@ const Report = (props) => {
 
   const [listCT, setListCt] = React.useState([]);
   const [listTT, setListTt] = React.useState([]);
-
+  const [listExpensesDaily, setListExpensesDaily] = useState([])
   let list1 = []
   let list2 = []
 
@@ -65,6 +66,10 @@ const Report = (props) => {
 
   ];
 
+
+  useEffect(() => {
+    
+  }, [])
 
 
   useEffect(() => {
@@ -106,7 +111,50 @@ const Report = (props) => {
     setSelectedToDate(toDate)
     getListExpensesFromDateToDate(from, toDate).then(task => {
       filterDate(task)
+      filterDailay(task)
     })
+  }
+
+  const filterDailay = (list) => {
+
+    let newList = Object.values(list.reduce((acc, item) => {
+      if (!acc[item.created_date]) acc[item.created_date] = {
+        created_date: item.created_date,
+        list: []
+      };
+      acc[item.created_date].list.push(item);
+      return acc;
+    }, {}))
+    // setListExpensesDaily(newList.sort(biggestToSmallest))
+    // if (list.length == 0) {
+    //   // setSumExpenses(0)
+    //   // setSumIN(0)
+    //   // setSumOUT(0)
+    // }
+    const listDaily =[]
+    newList.sort(biggestToSmallest).map((item) => {
+      let sum = 0
+      let sumout = 0
+      let sumin = 0
+     
+      item.list.map((item2) => {
+
+        if (item2.in_out == 0)
+          sumout = sumout + parseFloat(item2.price)
+        else sumin = sumin + parseFloat(item2.price)
+        // console.log('minh2', JSON.stringify(item2.price),' ',item2.type)
+      })
+      sum = sumin - sumout
+
+      listDaily.push({ value: sum, date: item.created_date })
+      console.log('minh', sum)
+    })
+    setListDaily(listDaily)
+    console.log('minh2', listDaily)
+  }
+
+  function biggestToSmallest(a, b) {
+    return b.created_date - a.created_date;
   }
 
   const isFound = (val) => {
@@ -449,15 +497,15 @@ const Report = (props) => {
   return (
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row', padding: 5, backgroundColor:  Color.blue, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={[style.text2, { color: 'white' }]}>{t('tab_3')}</Text>
         </View>
         <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white' }}>
-          <Text style={{ fontWeight: 'bold', color:  Color.blue }}>{t('from')}</Text>
+          <Text style={{ fontWeight: 'bold', color: Color.blue }}>{t('from')}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
             <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color:  Color.blue }}> {t('to')} </Text>
+          <Text style={{ fontWeight: 'bold', color: Color.blue }}> {t('to')} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
@@ -476,7 +524,7 @@ const Report = (props) => {
                       paddingVertical: 20,
                       flexDirection: 'row',
 
-                      backgroundColor:  Color.white
+                      backgroundColor: Color.white
                     }}
                   >
                     <Pie
@@ -542,7 +590,7 @@ const Report = (props) => {
             <View>
               <LineChart
                 areaChart
-                data={ptData}
+                data={listDaily}
                 width={width}
                 hideDataPoints
                 spacing={20}
@@ -580,9 +628,8 @@ const Report = (props) => {
                         style={style.detailinfo}>
                         <Text
                           style={style.textdetail}>
-                          {items[0].date}
+                          {momentFormat(items[0].date)}
                         </Text>
-
                         <View
                         >
                           <Text style={[style.textPrive, { color: items[0].value >= 0 ? 'green' : 'red' }]}>
@@ -603,7 +650,7 @@ const Report = (props) => {
         </ScrollView>
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
-          <Calendar onDateChange={onFromDateChange} />
+            <Calendar onDateChange={onFromDateChange} />
             {/* <CalendarPicker
               previousTitle="Trước"
               nextTitle="Sau"

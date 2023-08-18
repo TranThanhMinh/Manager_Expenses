@@ -26,6 +26,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import * as Icon from "react-native-feather"
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
+import Dialog from "react-native-dialog";
 
 const Home = (props) => {
   const { t } = useTranslation()
@@ -53,7 +54,7 @@ const Home = (props) => {
   const [isFromDate, setFromDate] = useState(false);
   const [isToDate, setToDate] = useState(false);
   const [textSearch, setTextSearch] = useState('');
-
+  const [visible, setVisible] = useState(false);
   const [isType, setIsType] = useState(true)
 
   const [type, setType] = useState(0)
@@ -112,7 +113,7 @@ const Home = (props) => {
   }
 
   const addWalletDefault = () => {
-    addWallet(urid(), t('mywallet'), 0, new Date().getTime().toString(), true)
+    addWallet(urid(), 'mywallet', 0, new Date().getTime().toString(), true)
     getListwalletDefault(true).then(task => {
       setWallet(task)
     })
@@ -188,7 +189,7 @@ const Home = (props) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
           <Text style={{
             fontSize: 17,
-          }}>Ngày {momentFormat(parseFloat(item.created_date))}</Text>
+          }}>{momentFormat(parseFloat(item.created_date))}</Text>
           <Text style={{
             fontSize: 17, color: sum >= 0 ? 'green' : 'red', fontWeight: 'bold'
           }}>{Utils.numberWithCommas(sum)} VND</Text>
@@ -334,21 +335,53 @@ const Home = (props) => {
   }
 
 
+  function changeLanguge() {
+    return (
+      <Dialog.Container visible={visible}>
+        <Dialog.Title>{t('change_languge')}</Dialog.Title>
+        {/* <Dialog.Description>
+          Do you want to delete this account? You cannot undo this action.
+        </Dialog.Description> */}
+        <Dialog.Button label= {t('vietnam')} onPress={handleVN} />
+        <Dialog.Button label= {t('english')} onPress={handleEN} />
+      </Dialog.Container>
+    )
+  }
+
+  const handleEN = () => {
+    // The user has pressed the "Delete" button, so here you can do your own logic.
+    // ...Your logic
+    global.multilanguge = 'en'
+    setVisible(false)
+   i18n.changeLanguage(global.multilanguge)
+  };
+
+   const handleVN = () => {
+    global.multilanguge = 'vi';
+   i18n.changeLanguage(global.multilanguge)
+  setVisible(false)
+  };
+
+
   return (
     <View style={[style.container]}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row', padding: 5, backgroundColor:  Color.blue , alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: Color.blue, alignItems: 'center' }}>
           <View>
-            <Text style={[style.text2, { color: 'white', borderColor: 'white', borderWidth: 1, borderRadius: 5, padding: 3 }]}>{wallet.length > 0 ? wallet[0].name : 'Chưa có ví'}</Text>
+            <Text style={[style.text2, { color: 'white', borderColor: 'white', borderWidth: 1, borderRadius: 5, padding: 3 }]}>{wallet.length > 0 ? t(wallet[0].name) : 'Chưa có ví'}</Text>
           </View>
           <Text style={[style.text2, { color: 'white' }]}>: {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} VND </Text>
+          <TouchableOpacity style={{ position: 'absolute', right: 10}} onPress={() =>    setVisible(true)}>
+            <Text style ={{color: Color.white }}>{t('language')}</Text>
+          </TouchableOpacity>
+
         </View>
         <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
           <Text style={{ fontWeight: 'bold', color: Color.blue }}>{t('from')}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
             <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color:  Color.blue  }}> {t('to')} </Text>
+          <Text style={{ fontWeight: 'bold', color: Color.blue }}> {t('to')} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
             <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
@@ -440,6 +473,7 @@ const Home = (props) => {
           </View>
         </Modal>
       </View>
+      {changeLanguge()}
     </View>
   )
 }
