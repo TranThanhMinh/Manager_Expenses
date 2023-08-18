@@ -29,7 +29,10 @@ i18n
                     'change_languge':'Select Languge',
                     'language':'EN',
                     'vietnam':'VietNamese',
-                    'english':'English'
+                    'english':'English',
+                    'button.update':'Update',
+                    'button.add':'Add',
+                    'button.delete':'Delete',
                 }
             },
             vi: {
@@ -52,7 +55,10 @@ i18n
                     'change_languge':'Thay đổi ngôn ngữ',
                     'language':'VN',
                     'vietnam':'Việt Nam',
-                    'english':'Tiếng Anh'
+                    'english':'Tiếng Anh',
+                    'button.update':'Sửa',
+                    'button.add':'Thêm',
+                    'button.delete':'Xóa',
                 }
             }
         },

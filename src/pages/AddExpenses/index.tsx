@@ -1,8 +1,8 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Image, TextInput, TouchableOpacity, Text } from "react-native";
 import style from "./style";
 import {
-  addExpenses, getListExpensesBorrow,getListExpensesBorrow2, updateTask, updateBorrow,updateBorrow2,
+  addExpenses, getListExpensesBorrow, getListExpensesBorrow2, updateTask, updateBorrow, updateBorrow2,
   removeTask, deleteBorrow
 } from "../../data/ExpensesServices ";
 import { getListHistory } from "../../data/WalletServices";
@@ -12,17 +12,16 @@ import {
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown'
 import urid from 'urid';
-import { Utils,Color,String } from "../../common"
+import { Utils, Color, String } from "../../common"
 import * as Icon from "react-native-feather"
 import CalendarPicker from 'react-native-calendar-picker';
 import Calendar from "../../component/Calendar";
 import Modal from "react-native-modal";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import i18n from "i18next";
-import Dialog from "react-native-dialog";
+import { useTranslation, initReactI18next } from "react-i18next";
 const AddExpenses = (props) => {
   const insets = useSafeAreaInsets();
-
+  const {t} = useTranslation()
   let item = props.item
   const [type, setType] = useState(1)
   const [isType, setIsType] = useState(true)
@@ -69,7 +68,7 @@ const AddExpenses = (props) => {
           let price = parseFloat(stask[item.item.type_borrow].price_borrow) + parseFloat(item.item.price)
           setMoney(price)
         })
-      }else if (item.item.type == 15) {
+      } else if (item.item.type == 15) {
         getListExpensesBorrow(14).then(stask => {
           setListBorrow(stask)
           console.log(stask[item.item.type_borrow].price_borrow, item.item.price)
@@ -101,14 +100,14 @@ const AddExpenses = (props) => {
         }
       })
 
-     
+
       if (task.length > 0) {
         deleteBorrow(task[0].id_borrow)
       }
 
       if (type == 13) {
         updateBorrow2(idBorrow, priceBorrow)
-      }else if (type == 15) {
+      } else if (type == 15) {
         updateBorrow2(idBorrow, priceBorrow)
       }
 
@@ -149,13 +148,13 @@ const AddExpenses = (props) => {
           })
       }
       else {
-       let updatedate = moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime()
+        let updatedate = moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime()
         if (item.item.in_out == 0)
           updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price2) - parseFloat(price)))
         else updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price) - parseFloat(price2)))
         if (type == 13 || type == 15) {
           updateBorrow(idBorrow, priceBorrow - priceBorrow2)
-          updateTask(id, descripbe, price, priceBorrow, type,updatedate).then(task => {
+          updateTask(id, descripbe, price, priceBorrow, type, updatedate).then(task => {
             props.goToBack()
           })
         } else if (type == 12 || type == 14) {
@@ -164,11 +163,11 @@ const AddExpenses = (props) => {
             task.map(item => {
               paid = paid + parseFloat(item.price)
             })
-            updateTask(id, descripbe, price, parseFloat(price) - paid, type,updatedate).then(task => {
+            updateTask(id, descripbe, price, parseFloat(price) - paid, type, updatedate).then(task => {
               props.goToBack()
             })
           })
-        } else updateTask(id, descripbe, price, priceBorrow, type,updatedate).then(task => {
+        } else updateTask(id, descripbe, price, priceBorrow, type, updatedate).then(task => {
           props.goToBack()
         })
 
@@ -177,8 +176,6 @@ const AddExpenses = (props) => {
     }
 
   }
-
-  
 
   const onDateChange = (date) => {
     setDate(date)
@@ -194,15 +191,7 @@ const AddExpenses = (props) => {
     return (
       <Modal isVisible={isDate}>
         <View style={{ backgroundColor: 'white' }}>
-          {/* <CalendarPicker
-            previousTitle="Trước"
-            nextTitle="Sau"
-            weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
-            months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-
-            onDateChange={onDateChange}
-          /> */}
-            <Calendar onDateChange={onDateChange} />
+          <Calendar onDateChange={onDateChange} />
         </View>
       </Modal>
     )
@@ -243,7 +232,6 @@ const AddExpenses = (props) => {
 
                   })
                 }
-
                 else if (selectedItem.id == 13) {
                   getListExpensesBorrow2(12).then(stask => {
                     setIdBorrow(stask[0].id)
@@ -269,6 +257,7 @@ const AddExpenses = (props) => {
                   </View>
                 );
               }}
+              
               buttonTextAfterSelection={(selectedItem, index) => {
                 setType(selectedItem.id)
                 setInOut(parseInt(selectedItem.type))
@@ -295,7 +284,7 @@ const AddExpenses = (props) => {
                 <SelectDropdown
                   data={listBorrow}
                   disabled={edit}
-                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money:listBorrow[typeBorrow].price_borrow ) + ' VND'}
+                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money : listBorrow[typeBorrow].price_borrow) + ' VND'}
                   onSelect={(selectedItem, index) => {
                     setIdBorrow(selectedItem.id)
                     setTypeBorrow(index)
@@ -341,7 +330,7 @@ const AddExpenses = (props) => {
                     :
                     setPriceBorrow(parseFloat(text.replace(/[^0-9]/g, ''))),
                   type == 13 || type == 15 ?
-                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? console.log('haha',text,money) : setPrice(text.replace(/[^0-9]/g, ''))
+                    parseFloat(text.replace(/[^0-9]/g, '')) > money ? console.log('haha', text, money) : setPrice(text.replace(/[^0-9]/g, ''))
                     :
                     setPrice(text.replace(/[^0-9]/g, ''))
               }} />
@@ -352,9 +341,9 @@ const AddExpenses = (props) => {
                 <TouchableOpacity style={style.btnAdd} onPress={handleAdd}>
                   <Icon.Save stroke={'white'} width={20} height={20} />
                   {id == '' ?
-                    <Text style={{ color: 'white' }}> Thêm </Text>
+                    <Text style={{ color: 'white' }}> {t('button.add')} </Text>
                     :
-                    <Text style={{ color: 'white' }}> Sửa </Text>
+                    <Text style={{ color: 'white' }}> {t('button.update')} </Text>
                   }
                 </TouchableOpacity>
               ) :
@@ -362,12 +351,12 @@ const AddExpenses = (props) => {
                   <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
                     <TouchableOpacity style={style.btnDelete} onPress={handleRemove}>
                       <Icon.Trash2 stroke={'red'} width={20} height={20} />
-                      <Text style={{ color: 'red' }}> Xóa </Text>
+                      <Text style={{ color: 'red' }}>  {t('button.delete')} </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={style.btnUpdate} onPress={handleAdd}>
                       <Icon.Save stroke={'white'} width={20} height={20} />
-                      <Text style={{ color: 'white' }}> Sửa </Text>
+                      <Text style={{ color: 'white' }}> {t('button.update')} </Text>
                     </TouchableOpacity>
                   </View>
                 )
