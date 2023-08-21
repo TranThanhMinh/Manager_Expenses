@@ -127,7 +127,6 @@ const Home = (props) => {
       filterDate(task)
       setListSearch(task)
     })
-
   }
 
   const filterDate = (list) => {

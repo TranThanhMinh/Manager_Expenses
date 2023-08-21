@@ -8,7 +8,7 @@ const Calendar =(props)=>{
         <View>
              <CalendarPicker
               previousTitle = {String.before}
-              nextTitle={String.affter}
+              nextTitle={String.after}
               weekdays={Utils.listDay}
               months={Utils.listMonths}
               onDateChange={props.onDateChange}

@@ -7,7 +7,6 @@ import { useIsFocused } from "@react-navigation/native";
 import Pie from 'react-native-pie'
 import moment from 'moment';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import CalendarPicker from 'react-native-calendar-picker';
 import Calendar from '../../component/Calendar'
 import Modal from "react-native-modal";
 import { getListwalletDefault } from "../../data/WalletServices";
@@ -147,10 +146,9 @@ const Report = (props) => {
       sum = sumin - sumout
 
       listDaily.push({ value: sum, date: item.created_date })
-      console.log('minh', sum)
+      
     })
     setListDaily(listDaily)
-    console.log('minh2', listDaily)
   }
 
   function biggestToSmallest(a, b) {
@@ -597,9 +595,9 @@ const Report = (props) => {
                 color="#50a1e3"
 
                 startFillColor="#50a1e3"
-                endFillColor="#50a1e3"
-                //   startOpacity={1}
-                // endOpacity={0.2}
+                endFillColor="#000"
+                  startOpacity={1}
+                endOpacity={0.2}
                 //initialSpacing={0}
                 noOfSections={6}
                 height={300}
@@ -609,6 +607,7 @@ const Report = (props) => {
                 rulesColor="gray"
                 yAxisTextStyle={{ color: 'gray' }}
                 yAxisTextNumberOfLines={1}
+                scrollAnimation={true}
                 //  yAxisLabelWidth={40}
                 yAxisSide='right'
                 xAxisColor="lightgray"
@@ -651,26 +650,11 @@ const Report = (props) => {
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
             <Calendar onDateChange={onFromDateChange} />
-            {/* <CalendarPicker
-              previousTitle="Trước"
-              nextTitle="Sau"
-              weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
-              months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-              onDateChange={onFromDateChange}
-            /> */}
           </View>
         </Modal>
         <Modal isVisible={isToDate}>
           <View style={{ backgroundColor: 'white' }}>
             <Calendar onDateChange={onToDateChange} />
-            {/* <CalendarPicker
-              previousTitle="Trước"
-              nextTitle="Sau"
-              weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
-              months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-
-              onDateChange={onToDateChange}
-            /> */}
           </View>
         </Modal>
 
