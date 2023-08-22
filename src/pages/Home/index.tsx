@@ -21,7 +21,7 @@ import ButtonAdd from "../../component/ButtonAdd";
 import { Utils, String } from "@common";
 import Calendar from "../../component/Calendar";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AlarmClock from "react-native-alarm-clock";
+
 import SelectDropdown from 'react-native-select-dropdown'
 import * as Icon from "react-native-feather"
 import i18n from "i18next";
@@ -184,19 +184,22 @@ const Home = (props) => {
     let lis = [...list].reverse()
 
     return (
-      <View style={{ margin: 5 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
+      <View style={{marginTop:8,backgroundColor:'#fff'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between',alignItems:'center'}}>
+          <View style={{flexDirection:'row',alignItems:'center'}}>
+            <View style={{backgroundColor:Color.blue,width:5,height:50}}/>
           <Text style={{
-            fontSize: 17,
+            fontSize: 20,marginLeft:10,fontWeight:'bold'
           }}>{momentFormat(parseFloat(item.created_date))}</Text>
+          </View>
+      
           <Text style={{
-            fontSize: 17, color: sum >= 0 ? 'green' : 'red', fontWeight: 'bold'
+            fontSize: 20, color: sum >= 0 ? 'green' : 'red', fontWeight: 'bold',marginRight:10
           }}>{Utils.numberWithCommas(sum)} VND</Text>
         </View>
 
-        <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
+        <View style={{ backgroundColor: 'black', height: 0.5, margin: 5 }} />
         <SwipeListView
-          style={{ marginHorizontal: 10 }}
           data={lis}
           renderItem={renderItem}
           renderHiddenItem={renderHiddenItem}
@@ -222,7 +225,7 @@ const Home = (props) => {
         style={style.rowFront}
         underlayColor={'#fff'}
       >
-        <View style={{ height: 50 }}>
+        <View style={{ height: 50,paddingHorizontal:10 }}>
           <View style={style.itemExpenses}>
             <Text style={[style.text2, { color: 'black' }]}>{selectDropdown[(type + 1)].name}</Text>
             <Text style={style.text}> {created_time}</Text>
@@ -437,8 +440,9 @@ const Home = (props) => {
         </View>
 
         <FlatList
-          style={{ marginTop: 10 }}
+          style={{ marginTop: 10 ,backgroundColor:Color.gray}}
           data={listExpenses}
+          showsVerticalScrollIndicator={false}
           renderItem={itemExpenses} />
 
         <TouchableOpacity style={{ position: 'absolute', bottom: 25, right: 20 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
@@ -446,14 +450,7 @@ const Home = (props) => {
         </TouchableOpacity>
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
-            {/* <CalendarPicker
-              previousTitle="Trước"
-              nextTitle="Sau"
-              weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
-              months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-
-              onDateChange={onFromDateChange}
-            /> */}
+          
             <Calendar onDateChange={onFromDateChange} />
           </View>
 
@@ -461,14 +458,7 @@ const Home = (props) => {
         <Modal isVisible={isToDate}>
           <View style={{ backgroundColor: 'white' }}>
             <Calendar onDateChange={onToDateChange} />
-            {/* <CalendarPicker
-              previousTitle="Trước"
-              nextTitle="Sau"
-              weekdays={['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy']}
-              months={['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']}
-
-              onDateChange={onToDateChange}
-            /> */}
+       
           </View>
         </Modal>
       </View>

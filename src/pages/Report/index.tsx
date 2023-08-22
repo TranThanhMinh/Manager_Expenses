@@ -44,30 +44,8 @@ const Report = (props) => {
   const { width } = Dimensions.get("window");
   const height = 256;
 
-
-  const chartConfig = {
-    backgroundGradientFrom: "#50a1e3",
-    backgroundGradientTo: "#50a1e3",
-    color: (opacity = 1) => `white`,
-    strokeWidth: 5, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false // optional
-  };
-
-  let [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, visible: false, value: 0 })
-
-  const ptData = [
-    { value: -17000000, date: '1 Apr 2022' },
-    { value: 1800000, date: '2 Apr 2022' },
-    { value: 50000, date: '3 Apr 2022' },
-    { value: 300000, date: '3 Apr 2022' },
-    { value: 20000000, date: '3 Apr 2022' },
-
-  ];
-
-
   useEffect(() => {
-    
+
   }, [])
 
 
@@ -130,12 +108,12 @@ const Report = (props) => {
     //   // setSumIN(0)
     //   // setSumOUT(0)
     // }
-    const listDaily =[]
+    const listDaily = []
     newList.sort(biggestToSmallest).map((item) => {
       let sum = 0
       let sumout = 0
       let sumin = 0
-     
+
       item.list.map((item2) => {
 
         if (item2.in_out == 0)
@@ -146,9 +124,10 @@ const Report = (props) => {
       sum = sumin - sumout
 
       listDaily.push({ value: sum, date: item.created_date })
-      
+
     })
     setListDaily(listDaily)
+    console.log(listDaily)
   }
 
   function biggestToSmallest(a, b) {
@@ -363,14 +342,15 @@ const Report = (props) => {
           else if (i.type == 17) {
             tt3 = tt3 + parseFloat(i.price)
             let item = {
-              name: t('ponus'),
+              name: 'Tiền lương',
               color: '#EBD22F',
               price: tt3,
               percentage: (tt3 / sumIn) * 100,
             }
             isFound2(item)
 
-          } else if (i.type == 18) {
+          } 
+          else if (i.type == 18) {
             tt4 = tt4 + parseFloat(i.price)
             let item = {
               name: 'Tiền lãi',
@@ -534,6 +514,7 @@ const Report = (props) => {
                     <View style={{ marginLeft: 10 }}>
                       <FlatList
                         data={listCT}
+                        showsVerticalScrollIndicator={false}
                         renderItem={renderItem}
                       />
                     </View>
@@ -582,11 +563,11 @@ const Report = (props) => {
                 </View>
                 : null
             }
-            <Text style={{ fontWeight: 'bold', color: 'white', padding: 10, backgroundColor: '#50a1e3' }}>Biểu đồ theo dõi mỗi ngày</Text>
+            {/* <Text style={{ fontWeight: 'bold', color: 'white', padding: 10, backgroundColor: '#50a1e3' }}>Biểu đồ theo dõi mỗi ngày</Text> */}
 
 
             <View>
-              <LineChart
+            {/* <LineChart
                 areaChart
                 data={listDaily}
                 width={width}
@@ -595,9 +576,9 @@ const Report = (props) => {
                 color="#50a1e3"
 
                 startFillColor="#50a1e3"
-                endFillColor="#000"
-                  startOpacity={1}
-                endOpacity={0.2}
+                endFillColor="#50a1e3"
+                //   startOpacity={1}
+                // endOpacity={0.2}
                 //initialSpacing={0}
                 noOfSections={6}
                 height={300}
@@ -607,7 +588,6 @@ const Report = (props) => {
                 rulesColor="gray"
                 yAxisTextStyle={{ color: 'gray' }}
                 yAxisTextNumberOfLines={1}
-                scrollAnimation={true}
                 //  yAxisLabelWidth={40}
                 yAxisSide='right'
                 xAxisColor="lightgray"
@@ -639,7 +619,7 @@ const Report = (props) => {
                     );
                   },
                 }}
-              />
+              /> */}
             </View>
             <View>
 

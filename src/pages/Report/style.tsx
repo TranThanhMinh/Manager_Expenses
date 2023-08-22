@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet } from 'react-native'
+import Color from "../../common/Color";
 
 
 const style = StyleSheet.create({
@@ -8,7 +9,7 @@ const style = StyleSheet.create({
     flex: 1,
   },
   container2: {
-    backgroundColor: '#e1e1e1',
+    backgroundColor: Color.gray,
     flex: 1,
   },
   textPrice: {

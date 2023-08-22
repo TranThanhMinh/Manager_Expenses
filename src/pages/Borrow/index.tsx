@@ -111,17 +111,18 @@ const Borrow = (props) => {
         {
           newList.length > 0 ?
             (
-              <View style={{ margin: 5 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 5 }}>
+              <View style={{backgroundColor:Color.white, marginTop:8}}>
+                <View style={{ flexDirection: 'row',  alignItems:'center' }}>
+                <View style={{backgroundColor:Color.blue,width:5,height:50}}/>
                   <Text style={{
-                    fontSize: 17,
+                    fontSize: 20,marginLeft:10, fontWeight:'bold'
                   }}>{momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
                 <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
                 <FlatList
-                  style={{ marginHorizontal: 10 }}
                   data={newList}
+                  showsVerticalScrollIndicator={false}
                   renderItem={renderItem} />
 
               </View>
@@ -141,7 +142,6 @@ const Borrow = (props) => {
         style={[style.rowFront]}>
         <View>
           <View style={style.itemExpenses}>
-
             <Text style={[style.text, { fontWeight: 'bold', color: 'black' }]}>{descripbe} ({Utils.TypeExpenses[type].name})</Text>
             <TouchableOpacity
               onPress={() => {
@@ -173,7 +173,7 @@ const Borrow = (props) => {
           <Text style={[style.text2, { color: 'white' }]}>Danh sách cho vay - đi vay</Text>
         </View>
         <FlatList
-          style={{ marginTop: 10, marginBottom: 80 }}
+          style={{ marginTop: 10, marginBottom: 80 , backgroundColor:Color.gray}}
           data={listExpenses}
           renderItem={itemBorrow}
         />
