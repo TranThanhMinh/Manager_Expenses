@@ -5,18 +5,19 @@ import { useSelector, useDispatch } from "react-redux";
 import style from "./style";
 import { FloodReports } from "../../model/types.d";
 import {
-   getListExpenses
+  getListExpenses
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
 import { Utils, Color } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation, initReactI18next } from "react-i18next"
+import Empty from '../../component/Empty'
 
 const Borrow = (props) => {
   const insets = useSafeAreaInsets();
   const isVisible = useIsFocused();
-  const {t} = useTranslation()
+  const { t } = useTranslation()
   const { danangReducer } = useSelector(state => state)
   const [listExpenses, setListExpenses] = useState([])
   const [data, setData] = useState<FloodReports>()
@@ -111,11 +112,11 @@ const Borrow = (props) => {
         {
           newList.length > 0 ?
             (
-              <View style={{backgroundColor:Color.white, marginTop:8}}>
-                <View style={{ flexDirection: 'row',  alignItems:'center' }}>
-                <View style={{backgroundColor:Color.blue,width:5,height:50}}/>
+              <View style={{ backgroundColor: Color.white, marginTop: 8 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
                   <Text style={{
-                    fontSize: 20,marginLeft:10, fontWeight:'bold'
+                    fontSize: 20, marginLeft: 10, fontWeight: 'bold'
                   }}>{momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
@@ -172,11 +173,17 @@ const Borrow = (props) => {
         <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', justifyContent: 'center', alignItems: 'center' }}>
           <Text style={[style.text2, { color: 'white' }]}>Danh sách cho vay - đi vay</Text>
         </View>
-        <FlatList
-          style={{ marginTop: 10, marginBottom: 80 , backgroundColor:Color.gray}}
-          data={listExpenses}
-          renderItem={itemBorrow}
-        />
+        {
+          listExpenses != null && listExpenses.length >0?
+            <FlatList
+              style={{ backgroundColor: Color.gray }}
+              data={listExpenses}
+              renderItem={itemBorrow}
+            />
+            :
+            <Empty title={t('text.lend.borrow')} />
+        }
+
         {/* <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5 }}>
             <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>

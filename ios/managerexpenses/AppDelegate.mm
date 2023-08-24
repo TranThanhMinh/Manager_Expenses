@@ -54,7 +54,16 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  UIStoryboard *sb = [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil];
+  UIViewController *vc = [sb instantiateInitialViewController];
+  [rootView addSubview:vc.view];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    [[vc view] removeFromSuperview];
+  });
   return YES;
+  
+  
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

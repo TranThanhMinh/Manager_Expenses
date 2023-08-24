@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+import { Color } from "../../common";
 
 const style = StyleSheet.create({
   container: {
@@ -7,7 +8,7 @@ const style = StyleSheet.create({
     flex: 1,
   },
   container2: {
-    backgroundColor: 'white',
+    backgroundColor: Color.gray,
     flex: 1,
   },
   list: {
@@ -16,6 +17,13 @@ const style = StyleSheet.create({
   btnText: {
     color: '#FFF',
   },
+  textNoTransaction:{
+    textAlign:'center',
+    alignItems:'center',
+    alignContent:'center',
+    color:Color.gray2
+  },
+
   rowFront: {
     backgroundColor: 'white',
     height: 60,
@@ -27,6 +35,9 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: 5,
+  },
+  textUnit:{
+    textDecorationLine:'underline'
   },
   actionButton: {
     alignItems: 'center',
@@ -75,6 +86,35 @@ const style = StyleSheet.create({
     color:'balck',
     fontWeight:"bold",
     fontSize:16
+  },
+
+  borderBalance:{
+    backgroundColor: Color.white,
+    marginVertical:10,
+    padding:5
+  },
+
+  textBalance:{
+    fontWeight:'bold',
+    color:Color.black,
+    fontSize:16,
+    marginHorizontal:10
+  },
+
+  textPrice:{
+    textAlign:'center',
+    fontWeight:'bold',
+    fontSize:20,
+  },
+
+  textHistory: {
+    width:'100%',
+    marginHorizontal: 5,
+    textAlign:'center',
+    marginTop:5,
+    color:Color.white,
+    fontWeight:"bold",
+    fontSize:20
   },
 
   borderSearch:{

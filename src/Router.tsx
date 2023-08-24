@@ -48,7 +48,7 @@ const MyTabs = () => {
               ? require('./images/ic_report.png')
               : require('./images/ic_report_2.png');
           }
-          return <Image source={iconName} style={{ width: 24, height: 24 }} />
+          return <Image source={iconName} style={{ width: 30, height: 30 }} />
         },
         tabBarActiveTintColor: '#50a1e3',
         tabBarInactiveTintColor: '#444',

@@ -1,11 +1,29 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
+import { FloatingAction } from "react-native-floating-action";
+import Color from "../../common/Color";
 
-const ButtonAdd =()=>{
-  return(
-   <View>
-      <Image source={require('../../images/ic_add.png')} style ={{width:40,height:40}}/>
-   </View>
+
+const ButtonAdd = (props) => {
+  return (
+
+    <View
+      style={{
+        borderWidth: 1,
+        borderColor:  Color.blue,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 50,
+        position: 'absolute',
+        right: 5,
+        height: 50,
+        backgroundColor: Color.blue,
+        borderRadius: 100,
+        bottom: 5
+      }}>
+      <Text style={{ color: "white" ,fontSize:30,top:-1,right:-1}}>+</Text>
+    </View>
+
   )
 }
 

@@ -19,7 +19,7 @@ const style = StyleSheet.create({
     marginLeft: 10,
     color:'balck',
     fontWeight:"bold",
-    fontSize:16
+    fontSize:20
   },
 })
 

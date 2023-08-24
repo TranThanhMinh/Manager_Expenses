@@ -27,6 +27,7 @@ import * as Icon from "react-native-feather"
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import Dialog from "react-native-dialog";
+import Empty from "../../component/Empty";
 
 const Home = (props) => {
   const { t } = useTranslation()
@@ -184,18 +185,18 @@ const Home = (props) => {
     let lis = [...list].reverse()
 
     return (
-      <View style={{marginTop:8,backgroundColor:'#fff'}}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between',alignItems:'center'}}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <View style={{backgroundColor:Color.blue,width:5,height:50}}/>
-          <Text style={{
-            fontSize: 20,marginLeft:10,fontWeight:'bold'
-          }}>{momentFormat(parseFloat(item.created_date))}</Text>
+      <View style={{ marginTop: 8, backgroundColor: '#fff' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
+            <Text style={{
+              fontSize: 20, marginLeft: 10, fontWeight: 'bold'
+            }}>{momentFormat(parseFloat(item.created_date))}</Text>
           </View>
-      
+
           <Text style={{
-            fontSize: 20, color: sum >= 0 ? 'green' : 'red', fontWeight: 'bold',marginRight:10
-          }}>{Utils.numberWithCommas(sum)} VND</Text>
+            fontSize: 20, color: sum >= 0 ? 'green' : 'red', fontWeight: 'bold', marginRight: 10
+          }}>{Utils.numberWithCommas(sum)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
         </View>
 
         <View style={{ backgroundColor: 'black', height: 0.5, margin: 5 }} />
@@ -225,14 +226,14 @@ const Home = (props) => {
         style={style.rowFront}
         underlayColor={'#fff'}
       >
-        <View style={{ height: 50,paddingHorizontal:10 }}>
+        <View style={{ height: 50, paddingHorizontal: 10 }}>
           <View style={style.itemExpenses}>
             <Text style={[style.text2, { color: 'black' }]}>{selectDropdown[(type + 1)].name}</Text>
             <Text style={style.text}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
             <Text style={style.text}>{descripbe}</Text>
-            <Text style={[style.text, { color: in_out == 0 ? 'red' : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} VND</Text>
+            <Text style={[style.text, { color: in_out == 0 ? 'red' : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -344,8 +345,8 @@ const Home = (props) => {
         {/* <Dialog.Description>
           Do you want to delete this account? You cannot undo this action.
         </Dialog.Description> */}
-        <Dialog.Button label= {t('vietnam')} onPress={handleVN} />
-        <Dialog.Button label= {t('english')} onPress={handleEN} />
+        <Dialog.Button label={t('vietnam')} onPress={handleVN} />
+        <Dialog.Button label={t('english')} onPress={handleEN} />
       </Dialog.Container>
     )
   }
@@ -355,13 +356,13 @@ const Home = (props) => {
     // ...Your logic
     global.multilanguge = 'en'
     setVisible(false)
-   i18n.changeLanguage(global.multilanguge)
+    i18n.changeLanguage(global.multilanguge)
   };
 
-   const handleVN = () => {
+  const handleVN = () => {
     global.multilanguge = 'vi';
-   i18n.changeLanguage(global.multilanguge)
-  setVisible(false)
+    i18n.changeLanguage(global.multilanguge)
+    setVisible(false)
   };
 
 
@@ -369,88 +370,92 @@ const Home = (props) => {
     <View style={[style.container]}>
       <View style={[style.container2, { marginTop: insets.top }]}>
         <View style={{ flexDirection: 'row', padding: 5, backgroundColor: Color.blue, alignItems: 'center' }}>
-          <View>
-            <Text style={[style.text2, { color: 'white', borderColor: 'white', borderWidth: 1, borderRadius: 5, padding: 3 }]}>{wallet.length > 0 ? t(wallet[0].name) : 'Chưa có ví'}</Text>
+          <Text style={style.textHistory}>{t('text.history')} </Text>
+          <TouchableOpacity style={{ position: 'absolute', right: 10 }} onPress={() => setVisible(true)}>
+            <Text style={{ color: Color.white }}>{t('language')}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={style.borderBalance}>
+          <Text style={[style.textBalance,]}>{t('text.balance')}</Text>
+          <Text style={[style.textPrice, { color: Color.red }]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
+        </View>
+        <View style={{ backgroundColor: Color.white, padding: 5 }}>
+          <View style={{ marginTop: 5, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
+            <Text style={{ fontWeight: 'bold', color: Color.blue }}>{t('from')}</Text>
+            <TouchableOpacity onPress={toggleModalFromDate}>
+              <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+            </TouchableOpacity>
+            <Text style={{ fontWeight: 'bold', color: Color.blue }}> {t('to')} </Text>
+            <TouchableOpacity onPress={toggleModalToDate}>
+              <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+            </TouchableOpacity>
+
           </View>
-          <Text style={[style.text2, { color: 'white' }]}>: {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} VND </Text>
-          <TouchableOpacity style={{ position: 'absolute', right: 10}} onPress={() =>    setVisible(true)}>
-            <Text style ={{color: Color.white }}>{t('language')}</Text>
-          </TouchableOpacity>
+          <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <TextInput
+              style={style.borderSearch}
+              placeholderTextColor={'#E1E1E1'}
+              placeholder={t('txt_search')}
+              onChangeText={text => onSearch(text)}
+            />
+            <SelectDropdown
+              data={selectDropdown}
+              disabled={edit}
+              disableAutoScroll={false}
+              defaultButtonText={selectDropdown[type].name}
+              onSelect={(selectedItem, index) => {
+                setIsType(true)
+                handleSearch(selectedItem.id)
+              }}
 
-        </View>
-        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={{ fontWeight: 'bold', color: Color.blue }}>{t('from')}</Text>
-          <TouchableOpacity onPress={toggleModalFromDate}>
-            <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
-          </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color: Color.blue }}> {t('to')} </Text>
-          <TouchableOpacity onPress={toggleModalToDate}>
-            <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
-          </TouchableOpacity>
+              renderCustomizedRowChild={(item, index) => {
+                return (
+                  <View>
+                    {
+                      item.id != 0 && item.id != 11 && item.id != 16 ?
+                        <Text style={style.dropdown1RowTxtStyle}>{item.name}</Text>
+                        : <Text style={style.dropdown1RowTxtStyleTitle}>{item.name}</Text>
+                    }
+                  </View>
+                );
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
 
-        </View>
-        {/* <View >
-      <Button title="Create Alarm at 1:55PM" onPress={() => create()} />
-    </View> */}
-        <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-          <TextInput
-            style={style.borderSearch}
-            placeholderTextColor={'#E1E1E1'}
-            placeholder={t('txt_search')}
-            onChangeText={text => onSearch(text)}
-          />
-          <SelectDropdown
-            data={selectDropdown}
-            disabled={edit}
-            disableAutoScroll={false}
-            defaultButtonText={selectDropdown[type].name}
-            onSelect={(selectedItem, index) => {
-              setIsType(true)
-              handleSearch(selectedItem.id)
-            }}
-
-            renderCustomizedRowChild={(item, index) => {
-              return (
-                <View>
-                  {
-                    item.id != 0 && item.id != 11 && item.id != 16 ?
-                      <Text style={style.dropdown1RowTxtStyle}>{item.name}</Text>
-                      : <Text style={style.dropdown1RowTxtStyleTitle}>{item.name}</Text>
-                  }
-                </View>
-              );
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-
-              return selectedItem.name
-            }}
-            rowTextForSelection={(item, index) => {
-              return item.name
-            }}
-            buttonStyle={style.dropdown1BtnStyleFalse}
-            buttonTextStyle={style.dropdown1BtnTxtStyle}
-            renderDropdownIcon={isOpened => {
-              return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
-            }}
-            dropdownIconPosition={'right'}
-            dropdownStyle={style.dropdown1DropdownStyle}
-            rowStyle={style.dropdown1RowStyle}
-            rowTextStyle={style.dropdown1RowTxtStyle}
-          />
+                return selectedItem.name
+              }}
+              rowTextForSelection={(item, index) => {
+                return item.name
+              }}
+              buttonStyle={style.dropdown1BtnStyleFalse}
+              buttonTextStyle={style.dropdown1BtnTxtStyle}
+              renderDropdownIcon={isOpened => {
+                return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={style.dropdown1DropdownStyle}
+              rowStyle={style.dropdown1RowStyle}
+              rowTextStyle={style.dropdown1RowTxtStyle}
+            />
+          </View>
         </View>
 
-        <FlatList
-          style={{ marginTop: 10 ,backgroundColor:Color.gray}}
-          data={listExpenses}
-          showsVerticalScrollIndicator={false}
-          renderItem={itemExpenses} />
+        {
+          listExpenses != null && listExpenses.length > 0 ?
+            <FlatList
+              data={listExpenses}
+              showsVerticalScrollIndicator={false}
+              renderItem={itemExpenses} />
+            :
+            <Empty title ={t('text.not.record')}/>
+        }
+
 
         <TouchableOpacity style={{ position: 'absolute', bottom: 25, right: 20 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
           <ButtonAdd />
         </TouchableOpacity>
         <Modal isVisible={isFromDate}>
           <View style={{ backgroundColor: 'white' }}>
-          
+
             <Calendar onDateChange={onFromDateChange} />
           </View>
 
@@ -458,7 +463,7 @@ const Home = (props) => {
         <Modal isVisible={isToDate}>
           <View style={{ backgroundColor: 'white' }}>
             <Calendar onDateChange={onToDateChange} />
-       
+
           </View>
         </Modal>
       </View>

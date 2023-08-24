@@ -21,7 +21,7 @@ const style = StyleSheet.create({
     marginTop: 5,
     color: 'balck',
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 20
   },
   detailinfo: {
     width: 120,
