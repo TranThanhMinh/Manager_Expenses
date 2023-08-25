@@ -116,7 +116,7 @@ const Borrow = (props) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
                   <Text style={{
-                    fontSize: 20, marginLeft: 10, fontWeight: 'bold'
+                    fontSize: 18, marginLeft: 10, fontWeight: 'bold'
                   }}>{momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
@@ -143,21 +143,20 @@ const Borrow = (props) => {
         style={[style.rowFront]}>
         <View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { fontWeight: 'bold', color: 'black' }]}>{descripbe} ({Utils.TypeExpenses[type].name})</Text>
+            <Text style={[style.text, { fontWeight: 'bold', color: 'black' }]}>{descripbe} ({t(Utils.TypeExpenses[type].name)})</Text>
             <TouchableOpacity
               onPress={() => {
                 props.goToHistory(id)
               }}>
-              <Text style={style.text5}>Chi tiết</Text>
+              <Text style={style.text5}>{t('text.total.detail')}</Text>
             </TouchableOpacity>
-
+          </View>
+          <View style={[style.itemExpenses, { marginTop: 10 }]}>
+            <Text style={[style.text, { color: 'black' }]}>{type == 12 ? t('text.total.debt') : t('text.total.loan')} {Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { color: 'black' }]}>{type == 12 ? 'Tổng đi vay trả:' : 'Tổng cho vay:'} {Utils.numberWithCommas(parseFloat(price))} VND</Text>
-          </View>
-          <View style={style.itemExpenses}>
-            <Text style={[style.text, { color: type == 13 ? 'green' : 'red' }]}>{type == 12 ? 'Phải trả:' : 'Cần thu:'} {Utils.numberWithCommas(price_borrow)} VND</Text>
-            <Text style={[style.text, { color: type == 13 ? 'red' : 'green' }]}>{type == 12 ? 'Đã trả:' : 'Đã thu:'} {Utils.numberWithCommas(borrow)} VND</Text>
+            <Text style={[style.text, { color: type == 13 ? 'green' : Color.blue }]}>{type == 12 ? t('text.total.payable') : t('text.total.collectible')} {Utils.numberWithCommas(price_borrow)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+            <Text style={[style.text, { color: type == 13 ? Color.blue : 'green' }]}>{type == 12 ? t('text.total.paid') : t('text.total.collected')} {Utils.numberWithCommas(borrow)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
           <View style={style.progressBar}>
             <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: "green", width: `${prencent}%` }]} />
@@ -170,31 +169,19 @@ const Borrow = (props) => {
   return (
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: '#50a1e3', justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={[style.text2, { color: 'white' }]}>Danh sách cho vay - đi vay</Text>
+        <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={[style.text2, { color: 'white' }]}>{t('text.lent.borrow')}</Text>
         </View>
         {
-          listExpenses != null && listExpenses.length >0?
+          listExpenses != null && listExpenses.length > 0 ?
             <FlatList
               style={{ backgroundColor: Color.gray }}
               data={listExpenses}
               renderItem={itemBorrow}
             />
             :
-            <Empty title={t('text.lend.borrow')} />
+            <Empty title={t('text.not.record')} />
         }
-
-        {/* <View style={{ position: 'absolute', bottom: 10, width: '100%', borderTopWidth: 0.5, borderColor: '#50a1e3' }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5 }}>
-            <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Cho vay: {Utils.numberWithCommas(lend)} VND</Text>
-            <Text style={{ marginTop: 10, color: 'green', fontSize: 15 }}>Thu nợ: {Utils.numberWithCommas(debtcollection)} VND</Text>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10 }}>
-            <Text style={{ marginTop: 10, color: 'green', fontSize: 15 }}>Đi vay: {Utils.numberWithCommas(borrow)} VND</Text>
-
-            <Text style={{ marginTop: 10, color: 'red', fontSize: 15 }}>Trả nợ: {Utils.numberWithCommas(pay)} VND</Text>
-          </View>
-        </View> */}
       </View>
     </View>
   )

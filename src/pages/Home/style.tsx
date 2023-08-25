@@ -4,7 +4,7 @@ import { Color } from "../../common";
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: '#50a1e3',
+    backgroundColor: Color.blue,
     flex: 1,
   },
   container2: {
@@ -17,11 +17,11 @@ const style = StyleSheet.create({
   btnText: {
     color: '#FFF',
   },
-  textNoTransaction:{
-    textAlign:'center',
-    alignItems:'center',
-    alignContent:'center',
-    color:Color.gray2
+  textNoTransaction: {
+    textAlign: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    color: Color.gray2
   },
 
   rowFront: {
@@ -36,8 +36,8 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 5,
   },
-  textUnit:{
-    textDecorationLine:'underline'
+  textUnit: {
+    textDecorationLine: 'underline'
   },
   actionButton: {
     alignItems: 'center',
@@ -60,73 +60,97 @@ const style = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     marginVertical: 5,
-    paddingHorizontal:10,
-    marginHorizontal:5
+    paddingHorizontal: 10,
+    marginHorizontal: 5
   },
   button: {
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#50a1e3',
-    width:150,
-    marginHorizontal:5,
+    backgroundColor: Color.blue,
+    width: 150,
+    marginHorizontal: 5,
     borderRadius: 5
+  },
+  borderCalendar :{
+    backgroundColor: 'white',
+    borderRadius:10
+  },
+  buttonLangagueVN: {
+    flex: 1,
+    padding: 20,
+    borderEndWidth:0.2,
+    borderTopWidth:0.2
+  },
+  buttonLangagueEN: {
+    flex: 1,
+    padding: 20,
+    borderTopWidth:0.2
+  },
+  textLangague: {
+    textAlign: 'center'
   },
   itemExpenses: {
     flexDirection: 'row',
-    justifyContent:'space-between'
+    justifyContent: 'space-between'
   },
   text: {
     marginHorizontal: 5,
-    marginTop:5,
+    marginTop: 5,
   },
   text2: {
     marginHorizontal: 5,
-    marginTop:5,
-    color:'balck',
-    fontWeight:"bold",
-    fontSize:16
+    marginTop: 5,
+    color: 'balck',
+    fontWeight: "bold",
+    fontSize: 16
+  },
+  textDate: {
+    fontWeight: 'bold', color: Color.black, fontSize: 16
+  },
+  textFromDate: {
+    fontWeight: 'bold', color: Color.blue, fontSize: 16, marginHorizontal: 5
   },
 
-  borderBalance:{
+  borderBalance: {
     backgroundColor: Color.white,
-    marginVertical:10,
-    padding:5
+    marginVertical: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 10
   },
 
-  textBalance:{
-    fontWeight:'bold',
-    color:Color.black,
-    fontSize:16,
-    marginHorizontal:10
+  textBalance: {
+    color: Color.black,
+    fontSize: 16,
+    marginHorizontal: 10
   },
 
-  textPrice:{
-    textAlign:'center',
-    fontWeight:'bold',
-    fontSize:20,
+  textPrice: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 30,
   },
 
   textHistory: {
-    width:'100%',
+    width: '100%',
     marginHorizontal: 5,
-    textAlign:'center',
-    marginTop:5,
-    color:Color.white,
-    fontWeight:"bold",
-    fontSize:20
+    textAlign: 'center',
+    color: Color.white,
+    fontWeight: "bold",
+    fontSize: 20
   },
 
-  borderSearch:{
-    flex:1,
-    height:35,
+  borderSearch: {
+    width: '50%',
+    height: 35,
     borderRadius: 5,
-    borderColor :'#444',
-    borderWidth:0.5,
-    paddingHorizontal:10
+    borderColor: '#444',
+    borderWidth: 0.5,
+    fontSize: 16,
+    paddingHorizontal: 10
   },
   dropdown1BtnStyle: {
-    width:150,
+    width: '50%',
     height: 35,
     borderBottomWidth: 0.5,
     marginVertical: 5,
@@ -135,14 +159,14 @@ const style = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   dropdown1BtnStyleFalse: {
-    width:150,
+    width: '50%',
     height: 35,
-    borderWidth:0.5,
+    borderWidth: 0.5,
     marginVertical: 5,
-    borderRadius:5,
+    borderRadius: 5,
     paddingHorizontal: 0,
-    marginHorizontal: 5,
-    backgroundColor: '#FFF',
+    marginRight: 5,
+    backgroundColor: Color.white,
 
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -150,12 +174,12 @@ const style = StyleSheet.create({
     shadowRadius: 1,
     elevation: 2,
   },
-  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'center',fontSize:14 },
-  dropdown1DropdownStyle: { backgroundColor: '#EFEFEF'},
-  dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
-  dropdown1RowTxtStyle2: { color: 'black', textAlign: 'center', fontSize:16,marginHorizontal:5},
-  dropdown1RowTxtStyle: { color: 'black', textAlign: 'center', fontSize:16,marginHorizontal:5},
-  dropdown1RowTxtStyleTitle: { color: 'black', textAlign: 'center', fontSize:16,marginHorizontal:5,fontWeight:'bold'},
+  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'center', fontSize: 16 },
+  dropdown1DropdownStyle: { backgroundColor: '#EFEFEF' },
+  dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5' },
+  dropdown1RowTxtStyle2: { color: 'black', textAlign: 'center', fontSize: 16, marginHorizontal: 5 },
+  dropdown1RowTxtStyle: { color: 'black', textAlign: 'center', fontSize: 16, marginHorizontal: 5 },
+  dropdown1RowTxtStyleTitle: { color: 'black', textAlign: 'center', fontSize: 16, marginHorizontal: 5, fontWeight: 'bold' },
 
 })
 

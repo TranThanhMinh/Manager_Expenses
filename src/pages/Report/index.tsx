@@ -406,11 +406,11 @@ const Report = (props) => {
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-          <Text style={{ fontSize: 12, color: 'black' }}>{name}</Text>
-          <Text style={{ fontSize: 12, color: color }}> ({prencent.toFixed(2)})%</Text>
+          <Text style={{ fontSize: 16, color: 'black' }}>{name}</Text>
+          <Text style={{ fontSize: 16, color: color }}> ({prencent.toFixed(2)})%</Text>
 
         </View>
-        <Text style={{ fontSize: 15, color: 'red' }}>{Utils.numberWithCommas(price)} VND</Text>
+        <Text style={{ fontSize: 18, color: Color.blue }}>{Utils.numberWithCommas(price)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
       </View>
 
     )
@@ -422,11 +422,11 @@ const Report = (props) => {
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-          <Text style={{ fontSize: 12, color: 'black' }}>{name}</Text>
-          <Text style={{ fontSize: 12, color: color }}> ({prencent.toFixed(2)})%</Text>
+          <Text style={{ fontSize: 16, color: Color.black}}>{name}</Text>
+          <Text style={{ fontSize: 16, color: color }}> ({prencent.toFixed(2)})%</Text>
 
         </View>
-        <Text style={{ fontSize: 15, color: 'green' }}>{Utils.numberWithCommas(price)} VND</Text>
+        <Text style={{ fontSize: 18, color: 'green' }}>{Utils.numberWithCommas(price)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
       </View>
 
     )
@@ -437,7 +437,7 @@ const Report = (props) => {
     return (
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text style={{ width: 10, height: 10, backgroundColor: color, margin: 5 }} />
-        <Text style={{ fontSize: 10 }}>{name}</Text>
+        <Text style={{ fontSize: 16 }}>{name}</Text>
       </View>
     )
   }
@@ -475,22 +475,22 @@ const Report = (props) => {
   return (
     <View style={style.container}>
       <View style={[style.container2, { marginTop: insets.top }]}>
-        <View style={{ flexDirection: 'row', padding: 5, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={[style.text2, { color: 'white' }]}>{t('tab_3')}</Text>
+        <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={style.text2}>{t('text.report')}</Text>
         </View>
-        <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white' }}>
-          <Text style={{ fontWeight: 'bold', color: Color.blue }}>{t('from')}</Text>
+        <View style={{ padding: 15, flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white' }}>
+          <Text style={style.textFromDate}>{t('from')}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
-            <Text style={{ fontWeight: 'bold' }}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+            <Text style={style.textDate}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
-          <Text style={{ fontWeight: 'bold', color: Color.blue }}> {t('to')} </Text>
+          <Text style={style.textFromDate}> {t('to')} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
-            <Text style={{ fontWeight: 'bold' }}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+            <Text style={style.textDate}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
-            <Text style={{ fontWeight: 'bold', color: 'red', margin: 10 }}>CHI TIỀN: {Utils.numberWithCommas(sumOUT)} VND</Text>
+            <Text style={[style.text,{color: Color.blue }]}>{t('text.expense')} {Utils.numberWithCommas(sumOUT)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
             {
               listCT.length > 0 ?
                 <View style={{
@@ -528,7 +528,7 @@ const Report = (props) => {
                 </View> : null
 
             }
-            <Text style={{ fontWeight: 'bold', color: 'green', margin: 10 }}>THU TIỀN: {Utils.numberWithCommas(sumIN)} VND</Text>
+            <Text style={[style.text,{color: 'green'}]}>{t('text.income')} {Utils.numberWithCommas(sumIN)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
             {
               listTT.length > 0 ?
                 <View style={{
@@ -628,12 +628,12 @@ const Report = (props) => {
           </View>
         </ScrollView>
         <Modal isVisible={isFromDate}>
-          <View style={{ backgroundColor: 'white' }}>
+          <View style={style.borderCalendar}>
             <Calendar onDateChange={onFromDateChange} />
           </View>
         </Modal>
         <Modal isVisible={isToDate}>
-          <View style={{ backgroundColor: 'white' }}>
+          <View style={style.borderCalendar}>
             <Calendar onDateChange={onToDateChange} />
           </View>
         </Modal>

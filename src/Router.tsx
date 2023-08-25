@@ -1,5 +1,5 @@
 import  React, {useState} from 'react';
-import { Image, } from 'react-native'
+import { Image,Text,View } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
@@ -14,6 +14,7 @@ import { String } from '@common';
 import './common/i18n'
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
+import Color from './common/Color';
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +34,7 @@ const MyTabs = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
+          
           if (route.name === 'Home') {
             iconName = focused
               ? require('./images/ic_expenses.png')
@@ -48,13 +50,14 @@ const MyTabs = () => {
               ? require('./images/ic_report.png')
               : require('./images/ic_report_2.png');
           }
-          return <Image source={iconName} style={{ width: 30, height: 30 }} />
+          return <Image source={iconName} style={{ width: 30, height: 30,tintColor:color }} />
         },
-        tabBarActiveTintColor: '#50a1e3',
+        tabBarActiveTintColor: Color.blue,
         tabBarInactiveTintColor: '#444',
-        headerShown: false
+        headerShown: false,
+       
       })} >
-      <Tab.Screen name="Home" component={HomeScreen}  options={{ title:t('tab_1') }}/>
+      <Tab.Screen name="Home" component={HomeScreen}  options={{ title:t('tab_1')}}/>
       <Tab.Screen name="Borrow" component={BorrowScreen}  options={{ title: t('tab_2') }}/>
       <Tab.Screen name="Report" component={ReportScreen}  options={{ title: t('tab_3') }}/>
       {/* <Tab.Screen name="Setting" component={SettingScreen}  options={{ title: t('tab_4') }}/> */}

@@ -2,6 +2,7 @@ import React,{useEffect} from "react";
 import { View, Text, Image } from "react-native";
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Color from "../../common/Color";
 
 const Slash = (props) => {
 
@@ -10,16 +11,16 @@ const Slash = (props) => {
     useEffect(()=>{
       setTimeout(()=>{
         props.goToMyTabs()
-      },3000)
+      },2000)
     },[])
      
     return (
-        <View style ={{flex:1,alignItems:'center',justifyContent:'center',marginBottom:insets.bottom}}>
-            <Image source={require('../../images/ic_app.png')} style ={{width:100,height:90}}/>
-            <Text style={{marginTop:10, color:'#50a1e3',fontSize:18}}>Quản lý chi tiêu</Text>
-            <View style ={{position:'absolute',bottom: 0}}>
+        <View style ={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:Color.white}}>
+            <Image source={require('../../images/ic_app.png')} style ={{width:150,height:110}}/>
+            <Text style={{marginTop:15, color:Color.pink,fontSize:20}}>Money Lover</Text>
+            {/* <View style ={{position:'absolute',bottom: 0,marginBottom:insets.bottom}}>
                   <Text style={{fontStyle:'italic', fontSize:10}}>A product of Minh Trần</Text> 
-            </View>
+            </View> */}
         </View>
     )
 }

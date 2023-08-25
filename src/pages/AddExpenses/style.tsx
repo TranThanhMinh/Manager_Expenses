@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+import { Color } from "../../common";
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: '#50a1e3',
+    backgroundColor: Color.blue,
     flex: 1,
   },
   container2: {
@@ -58,7 +59,7 @@ const style = StyleSheet.create({
     borderBottomWidth: 0.5,
     marginVertical: 5,
     paddingHorizontal: 10,
-    fontSize:14,
+    fontSize:18,
     marginHorizontal: 5,
     backgroundColor: '#FFF',
   },
@@ -84,8 +85,9 @@ const style = StyleSheet.create({
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#50a1e3',
-    width:'100%',
+    backgroundColor: Color.blue,
+    width:'50%',
+    marginTop:10,
     borderRadius: 5,
     flexDirection:'row',
     height:40
@@ -95,7 +97,7 @@ const style = StyleSheet.create({
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#50a1e3',
+    backgroundColor: Color.blue,
     width:'50%',
     borderRadius: 5,
     flexDirection:'row',
@@ -145,7 +147,7 @@ const style = StyleSheet.create({
     shadowRadius: 1,
     elevation: 2,
   },
-  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left',fontSize:14 },
+  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left',fontSize:18 },
   dropdown1DropdownStyle: { backgroundColor: '#EFEFEF'},
   dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
   dropdown1RowTxtStyle2: { color: 'black', textAlign: 'left', fontSize:16,marginHorizontal:5},
@@ -156,6 +158,10 @@ const style = StyleSheet.create({
     width:'100%',
     alignItems: 'center',
   },
+  button:{
+    fontSize:20,
+    marginLeft:5
+  }
 })
 
 export default style;

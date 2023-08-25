@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+import Color from "../../common/Color";
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: '#50a1e3',
+    backgroundColor:Color.blue,
     flex: 1,
   },
   container2: {
@@ -18,16 +19,17 @@ const style = StyleSheet.create({
   },
   text2: {
     marginHorizontal: 5,
-    marginTop:5,
     color:'balck',
     fontWeight:"bold",
     fontSize:20
   },
+  textUnit:{
+    textDecorationLine:'underline'
+  },
   rowFront: {
-    marginVertical:2,
     padding:5,
     backgroundColor: 'white',
-    height: 90,
+
   },
   rowBack: {
     alignItems: 'center',
@@ -76,13 +78,15 @@ const style = StyleSheet.create({
   },
   text: {
     marginHorizontal: 5,
-    marginTop:5
+    marginTop:5,
+    fontSize:16,
   },
   text5: {
     marginHorizontal: 5,
     marginTop:5,
     color:'blue',
-    textDecorationLine:'underline'
+    textDecorationLine:'underline',
+    fontSize:16
   },
   dropdown1BtnStyle: {
     width:'100%',

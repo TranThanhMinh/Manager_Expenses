@@ -190,7 +190,7 @@ const AddExpenses = (props) => {
   const selectDate = () => {
     return (
       <Modal isVisible={isDate}>
-        <View style={{ backgroundColor: 'white' }}>
+        <View style={{ backgroundColor: 'white' , borderRadius:10}}>
           <Calendar onDateChange={onDateChange} />
         </View>
       </Modal>
@@ -202,14 +202,14 @@ const AddExpenses = (props) => {
       <View style={[style.container2, { marginTop: insets.top }]}>
         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }} onPress={() => props.goToBack()}>
           <Icon.ArrowLeft stroke={'white'} />
-          <Text style={{ marginLeft: 10, color: 'white' }}>{String.daily_transaction}</Text>
+          <Text style={{ marginLeft: 10, color: 'white', fontSize:20, fontWeight:'bold' }}>{t('daily_transaction')}</Text>
         </TouchableOpacity>
 
         <View style={style.body}>
           <TouchableOpacity style={style.combobox} onPress={toggleModalToDate}>
             <Icon.Calendar stroke={Color.blue} />
-            <Text style={[style.text2, { height: 20, fontSize: 14 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
-            <Icon.Edit stroke={Color.blue} width={20} height={20} />
+            <Text style={[style.text2, { height: 20, fontSize: 18 }]}> {date ? momentFormat(date) : momentFormat(new Date().getTime())}</Text>
+            {/* <Icon.Edit stroke={Color.blue} width={20} height={20} /> */}
           </TouchableOpacity>
           <View style={[style.combobox, { marginTop: 5 }]}>
             <Icon.AlignLeft stroke={Color.blue} />
@@ -217,7 +217,7 @@ const AddExpenses = (props) => {
               data={Utils.TypeExpenses}
               disabled={edit}
               disableAutoScroll={false}
-              defaultButtonText={Utils.TypeExpenses[type].name}
+              defaultButtonText={t(Utils.TypeExpenses[type].name)}
               onSelect={(selectedItem, index) => {
                 setIsType(true)
                 setType(selectedItem.id)
@@ -251,8 +251,8 @@ const AddExpenses = (props) => {
                   <View>
                     {
                       item.id != 0 && item.id != 11 && item.id != 16 ?
-                        <Text style={style.dropdown1RowTxtStyle}>{item.name}</Text>
-                        : <Text style={style.dropdown1RowTxtStyleTitle}>{item.name}</Text>
+                        <Text style={style.dropdown1RowTxtStyle}>{t(item.name)}</Text>
+                        : <Text style={style.dropdown1RowTxtStyleTitle}>{t(item.name)}</Text>
                     }
                   </View>
                 );
@@ -261,10 +261,10 @@ const AddExpenses = (props) => {
               buttonTextAfterSelection={(selectedItem, index) => {
                 setType(selectedItem.id)
                 setInOut(parseInt(selectedItem.type))
-                return selectedItem.name
+                return t(selectedItem.name)
               }}
               rowTextForSelection={(item, index) => {
-                return item.name
+                return t(item.name)
               }}
               buttonStyle={!isType ? style.dropdown1BtnStyleFalse : style.dropdown1BtnStyle}
               buttonTextStyle={style.dropdown1BtnTxtStyle}
@@ -284,29 +284,29 @@ const AddExpenses = (props) => {
                 <SelectDropdown
                   data={listBorrow}
                   disabled={edit}
-                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money : listBorrow[typeBorrow].price_borrow) + ' VND'}
+                  defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money : listBorrow[typeBorrow].price_borrow) + t('text.unit')}
                   onSelect={(selectedItem, index) => {
                     setIdBorrow(selectedItem.id)
                     setTypeBorrow(index)
                     setMoney(selectedItem.price_borrow)
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
-                    return (selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + ' VND')
+                    return (selectedItem.descripbe + " - " + Utils.numberWithCommas(selectedItem.price_borrow) + t('text.unit'))
                   }}
                   rowTextForSelection={(item, index) => {
-                    return (item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND')
+                    return (item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + t('text.unit'))
                   }}
 
                   renderCustomizedRowChild={(item, index) => {
                     return (
-                      <View><Text style={style.dropdown1RowTxtStyle}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + ' VND'}</Text>
+                      <View><Text style={style.dropdown1RowTxtStyle}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + t('text.unit')}</Text>
                       </View>
                     );
                   }}
                   buttonStyle={style.dropdown1BtnStyle}
                   buttonTextStyle={style.dropdown1BtnTxtStyle}
                   renderDropdownIcon={isOpened => {
-                    return !edit ? isOpened ? <Icon.ChevronUp stroke={'#50a1e3'} /> : <Icon.ChevronDown stroke={'#50a1e3'} /> : null
+                    return !edit ? isOpened ? <Icon.ChevronUp stroke={Color.blue} /> : <Icon.ChevronDown stroke={Color.blue} /> : null
                   }}
                   dropdownIconPosition={'right'}
                   dropdownStyle={style.dropdown1DropdownStyle}
@@ -318,11 +318,11 @@ const AddExpenses = (props) => {
           }
           <View style={style.combobox}>
             <Icon.Edit3 stroke={Color.blue} />
-            <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder="Mô tả" placeholderTextColor={'#E1E1E1'} onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
+            <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder= {t('text.description')} placeholderTextColor={'#E1E1E1'} onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
           </View>
           <View style={style.combobox}>
             <Icon.DollarSign stroke={Color.blue} />
-            <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder="Nhâp giá" placeholderTextColor={'#E1E1E1'} keyboardType="numeric"
+            <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder= {t('text.price')} placeholderTextColor={'#E1E1E1'} keyboardType="numeric"
               onChangeText={(text) => {
                 setIsPrice(true),
                   type == 13 || type == 15 ?
@@ -341,22 +341,22 @@ const AddExpenses = (props) => {
                 <TouchableOpacity style={style.btnAdd} onPress={handleAdd}>
                   <Icon.Save stroke={'white'} width={20} height={20} />
                   {id == '' ?
-                    <Text style={{ color: 'white' }}> {t('button.add')} </Text>
+                    <Text style={[style.button,{ color: 'white' }]}> {t('button.add')} </Text>
                     :
-                    <Text style={{ color: 'white' }}> {t('button.update')} </Text>
+                    <Text style={[style.button,{ color: 'white' }]}> {t('button.update')} </Text>
                   }
                 </TouchableOpacity>
               ) :
                 (
-                  <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop:10}}>
                     <TouchableOpacity style={style.btnDelete} onPress={handleRemove}>
                       <Icon.Trash2 stroke={'red'} width={20} height={20} />
-                      <Text style={{ color: 'red' }}>  {t('button.delete')} </Text>
+                      <Text style={[style.button,{ color: 'red' }]}>  {t('button.delete')} </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={style.btnUpdate} onPress={handleAdd}>
                       <Icon.Save stroke={'white'} width={20} height={20} />
-                      <Text style={{ color: 'white' }}> {t('button.update')} </Text>
+                      <Text style={[style.button,{ color: 'white' }]}> {t('button.update')} </Text>
                     </TouchableOpacity>
                   </View>
                 )

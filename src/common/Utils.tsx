@@ -1,9 +1,9 @@
 import { NavigationActions } from 'react-navigation';
 import { Dimensions, Platform } from 'react-native'
+import { useTranslation, initReactI18next } from "react-i18next"
 
 // Acquiring the plugin 
 const moment = require('moment');
-
 
 function Utils() { };
 
@@ -47,107 +47,107 @@ Utils.getName =(id)=>{
 Utils.TypeExpenses = [
   {
     id: 0,
-    name: "---Chi tiền---",
+    name: 'text.title.expense',
     type:'0'
   },
   {
     id: 1,
-    name: "Ăn uống",
+    name: 'text.eat.drink',
     type:'0'
   },
   {
     id: 2,
-    name: "Cà phê",
+    name: "text.coffee",//cà phê
     type:'0'
   },
   {
     id: 3,
-    name: "Đi chợ",
+    name: "text.market",//đi chợ
     type:'0'
   },
   {
     id: 4,
-    name: "Hóa đơn điện/nước",
+    name: "text.electricity.water.bill",//Hóa đơn điện/nước
     type:'0'
   },
   {
     id: 5,
-    name: "Hóa đơn điện thoại",
+    name: "text.telephone.bill",//Hóa đơn điện thoại
     type:'0'
   },
   {
     id: 6,
-    name: "Quần áo",
+    name: "text.clothes",//Quần áo
     type:'0'
   },
   {
     id: 7,
-    name: "Xăng dầu",
+    name: "text.petroleum",//Xăng dầu
     type:'0'
   },
   {
     id: 8,
-    name: "Thuê nhà",
+    name: "text.rent",//Thuê nhà
     type:'0'
   },
   {
     id: 9,
-    name: "Chi phí",
+    name: "text.expense.2",//Chi phí
     type:'0'
   },
   {
     id: 10,
-    name: "Khác",
+    name: "text.other",//khác
     type:'0'
   },
   {
     id: 11,
-    name: "---Vay Nợ---",
+    name: "text.borrowing",//---Vay Nợ---
     type:'0'
   },
   {
     id: 12,
-    name: "Đi vay",
+    name: "text.borrow",//Đi vay
     type:'1'
   },
   {
     id: 13,
-    name: "Trả nợ",
+    name: "text.pay",//Trả nợ
     type:'0'
   },
   {
     id: 14,
-    name: "Cho vay",
+    name: "text.loan",//Cho vay
     type:'0'
   },
   {
     id: 15,
-    name: "Thu nợ",
+    name: "text.debt",//Thu nợ
     type:'1'
   },
   {
     id: 16,
-    name: "---Thu Tiền---",
+    name: "text.collect.money",//---Thu Tiền---",
     type:'0'
   },
   {
     id: 17,
-    name: "Tiền lương",
+    name: "text.salary",//Tiền lương
     type:'1'
   },
   {
     id: 18,
-    name: "Tiền lãi",
+    name: "text.interest",//Tiền lãi
     type:'1'
   },
   {
     id: 19,
-    name: "Tiền thưởng",
+    name: "text.ponus",//Tiền thưởng
     type:'1'
   },
   {
     id: 20,
-    name: "Khác",
+    name: "text.other",//Khác
     type:'1'
   },
 ]

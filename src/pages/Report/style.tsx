@@ -5,7 +5,7 @@ import Color from "../../common/Color";
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: '#50a1e3',
+    backgroundColor: Color.blue,
     flex: 1,
   },
   container2: {
@@ -16,10 +16,27 @@ const style = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'right'
   },
+  textUnit:{
+    textDecorationLine:'underline'
+  },
+  text:{
+    fontSize:18,
+    fontWeight: 'bold',
+    margin: 10 
+  },
+  borderCalendar :{
+    backgroundColor: 'white',
+    borderRadius:10,
+  },
+  textDate:{
+    fontWeight: 'bold', color: Color.black ,fontSize:16
+  },
+  textFromDate:{
+    fontWeight: 'bold', color: Color.blue ,fontSize:16,marginHorizontal:5
+  },
   text2: {
     marginHorizontal: 5,
-    marginTop: 5,
-    color: 'balck',
+    color: Color.white,
     fontWeight: "bold",
     fontSize: 20
   },
