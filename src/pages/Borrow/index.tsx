@@ -116,7 +116,7 @@ const Borrow = (props) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
                   <Text style={{
-                    fontSize: 18, marginLeft: 10, fontWeight: 'bold'
+                    fontSize: 18, marginLeft: 10, fontWeight: 'bold',color:Color.black
                   }}>{momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 

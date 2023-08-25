@@ -6,15 +6,18 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React,{useEffect} from 'react';
 import Router from './Router'
 import { Provider } from 'react-redux';
 import { store } from './redux/reducer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-
+import SplashScreen from 'react-native-splash-screen';
 const App = () => {
   console.disableYellowBox = true
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <Provider store={store}>
       <SafeAreaProvider>

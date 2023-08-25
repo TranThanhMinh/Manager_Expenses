@@ -190,7 +190,7 @@ const Home = (props) => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
             <Text style={{
-              fontSize: 18, marginLeft: 10, fontWeight: 'bold'
+              fontSize: 18, marginLeft: 10, fontWeight: 'bold',color:Color.black
             }}>{momentFormat(parseFloat(item.created_date))}</Text>
           </View>
 
@@ -228,12 +228,12 @@ const Home = (props) => {
       >
         <View style={{ height: 50, paddingHorizontal: 10 }}>
           <View style={style.itemExpenses}>
-            <Text style={[style.text2, { color: 'black' }]}>{t(selectDropdown[(type + 1)].name )}</Text>
+            <Text style={[style.text2, { color: 'black' }]}>{t(selectDropdown[(type + 1)].name)}</Text>
             <Text style={style.text}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
             <Text style={style.text}>{descripbe}</Text>
-            <Text style={[style.text, {fontSize:18, color: in_out == 0 ? Color.blue : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+            <Text style={[style.text, { fontSize: 18, color: in_out == 0 ? Color.blue : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -341,16 +341,16 @@ const Home = (props) => {
   function changeLanguge() {
     return (
       <Modal isVisible={visible}>
-        <View style={{ backgroundColor: 'white', borderRadius:10,alignItems:'center' }}>
-          <Text style ={{fontSize:20,color:Color.blue,paddingVertical:20,fontWeight:'bold'}}>{t('change_languge')}</Text>
-      
-          <View style ={{flexDirection:'row'}}>
-             <TouchableOpacity style={style.buttonLangagueVN} onPress={handleVN}>
+        <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
+          <Text style={{ fontSize: 20, color: Color.blue, paddingVertical: 20, fontWeight: 'bold' }}>{t('change_languge')}</Text>
+
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity style={style.buttonLangagueVN} onPress={handleVN}>
               <Text style={style.textLangague}>{t('vietnam')}</Text>
-             </TouchableOpacity>
-             <TouchableOpacity style={style.buttonLangagueEN} onPress={handleEN}>
+            </TouchableOpacity>
+            <TouchableOpacity style={style.buttonLangagueEN} onPress={handleEN}>
               <Text style={style.textLangague}>{t('english')}</Text>
-             </TouchableOpacity>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -375,8 +375,8 @@ const Home = (props) => {
       <View style={[style.container2, { marginTop: insets.top }]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }}>
           <Text style={style.textHistory}>{t('text.history')} </Text>
-          <TouchableOpacity style={{ position: 'absolute', right: 15 , top:15}} onPress={() => setVisible(true)}>
-            <Text style={{ color: Color.white ,fontWeight:'bold'}}>{t('language')}</Text>
+          <TouchableOpacity style={{ position: 'absolute', right: 15, top: 15 }} onPress={() => setVisible(true)}>
+            <Text style={{ color: Color.white, fontWeight: 'bold', borderWidth: 0.5, borderRadius: 3, paddingHorizontal: 4, borderColor: Color.white }}>{t('language')}</Text>
           </TouchableOpacity>
         </View>
         <View style={style.borderBalance}>
@@ -398,8 +398,8 @@ const Home = (props) => {
           <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <TextInput
               style={style.borderSearch}
-              placeholderTextColor={'#E1E1E1'}
               
+              placeholderTextColor={Color.gray2}
               placeholder={t('txt_search')}
               onChangeText={text => onSearch(text)}
             />
@@ -407,7 +407,7 @@ const Home = (props) => {
               data={selectDropdown}
               disabled={edit}
               disableAutoScroll={false}
-              defaultButtonText={t(selectDropdown[type].name) }
+              defaultButtonText={t(selectDropdown[type].name)}
               onSelect={(selectedItem, index) => {
                 setIsType(true)
                 handleSearch(selectedItem.id)
@@ -451,7 +451,7 @@ const Home = (props) => {
               showsVerticalScrollIndicator={false}
               renderItem={itemExpenses} />
             :
-            <Empty title ={t('text.not.record')}/>
+            <Empty title={t('text.not.record')} />
         }
 
 

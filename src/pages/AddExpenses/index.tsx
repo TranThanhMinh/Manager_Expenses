@@ -318,11 +318,11 @@ const AddExpenses = (props) => {
           }
           <View style={style.combobox}>
             <Icon.Edit3 stroke={Color.blue} />
-            <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder= {t('text.description')} placeholderTextColor={'#E1E1E1'} onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
+            <TextInput style={[style.textInput, { borderColor: !isDescripbe ? 'red' : '#444' }]} value={descripbe} placeholder= {t('text.description')}    placeholderTextColor={Color.gray2} onChangeText={(text) => { setDescripbe(text), setIsDescripbe(true) }} />
           </View>
           <View style={style.combobox}>
             <Icon.DollarSign stroke={Color.blue} />
-            <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder= {t('text.price')} placeholderTextColor={'#E1E1E1'} keyboardType="numeric"
+            <TextInput style={[style.textInput, { borderColor: !isPrice ? 'red' : '#444' }]} value={Utils.numberWithCommas(price)} placeholder= {t('text.price')}     placeholderTextColor={Color.gray2} keyboardType="numeric"
               onChangeText={(text) => {
                 setIsPrice(true),
                   type == 13 || type == 15 ?

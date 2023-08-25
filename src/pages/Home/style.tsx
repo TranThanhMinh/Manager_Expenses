@@ -80,12 +80,13 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 20,
     borderEndWidth:0.2,
-    borderTopWidth:0.2
+    borderTopWidth:0.2,
   },
   buttonLangagueEN: {
     flex: 1,
     padding: 20,
-    borderTopWidth:0.2
+    borderTopWidth:0.2,
+    borderSatrtWidth:0.2
   },
   textLangague: {
     textAlign: 'center'
@@ -142,16 +143,18 @@ const style = StyleSheet.create({
 
   borderSearch: {
     width: '50%',
-    height: 35,
+    height: 40,
+    
     borderRadius: 5,
     borderColor: '#444',
+    textAlign:'left',
     borderWidth: 0.5,
     fontSize: 16,
     paddingHorizontal: 10
   },
   dropdown1BtnStyle: {
     width: '50%',
-    height: 35,
+    height: 40,
     borderBottomWidth: 0.5,
     marginVertical: 5,
     paddingHorizontal: 0,
@@ -160,7 +163,7 @@ const style = StyleSheet.create({
   },
   dropdown1BtnStyleFalse: {
     width: '50%',
-    height: 35,
+    height: 40,
     borderWidth: 0.5,
     marginVertical: 5,
     borderRadius: 5,

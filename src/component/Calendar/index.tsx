@@ -31,24 +31,15 @@ const Calendar = (props) => {
       }
 
     const customDatesStylesCallback = date => {
-        switch(date.isoWeekday()) {
-          case 1: // Monday
-            return {
-              style:{
-                backgroundColor: '#909',
-              },
-              textStyle: {
-                color: '#0f0',
-                fontWeight: 'bold',
-              }
-            };
-          case 7: // Sunday
-            return {
-              textStyle: {
-                color: 'red',
-              }
-            };
+      return {
+        style:{
+         // backgroundColor: '#909',
+        },
+        textStyle: {
+          color: Color.black,
+          fontSize:16
         }
+      };
       }
 
 
@@ -65,7 +56,7 @@ const Calendar = (props) => {
                 months={listMonths}
                 onDateChange={props.onDateChange}
                 todayBackgroundColor= {Color.blue}
-                backgroundColor={Color.blue}
+                // backgroundColor={Color.blue}
                 selectedDayColor={Color.white}
                 selectedDayTextColor={Color.white}
                 scaleFactor={375}
@@ -74,12 +65,16 @@ const Calendar = (props) => {
                     fontSize: 18,
                     
                 }}
-                // monthTitleStyle={{
-                //     color:Color.blue,
-                // }}
-                // yearTitleStyle={{
-                //     color:Color.blue,
-                // }}
+                monthTitleStyle={{
+                 //   color:Color.blue,
+                    fontSize:20
+                }}
+                yearTitleStyle={{
+                   // color:Color.blue,
+                    fontSize:20
+                }}
+                customDatesStyles={customDatesStylesCallback}
+              //  customDayHeaderStyles={customDayHeaderStylesCallback}
             />
         </View>
     )

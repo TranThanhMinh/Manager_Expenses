@@ -55,7 +55,7 @@ const style = StyleSheet.create({
   },
   textInput: {
     flex:1,
-    height: 35,
+    height:40,
     borderBottomWidth: 0.5,
     marginVertical: 5,
     paddingHorizontal: 10,
@@ -65,7 +65,7 @@ const style = StyleSheet.create({
   },
   text2: {
     flex:1,
-    height: 35,
+    height: 40,
     textAlignVertical:'center',
     color:'#000',
     marginVertical: 5,

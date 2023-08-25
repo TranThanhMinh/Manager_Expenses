@@ -84,7 +84,7 @@ const style = StyleSheet.create({
   text5: {
     marginHorizontal: 5,
     marginTop:5,
-    color:'blue',
+    color:Color.gray2,
     textDecorationLine:'underline',
     fontSize:16
   },

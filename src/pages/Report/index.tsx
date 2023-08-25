@@ -173,7 +173,26 @@ const Report = (props) => {
     let tt4 = 0
     let tt41 = 0
     let tt5 = 0
-
+    // 'text.title.expense': '---Chi tiền---',
+    //                 'text.eat.drink': 'Ăn uống',
+    //                 'text.coffee': 'Cà phê',
+    //                 'text.market': 'Đi chợ',
+    //                 'text.electricity.water.bill': 'Hóa đơn điện/nước',
+    //                 'text.telephone.bill': 'Hóa đơn điện thoại',
+    //                 "text.clothes": 'Quần áo',
+    //                 "text.petroleum": 'Xăng dầu',
+    //                 "text.rent":'Thuê nhà',
+    //                 "text.expense.2":'Chi phí',
+    //                 "text.other":'khác',
+    //                 "text.borrowing":'---Vay Nợ---',
+    //                 "text.borrow":'Đi vay',
+    //                 "text.pay":'Trả nợ',
+    //                 "text.loan":'Cho vay',
+    //                 "text.debt":'Thu nợ',
+    //                 "text.collect.money":'---Thu Tiền---',
+    //                 "text.salary":'Tiền lương',
+    //                 "text.interest":'Tiền lãi',
+    //                 "text.ponus":'Tiền thưởng'
 
     if (list.length == 0) {
       setSumIN(0)
@@ -191,7 +210,7 @@ const Report = (props) => {
           if (i.type == 1) {
             ct1 = ct1 + parseFloat(i.price)
             let item = {
-              name: 'Ăn uống',
+              name: t('text.eat.drink'),
               color: 'green',
               price: ct1,
               percentage: (ct1 / sumOut) * 100,
@@ -201,7 +220,7 @@ const Report = (props) => {
           } else if (i.type == 2) {
             ct12 = ct12 + parseFloat(i.price)
             let item = {
-              name: 'cà phê',
+              name: t('text.coffee'),
               color: 'black',
               price: ct12,
               percentage: (ct12 / sumOut) * 100,
@@ -213,7 +232,7 @@ const Report = (props) => {
           else if (i.type == 3) {
             ct2 = ct2 + parseFloat(i.price)
             let item = {
-              name: 'Đi chợ',
+              name: t('text.market'),
               color: 'red',
               price: ct2,
               percentage: (ct2 / sumOut) * 100,
@@ -224,7 +243,7 @@ const Report = (props) => {
           } else if (i.type == 4) {
             ct3 = ct3 + parseFloat(i.price)
             let item = {
-              name: 'Hoá đơn điện/nước',
+              name: t('text.electricity.water.bill'),
               color: '#A98D8D',
               price: ct3,
               percentage: (ct3 / sumOut) * 100,
@@ -235,7 +254,7 @@ const Report = (props) => {
           else if (i.type == 5) {
             ct31 = ct31 + parseFloat(i.price)
             let item = {
-              name: 'Hoá đơn điện thoại',
+              name: t('text.telephone.bill'),
               color: '#EBD22F',
               price: ct31,
               percentage: (ct31 / sumOut) * 100,
@@ -246,7 +265,7 @@ const Report = (props) => {
           else if (i.type == 6) {
             ct4 = ct4 + parseFloat(i.price)
             let item = {
-              name: 'Quần áo',
+              name:  t('text.clothes'),
               color: '#3B3538',
               price: ct4,
               percentage: (ct4 / sumOut) * 100,
@@ -256,7 +275,7 @@ const Report = (props) => {
           } else if (i.type == 7) {
             ct5 = ct5 + parseFloat(i.price)
             let item = {
-              name: 'Xăng dầu',
+              name: t('text.petroleum'),
               color: '#18EB87',
               price: ct5,
               percentage: (ct5 / sumOut) * 100,
@@ -266,7 +285,7 @@ const Report = (props) => {
           else if (i.type == 8) {
             ct52 = ct52 + parseFloat(i.price)
             let item = {
-              name: 'Thuê nhà',
+              name: t('text.rent'),
               color: 'blue',
               price: ct52,
               percentage: (ct52 / sumOut) * 100,
@@ -276,7 +295,7 @@ const Report = (props) => {
           else if (i.type == 9) {
             ct53 = ct53 + parseFloat(i.price)
             let item = {
-              name: ' phí',
+              name: t('text.expense.2'),
               color: 'blue',
               price: ct53,
               percentage: (ct53 / sumOut) * 100,
@@ -287,7 +306,7 @@ const Report = (props) => {
 
             ct6 = ct6 + parseFloat(i.price)
             let item = {
-              name: 'Khác',
+              name: t('text.other'),
               color: '#4A6BED',
               price: ct6,
               percentage: (ct6 / sumOut) * 100,
@@ -298,7 +317,7 @@ const Report = (props) => {
           else if (i.type == 13) {
             ct7 = ct7 + parseFloat(i.price)
             let item = {
-              name: 'Trả nợ',
+              name: t('text.pay'),
               color: '#BA16DB',
               price: ct7,
               percentage: (ct7 / sumOut) * 100,
@@ -309,7 +328,7 @@ const Report = (props) => {
 
             ct72 = ct72 + parseFloat(i.price)
             let item = {
-              name: 'Cho vay',
+              name: t('text.loan'),
               color: '#56B332',
               price: ct72,
               percentage: (ct72 / sumOut) * 100,
@@ -320,7 +339,7 @@ const Report = (props) => {
           else if (i.type == 12) {
             tt1 = tt1 + parseFloat(i.price)
             let item = {
-              name: 'Đi vay',
+              name: t('text.borrow'),
               color: 'green',
               price: tt1,
               percentage: (tt1 / sumIn) * 100,
@@ -331,7 +350,7 @@ const Report = (props) => {
           } else if (i.type == 15) {
             tt2 = tt2 + parseFloat(i.price)
             let item = {
-              name: 'Thu nợ',
+              name: t('text.debt'),
               color: 'red',
               price: tt2,
               percentage: (tt2 / sumIn) * 100,
@@ -342,7 +361,7 @@ const Report = (props) => {
           else if (i.type == 17) {
             tt3 = tt3 + parseFloat(i.price)
             let item = {
-              name: 'Tiền lương',
+              name: t('text.salary'),
               color: '#EBD22F',
               price: tt3,
               percentage: (tt3 / sumIn) * 100,
@@ -353,7 +372,7 @@ const Report = (props) => {
           else if (i.type == 18) {
             tt4 = tt4 + parseFloat(i.price)
             let item = {
-              name: 'Tiền lãi',
+              name: t('text.interest'),
               color: '#3B3538',
               price: tt4,
               percentage: (tt4 / sumIn) * 100,
@@ -363,7 +382,7 @@ const Report = (props) => {
           } else if (i.type == 19) {
             tt41 = tt41 + parseFloat(i.price)
             let item = {
-              name: 'Tiền thưởng',
+              name: t('text.ponus'),
               color: '#A43232',
               price: tt41,
               percentage: (tt41 / sumIn) * 100,
@@ -374,7 +393,7 @@ const Report = (props) => {
           else if (i.type == 20) {
             tt5 = tt5 + parseFloat(i.price)
             let item = {
-              name: 'Khác',
+              name: t('text.other'),
               color: 'blue',
               price: tt5,
               percentage: (tt5 / sumIn) * 100,

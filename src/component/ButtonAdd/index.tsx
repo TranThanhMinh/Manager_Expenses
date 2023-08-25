@@ -21,7 +21,7 @@ const ButtonAdd = (props) => {
         borderRadius: 100,
         bottom: 5
       }}>
-      <Text style={{ color: "white" ,fontSize:30,top:-1,right:-1}}>+</Text>
+      <Text style={{ color: "white" ,fontSize:30,top:-1,}}>+</Text>
     </View>
 
   )
