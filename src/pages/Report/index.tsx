@@ -149,6 +149,7 @@ const Report = (props) => {
   }
 
   const filterDate = (list) => {
+    console.log(list)
     setListExpenses(list)
     let sumIn = 0
     let sumOut = 0
@@ -173,26 +174,6 @@ const Report = (props) => {
     let tt4 = 0
     let tt41 = 0
     let tt5 = 0
-    // 'text.title.expense': '---Chi tiền---',
-    //                 'text.eat.drink': 'Ăn uống',
-    //                 'text.coffee': 'Cà phê',
-    //                 'text.market': 'Đi chợ',
-    //                 'text.electricity.water.bill': 'Hóa đơn điện/nước',
-    //                 'text.telephone.bill': 'Hóa đơn điện thoại',
-    //                 "text.clothes": 'Quần áo',
-    //                 "text.petroleum": 'Xăng dầu',
-    //                 "text.rent":'Thuê nhà',
-    //                 "text.expense.2":'Chi phí',
-    //                 "text.other":'khác',
-    //                 "text.borrowing":'---Vay Nợ---',
-    //                 "text.borrow":'Đi vay',
-    //                 "text.pay":'Trả nợ',
-    //                 "text.loan":'Cho vay',
-    //                 "text.debt":'Thu nợ',
-    //                 "text.collect.money":'---Thu Tiền---',
-    //                 "text.salary":'Tiền lương',
-    //                 "text.interest":'Tiền lãi',
-    //                 "text.ponus":'Tiền thưởng'
 
     if (list.length == 0) {
       setSumIN(0)
@@ -413,7 +394,7 @@ const Report = (props) => {
     }
 
   }
-
+ 
   const momentFormat = (date) => {
     return moment(date).format("DD-MM-YYYY")
   }
@@ -454,9 +435,9 @@ const Report = (props) => {
   const renderItem = ({ item }) => {
     const { name, color, price } = item
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center',alignContent:'center' }}>
         <Text style={{ width: 10, height: 10, backgroundColor: color, margin: 5 }} />
-        <Text style={{ fontSize: 16 }}>{name}</Text>
+        <Text style={{ fontSize: 16, color:Color.black }}>{name}</Text>
       </View>
     )
   }

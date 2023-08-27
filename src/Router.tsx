@@ -11,6 +11,7 @@ import SlashScreen from './screens/SlashScreen';
 import ReportScreen from './screens/ReportScreen';
 import SettingScreen from './screens/SettingScreen';
 import { String } from '@common';
+import * as Icon from "react-native-feather"
 import './common/i18n'
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
@@ -28,6 +29,7 @@ const MyTabs = () => {
   const { t } = useTranslation();
   const [multilanguge, setMultilanguge] = useState('vn')
   global.multilanguge =  multilanguge
+  
 
   return (
     <Tab.Navigator
@@ -36,21 +38,21 @@ const MyTabs = () => {
           let iconName;
           
           if (route.name === 'Home') {
-            iconName = focused
-              ? require('./images/ic_expenses.png')
-              : require('./images/ic_expenses_2.png');
+            iconName = require('./images/home.png')
+              // ? require('./images/ic_expenses.png')
+              // : require('./images/ic_expenses_2.png');
           } 
           else  if (route.name === 'Borrow') {
-            iconName = focused
-              ? require('./images/real-estate_2.png')
-              : require('./images/real-estate.png');
+            iconName = require('./images/real-estate_2.png')
+              // ? require('./images/real-estate_2.png')
+              // : require('./images/real-estate.png');
           }
           else {
-            iconName = focused
-              ? require('./images/ic_report.png')
-              : require('./images/ic_report_2.png');
+            iconName = require('./images/report.png')
+              // ? require('./images/ic_report.png')
+              // : require('./images/ic_report_2.png');
           }
-          return <Image source={iconName} style={{ width: 30, height: 30,tintColor:color }} />
+          return <Image source={iconName} style={{ width: 30, height: 30,tintColor:color } } />
         },
         tabBarActiveTintColor: Color.blue,
         tabBarInactiveTintColor: '#444',
@@ -74,7 +76,7 @@ const Router = () => {
           headerShown: false,
           ...defaultOptions,
         }}>
-        <stack.Screen name="Slash" component={SlashScreen}  />
+        {/* <stack.Screen name="Slash" component={SlashScreen}  /> */}
         <stack.Screen name="MyTabs" component={MyTabs}  />
         <stack.Screen name="AddExpenses" options={{ title: 'Thêm Chi tiêu hàng ngày' }} component={AddExpensesScreen} />
         <stack.Screen name="History" options={{ title: 'Danh sách lịch sử' }} component={HistoryScreen} />
