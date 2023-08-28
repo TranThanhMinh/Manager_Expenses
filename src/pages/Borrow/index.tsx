@@ -13,11 +13,13 @@ import { Utils, Color } from "@common";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation, initReactI18next } from "react-i18next"
 import Empty from '../../component/Empty'
+import { useTheme } from "react-native-paper";
 
 const Borrow = (props) => {
   const insets = useSafeAreaInsets();
   const isVisible = useIsFocused();
   const { t } = useTranslation()
+  const {colors} = useTheme()
   const { danangReducer } = useSelector(state => state)
   const [listExpenses, setListExpenses] = useState([])
   const [data, setData] = useState<FloodReports>()
@@ -112,11 +114,11 @@ const Borrow = (props) => {
         {
           newList.length > 0 ?
             (
-              <View style={{ backgroundColor: Color.white, marginTop: 8 }}>
+              <View style={{ backgroundColor: colors.viewBackground, marginTop: 8 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
                   <Text style={{
-                    fontSize: 18, marginLeft: 10, fontWeight: 'bold',color:Color.black
+                    fontSize: 18, marginLeft: 10, fontWeight: 'bold',color: colors.title
                   }}>{momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
@@ -140,10 +142,10 @@ const Borrow = (props) => {
     let borrow = parseFloat(price) - parseFloat(price_borrow)
     return (
       <View
-        style={[style.rowFront]}>
+        style={[style.rowFront,{backgroundColor:colors.viewBackground}]}>
         <View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { fontWeight: 'bold', color: 'black' }]}>{descripbe} ({t(Utils.TypeExpenses[type].name)})</Text>
+            <Text style={[style.text, { fontWeight: 'bold', color:  colors.title }]}>{descripbe} ({t(Utils.TypeExpenses[type].name)})</Text>
             <TouchableOpacity
               onPress={() => {
                 props.goToHistory(id)
@@ -152,7 +154,7 @@ const Borrow = (props) => {
             </TouchableOpacity>
           </View>
           <View style={[style.itemExpenses, { marginTop: 10 }]}>
-            <Text style={[style.text, { color: 'black' }]}>{type == 12 ? t('text.total.debt') : t('text.total.loan')} {Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+            <Text style={[style.text, { color: colors.title }]}>{type == 12 ? t('text.total.debt') : t('text.total.loan')} {Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
           <View style={style.itemExpenses}>
             <Text style={[style.text, { color: type == 13 ? 'green' : Color.blue }]}>{type == 12 ? t('text.total.payable') : t('text.total.collectible')} {Utils.numberWithCommas(price_borrow)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
@@ -168,14 +170,13 @@ const Borrow = (props) => {
 
   return (
     <View style={style.container}>
-      <View style={[style.container2, { marginTop: insets.top }]}>
+      <View style={[style.container2, { marginTop: insets.top ,backgroundColor:colors.background}]}>
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={[style.text2, { color: 'white' }]}>{t('text.lent.borrow')}</Text>
         </View>
         {
           listExpenses != null && listExpenses.length > 0 ?
             <FlatList
-              style={{ backgroundColor: Color.gray }}
               data={listExpenses}
               renderItem={itemBorrow}
             />

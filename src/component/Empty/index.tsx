@@ -1,13 +1,15 @@
 import React from "react";
 import { View ,Text} from "react-native";
 import { Color } from "@common";
+import { useTheme } from "react-native-paper";
 
 const Empty = (props) => {
+    const {colors} = useTheme()
     return (
         <View style={{
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: Color.gray ,
+            backgroundColor: colors.background,
             flex: 1
         }}>
             <Text style={{

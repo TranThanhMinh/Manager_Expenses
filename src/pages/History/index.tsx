@@ -10,9 +10,11 @@ import Color from "../../common/Color";
 import Empty from "../../component/Empty";
 
 import { useTranslation, initReactI18next } from "react-i18next"
+import { useTheme } from "react-native-paper";
 
 const History = (props) => {
   const {t} = useTranslation()
+  const {colors} = useTheme()
   const insets = useSafeAreaInsets();
   const [list, setList] = useState([])
 
@@ -26,10 +28,10 @@ const History = (props) => {
   const renderItem = ({ item }) => {
     const { descripbe, price, created_date, created_time, in_out } = item
     return (
-      <View style={{marginTop:8, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 ,backgroundColor:Color.white}}>
-        <Text style={{ color: 'black', fontWeight: 'bold',fontSize:16 }}>{descripbe}</Text>
+      <View style={{marginTop:8, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 ,backgroundColor:colors.viewBackground}}>
+        <Text style={{ color: colors.title, fontWeight: 'bold',fontSize:16 }}>{descripbe}</Text>
         <View>
-          <Text>{Utils.formatDateDefault(created_date)} {created_time}</Text>
+          <Text style={{color:colors.title}}>{Utils.formatDateDefault(created_date)} {created_time}</Text>
           <Text style={[style.textPrice, { color: in_out == 0 ? 'red' : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
         </View>
       </View>
@@ -50,7 +52,7 @@ const History = (props) => {
 
   return (
     <View style={style.container}>
-      <View style={[style.container2, { marginTop: insets.top }]}>
+      <View style={[style.container2, { marginTop: insets.top,backgroundColor:colors.background }]}>
         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }} onPress={() => props.goToBack()}>
           <Icon.ArrowLeft stroke={'white'} />
           <Text style={[style.text2, { color: 'white' }]}>{t('listHistory')}</Text>
@@ -58,7 +60,6 @@ const History = (props) => {
           {list != null && list.length > 0 ?
             <FlatList
               data={list}
-              style={{ backgroundColor: Color.gray }}
               renderItem={renderItem}
               ItemSeparatorComponent={ItemDivider} /> :
             <Empty title={t('text.not.record')} />}

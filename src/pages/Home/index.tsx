@@ -185,12 +185,12 @@ const Home = (props) => {
     let lis = [...list].reverse()
 
     return (
-      <View style={{ marginTop: 8, backgroundColor: '#fff' }}>
+      <View style={{ marginTop: 8, backgroundColor: colors.viewBackground}}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
             <Text style={{
-              fontSize: 18, marginLeft: 10, fontWeight: 'bold',color:Color.black
+              fontSize: 18, marginLeft: 10, fontWeight: 'bold',color:colors.title
             }}>{momentFormat(parseFloat(item.created_date))}</Text>
           </View>
 
@@ -223,16 +223,16 @@ const Home = (props) => {
         onPress={() => {
           props.goToEdit({ item: item, wallet: wallet[0], add: false })
         }}
-        style={style.rowFront}
+        style={[style.rowFront,{backgroundColor:colors.viewBackground}]}
         underlayColor={'#fff'}
       >
         <View style={{ height: 50, paddingHorizontal: 10 }}>
           <View style={style.itemExpenses}>
-            <Text style={[style.text2, { color: 'black' }]}>{t(selectDropdown[(type + 1)].name)}</Text>
-            <Text style={style.text}> {created_time}</Text>
+            <Text style={[style.text2, { color: colors.title }]}>{t(selectDropdown[(type + 1)].name)}</Text>
+            <Text style={[style.text,{color:colors.title}]}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={style.text}>{descripbe}</Text>
+            <Text style={[style.text,{color:colors.title}]}>{descripbe}</Text>
             <Text style={[style.text, { fontSize: 18, color: in_out == 0 ? Color.blue : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
         </View>
@@ -372,32 +372,32 @@ const Home = (props) => {
 
   return (
     <View style={[style.container]}>
-      <View style={[style.container2, { marginTop: insets.top }]}>
+      <View style={[style.container2, { marginTop: insets.top,backgroundColor: colors.background}]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }}>
           <Text style={style.textHistory}>{t('text.history')} </Text>
-          <TouchableOpacity style={{ position: 'absolute', right: 15, top: 15 }} onPress={() => setVisible(true)}>
+          {/* <TouchableOpacity style={{ position: 'absolute', right: 15, top: 15 }} onPress={() => setVisible(true)}>
             <Text style={{ color: Color.white, fontWeight: 'bold', borderWidth: 0.5, borderRadius: 3, paddingHorizontal: 4, borderColor: Color.white }}>{t('language')}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
-        <View style={style.borderBalance}>
-          <Text style={[style.textBalance,]}>{t('text.balance')}</Text>
+        <View style={[style.borderBalance,{backgroundColor:colors.viewBackground}]}>
+          <Text style={[style.textBalance,{color:colors.title}]}>{t('text.balance')}</Text>
           <Text style={[style.textPrice, { color: Color.blue }]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
         </View>
-        <View style={{ backgroundColor: Color.white, padding: 5 }}>
+        <View style={{ backgroundColor: colors.viewBackground, padding: 5 }}>
           <View style={{ marginTop: 5, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={style.textFromDate}>{t('from')}</Text>
             <TouchableOpacity onPress={toggleModalFromDate}>
-              <Text style={style.textDate}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+              <Text style={[style.textDate,{color:colors.title}]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
             </TouchableOpacity>
             <Text style={style.textFromDate}> {t('to')} </Text>
             <TouchableOpacity onPress={toggleModalToDate}>
-              <Text style={style.textDate}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+              <Text style={[style.textDate,{color:colors.title}]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
             </TouchableOpacity>
 
           </View>
           <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <TextInput
-              style={style.borderSearch}
+              style={[style.borderSearch,{color:colors.title}]}
               
               placeholderTextColor={Color.gray2}
               placeholder={t('txt_search')}
@@ -418,8 +418,8 @@ const Home = (props) => {
                   <View>
                     {
                       item.id != 0 && item.id != 11 && item.id != 16 ?
-                        <Text style={style.dropdown1RowTxtStyle}>{t(item.name)}</Text>
-                        : <Text style={style.dropdown1RowTxtStyleTitle}>{t(item.name)}</Text>
+                        <Text style={[style.dropdown1RowTxtStyle,{color:colors.title}]}>{t(item.name)}</Text>
+                        : <Text style={[style.dropdown1RowTxtStyleTitle,{color:colors.title}]}>{t(item.name)}</Text>
                     }
                   </View>
                 );
@@ -431,14 +431,14 @@ const Home = (props) => {
               rowTextForSelection={(item, index) => {
                 return t(item.name)
               }}
-              buttonStyle={style.dropdown1BtnStyleFalse}
-              buttonTextStyle={style.dropdown1BtnTxtStyle}
+              buttonStyle={[style.dropdown1BtnStyleFalse,{backgroundColor:colors.viewBackground}]}
+              buttonTextStyle={[style.dropdown1BtnTxtStyle,{color:colors.title}]}
               renderDropdownIcon={isOpened => {
                 return !edit ? isOpened ? <Icon.ChevronUp stroke={Color.blue} /> : <Icon.ChevronDown stroke={Color.blue} /> : null
               }}
               dropdownIconPosition={'right'}
               dropdownStyle={style.dropdown1DropdownStyle}
-              rowStyle={style.dropdown1RowStyle}
+              rowStyle={[style.dropdown1RowStyle,{backgroundColor:colors.viewBackground}]}
               rowTextStyle={style.dropdown1RowTxtStyle}
             />
           </View>

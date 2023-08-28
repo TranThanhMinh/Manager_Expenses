@@ -8,7 +8,6 @@ const style = StyleSheet.create({
     flex: 1,
   },
   container2: {
-    backgroundColor: 'white',
     flex: 1,
   },
   list: {

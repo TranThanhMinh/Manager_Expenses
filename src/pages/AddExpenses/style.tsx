@@ -12,9 +12,8 @@ const style = StyleSheet.create({
     flex: 1,
   },
   body: {
-    backgroundColor: 'white',
-    flex: 1,
     padding:10,
+    margin:10
   },
   list: {
     color: '#FFF',
@@ -135,7 +134,7 @@ const style = StyleSheet.create({
     flex:1,
     height: 35,
     borderBottomWidth: 0.5,
-    borderBottomColor:'red',
+    borderColor:'#444',
     marginVertical: 5,
     paddingHorizontal: 0,
     marginHorizontal: 5,
