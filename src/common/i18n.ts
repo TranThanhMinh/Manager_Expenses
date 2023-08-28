@@ -101,6 +101,10 @@ i18n
                     "text.theme":'Theme',
                     "text.comment":'App review',
                     "text.contact":'Contact',
+
+                    'dark':'Dark',
+                    'light':'Light',
+                    'title.theme':'Toggle theme'
                 }
             },
             vi: {
@@ -194,6 +198,9 @@ i18n
                     "text.theme":'Chế độ sáng tối',
                     "text.comment":'Đánh giá ứng dụng',
                     "text.contact":'Liên huệ',
+                    'dark':'Tối',
+                    'light':'Sáng',
+                    'title.theme':'Chế độ sáng và tối'
                 }
             }
         },

@@ -23,7 +23,8 @@ const style = StyleSheet.create({
     fontSize:18,
     fontWeight: 'bold',
     padding: 10,
-    backgroundColor:Color.white,
+  },
+  bgView:{
     marginTop:8,
   },
   borderCalendar :{

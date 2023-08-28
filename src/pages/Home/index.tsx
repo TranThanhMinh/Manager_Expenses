@@ -26,8 +26,8 @@ import SelectDropdown from 'react-native-select-dropdown'
 import * as Icon from "react-native-feather"
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
-import Dialog from "react-native-dialog";
 import Empty from "../../component/Empty";
+import { useTheme } from 'react-native-paper';
 
 const Home = (props) => {
   const { t } = useTranslation()
@@ -38,7 +38,7 @@ const Home = (props) => {
     type: '0'
   }
   const addfirst = [fisrt, ...Utils.TypeExpenses]
-
+   const {colors} = useTheme()
   const [wallet, setWallet] = useState([]);
   const isVisible = useIsFocused();
   const { danangReducer } = useSelector(state => state)

@@ -1,4 +1,4 @@
-import  React, {useState} from 'react';
+import  React, {useEffect, useState} from 'react';
 import { Image,Text,View } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,9 +15,12 @@ import * as Icon from "react-native-feather"
 import './common/i18n'
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
+import { useTheme } from 'react-native-paper';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Color from './common/Color';
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
 
 const defaultOptions = {
   headerStyle: { backgroundColor: '#00B0FF' },
@@ -29,6 +32,7 @@ const MyTabs = () => {
   const { t } = useTranslation();
   const [multilanguge, setMultilanguge] = useState('vn')
   global.multilanguge =  multilanguge
+  const {colors} = useTheme()
   
 
   return (
@@ -52,11 +56,14 @@ const MyTabs = () => {
               // ? require('./images/ic_report.png')
               // : require('./images/ic_report_2.png');
           }
-          return <Image source={iconName} style={{ width: 30, height: 30,tintColor:color } } />
+          return <Image source={iconName} style={{ width: 25, height: 25,tintColor:color } } />
         },
         tabBarActiveTintColor: Color.blue,
         tabBarInactiveTintColor: '#444',
         headerShown: false,
+        tabBarStyle:{
+          backgroundColor:colors.viewBackground
+        }
        
       })} >
       <Tab.Screen name="Home" component={HomeScreen}  options={{ title:t('tab_1')}}/>
@@ -68,6 +75,25 @@ const MyTabs = () => {
 }
 
 const Router = () => {
+  useEffect(()=>{
+    getLanguge()
+  },[])
+  const getLanguge = async () => {
+    let language = await AsyncStorage.getItem("language");
+    console.log('language',language)
+    try {
+      if(language === null)
+      i18n.changeLanguage('vi')
+      else
+      i18n.changeLanguage(language)
+    }
+    catch (error) {
+      console.log(error);
+      language = 'vi'
+      i18n.changeLanguage(language)
+    }
+  }
+
   return (
     <NavigationContainer>
       <stack.Navigator

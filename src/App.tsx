@@ -24,35 +24,17 @@ const App = () => {
     setTheme(theme)
   }
 
-  const toggleLanguge = async () => {
-    getLanguge()
-  }
-
-  const getLanguge = async () => {
-    let language = await AsyncStorage.getItem("language");
-    try {
-      if(language === null)
-      i18n.changeLanguage('vi')
-      else
-      i18n.changeLanguage(language)
-    }
-    catch (error) {
-      console.log(error);
-      language = 'vi'
-      i18n.changeLanguage(language)
-    }
-  }
 
   return (
-    <ThemeContext.Provider value={{ theme: themeName, toggleTheme, toggleLanguge }}>
-    <PaperProvider theme={theme} >
+     <ThemeContext.Provider value={{ theme: themeName, toggleTheme }}>
+     <PaperProvider theme={theme} >
     <Provider store={store}>
       <SafeAreaProvider>
         <Router />
       </SafeAreaProvider>
     </Provider>
-    </PaperProvider>
-    </ThemeContext.Provider>
+     </PaperProvider>
+     </ThemeContext.Provider>
   );
 };
 

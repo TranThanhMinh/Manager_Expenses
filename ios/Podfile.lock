@@ -289,6 +289,8 @@ PODS:
     - glog
   - react-native-safe-area-context (4.7.1):
     - React-Core
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - React-perflogger (0.68.2)
   - React-RCTActionSheet (0.68.2):
     - React-Core/RCTActionSheetHeaders (= 0.68.2)
@@ -359,12 +361,14 @@ PODS:
   - RealmJS (10.24.0):
     - GCDWebServer
     - React
+  - RNCAsyncStorage (1.19.3):
+    - React-Core
   - RNGestureHandler (2.12.1):
     - React-Core
   - RNScreens (3.24.0):
     - React-Core
     - React-RCTImage
-  - RNSVG (13.12.0):
+  - RNSVG (13.13.0):
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
@@ -418,6 +422,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -432,6 +437,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - RealmJS (from `../node_modules/realm`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -498,6 +504,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -526,6 +534,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/art"
   RealmJS:
     :path: "../node_modules/realm"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
@@ -572,6 +582,7 @@ SPEC CHECKSUMS:
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
   React-RCTAnimation: bc9440a1c37b06ae9ebbb532d244f607805c6034
@@ -586,9 +597,10 @@ SPEC CHECKSUMS:
   ReactCommon: 095366164a276d91ea704ce53cb03825c487a3f2
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   RealmJS: 2e45ca6ed4c3732be369219b41816e890ce51024
+  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
-  RNSVG: 6d07f8f8f246c85e3e16e0bcfc0d047db0c48496
+  RNSVG: ed492aaf3af9ca01bc945f7a149d76d62e73ec82
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 99652481fcd320aefa4a7ef90095b95acd181952

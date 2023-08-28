@@ -15,9 +15,11 @@ import {
 } from "../../data/ExpensesServices ";
 import { LineChart } from "react-native-gifted-charts";
 import { useTranslation, initReactI18next } from "react-i18next"
+import { useTheme } from "react-native-paper";
 
 const Report = (props) => {
   const { t } = useTranslation()
+  const { colors } = useTheme()
   const insets = useSafeAreaInsets();
   const [wallet, setWallet] = useState([]);
   const isVisible = useIsFocused();
@@ -246,7 +248,7 @@ const Report = (props) => {
           else if (i.type == 6) {
             ct4 = ct4 + parseFloat(i.price)
             let item = {
-              name:  t('text.clothes'),
+              name: t('text.clothes'),
               color: '#3B3538',
               price: ct4,
               percentage: (ct4 / sumOut) * 100,
@@ -349,7 +351,7 @@ const Report = (props) => {
             }
             isFound2(item)
 
-          } 
+          }
           else if (i.type == 18) {
             tt4 = tt4 + parseFloat(i.price)
             let item = {
@@ -394,7 +396,7 @@ const Report = (props) => {
     }
 
   }
- 
+
   const momentFormat = (date) => {
     return moment(date).format("DD-MM-YYYY")
   }
@@ -406,7 +408,7 @@ const Report = (props) => {
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-          <Text style={{ fontSize: 16, color: 'black' }}>{name}</Text>
+          <Text style={{ fontSize: 16, color: colors.title }}>{name}</Text>
           <Text style={{ fontSize: 16, color: color }}> ({prencent.toFixed(2)})%</Text>
 
         </View>
@@ -422,7 +424,7 @@ const Report = (props) => {
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-          <Text style={{ fontSize: 16, color: Color.black}}>{name}</Text>
+          <Text style={{ fontSize: 16,color: colors.title}}>{name}</Text>
           <Text style={{ fontSize: 16, color: color }}> ({prencent.toFixed(2)})%</Text>
 
         </View>
@@ -435,9 +437,9 @@ const Report = (props) => {
   const renderItem = ({ item }) => {
     const { name, color, price } = item
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center',alignContent:'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
         <Text style={{ width: 10, height: 10, backgroundColor: color, margin: 5 }} />
-        <Text style={{ fontSize: 16, color:Color.black }}>{name}</Text>
+        <Text style={{ fontSize: 16,  color: colors.title }}>{name}</Text>
       </View>
     )
   }
@@ -474,100 +476,100 @@ const Report = (props) => {
 
   return (
     <View style={style.container}>
-      <View style={[style.container2, { marginTop: insets.top }]}>
+      <View style={[style.container2, { marginTop: insets.top, backgroundColor: colors.background, }]}>
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.report')}</Text>
         </View>
-        <View style={{ padding: 15, flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white' }}>
+        <View style={{ padding: 15, flexDirection: 'row', justifyContent: 'center', backgroundColor: colors.viewBackground }}>
           <Text style={style.textFromDate}>{t('from')}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>
-            <Text style={style.textDate}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+            <Text style={[style.textDate, { color: colors.title }]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
           <Text style={style.textFromDate}> {t('to')} </Text>
           <TouchableOpacity onPress={toggleModalToDate}>
-            <Text style={style.textDate}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+            <Text style={[style.textDate, { color: colors.title }]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
-            <Text style={[style.text,{color: Color.blue }]}>{t('text.expense')} {Utils.numberWithCommas(sumOUT)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
-            {
-              listCT.length > 0 ?
-                <View style={{
-                  backgroundColor: Color.white,
-                  paddingHorizontal: 10,
-                }}>
-                  <View
-                    style={{
-                      paddingVertical: 20,
-                      flexDirection: 'row',
-
-                      backgroundColor: Color.white
-                    }}
-                  >
-                    <Pie
-                      radius={80}
-                      innerRadius={50}
-                      sections={listCT}
-                      strokeCap={'butt'}
-                    />
-                    <View style={{ marginLeft: 10 }}>
+            <View style={[style.bgView, { backgroundColor: colors.viewBackground }]}>
+              <Text style={[style.text, { color: Color.blue }]}>{t('text.expense')} {Utils.numberWithCommas(sumOUT)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+              {
+                listCT.length > 0 ?
+                  <View style={{
+                    paddingHorizontal: 10,
+                  }}>
+                    <View
+                      style={{
+                        paddingVertical: 20,
+                        flexDirection: 'row',
+                      }}
+                    >
+                      <Pie
+                        radius={80}
+                        innerRadius={50}
+                        sections={listCT}
+                        strokeCap={'butt'}
+                      />
+                      <View style={{ marginLeft: 10 }}>
+                        <FlatList
+                          data={listCT}
+                          showsVerticalScrollIndicator={false}
+                          renderItem={renderItem}
+                        />
+                      </View>
+                    </View>
+                    <View>
                       <FlatList
                         data={listCT}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={renderItem}
-                      />
+                        renderItem={renderItem2}
+                        ItemSeparatorComponent={ItemDivider} />
                     </View>
-                  </View>
-                  <View>
-                    <FlatList
-                      data={listCT}
-                      renderItem={renderItem2}
-                      ItemSeparatorComponent={ItemDivider} />
-                  </View>
-                </View> : null
+                  </View> : null
 
-            }
-            <Text style={[style.text,{color: 'green'}]}>{t('text.income')} {Utils.numberWithCommas(sumIN)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
-            {
-              listTT.length > 0 ?
-                <View style={{
-                  backgroundColor: 'white',
-                  paddingHorizontal: 10,
-                }}>
-                  <View
-                    style={{
-                      paddingVertical: 20,
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <Pie
-                      radius={80}
-                      innerRadius={50}
-                      sections={listTT}
-                      strokeCap={'butt'} />
+              }
+            </View>
+            <View style={[style.bgView, { backgroundColor: colors.viewBackground }]}>
+              <Text style={[style.text, { color: 'green' }]}>{t('text.income')} {Utils.numberWithCommas(sumIN)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+              {
+                listTT.length > 0 ?
+                  <View style={{
+                    paddingHorizontal: 10,
+                  }}>
+                    <View
+                      style={{
+                        paddingVertical: 20,
+                        flexDirection: 'row',
+                      }}
+                    >
+                      <Pie
+                        radius={80}
+                        innerRadius={50}
+                        sections={listTT}
+                        strokeCap={'butt'} />
 
-                    <View style={{ marginLeft: 10 }}>
+                      <View style={{ marginLeft: 10 }}>
+                        <FlatList
+                          data={listTT}
+                          renderItem={renderItem}
+                        />
+                      </View>
+                    </View>
+                    <View>
                       <FlatList
                         data={listTT}
-                        renderItem={renderItem}
-                      />
+                        renderItem={renderItem3}
+                        ItemSeparatorComponent={ItemDivider} />
                     </View>
                   </View>
-                  <View>
-                    <FlatList
-                      data={listTT}
-                      renderItem={renderItem3}
-                      ItemSeparatorComponent={ItemDivider} />
-                  </View>
-                </View>
-                : null
-            }
+                  : null
+              }
+            </View>
             {/* <Text style={{ fontWeight: 'bold', color: 'white', padding: 10, backgroundColor: '#50a1e3' }}>Biểu đồ theo dõi mỗi ngày</Text> */}
 
 
             <View>
-            {/* <LineChart
+              {/* <LineChart
                 areaChart
                 data={listDaily}
                 width={width}
