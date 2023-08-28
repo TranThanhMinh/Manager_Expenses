@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import style from './style';
 import * as Icon from "react-native-feather"
@@ -6,19 +6,46 @@ import { Color } from '../../common';
 import { useTranslation } from 'react-i18next';
 import Modal from "react-native-modal";
 import i18n from "i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useColors,ThemeContext} from '@hooks'
+import { useTheme } from 'react-native-paper';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
   const insets = useSafeAreaInsets();
   const [visibleLanguage, setVisibleLanguage] = useState(false)
+  const [visibleTheme, setVisibleTheme] = useState(false)
+  const themeContext = useContext(ThemeContext)
+  const { theme, setTheme } = useColors({ themeName: 'Light' })
+  const [visibleColor, setVisibleColor] = useState(false);
+  const {colors} = useTheme()
 
-  
   function changeLanguge() {
     return (
       <Modal isVisible={visibleLanguage}>
         <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
           <Text style={{ fontSize: 20, color: Color.blue, paddingVertical: 20, fontWeight: 'bold' }}>{t('change_languge')}</Text>
+
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity style={style.buttonLangagueVN} onPress={colorDark}>
+              <Text style={style.textLangague}>{t('dark')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={style.buttonLangagueEN} onPress={colorLight}>
+              <Text style={style.textLangague}>{t('light')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    )
+  }
+
+    
+  function changeTheme() {
+    return (
+      <Modal isVisible={visibleColor}>
+        <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
+          <Text style={{ fontSize: 20, color: Color.blue, paddingVertical: 20, fontWeight: 'bold' }}>{t('title.theme')}</Text>
 
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity style={style.buttonLangagueVN} onPress={handleVN}>
@@ -31,6 +58,28 @@ const Setting = ({ navigation, route }) => {
         </View>
       </Modal>
     )
+  }
+
+  const colorDark = () => {
+    saveColor('Dark')
+    
+  }
+  
+
+  const colorLight = () => {
+    saveColor('Light')
+   
+  }
+
+  const saveColor = (color) => {
+    try {
+      AsyncStorage.setItem("color", color);
+      setTheme(color)
+      themeContext.toggleTheme()
+    } catch (error) {
+      console.log("color error 2")
+    }
+    setVisibleColor(false)
   }
 
   const handleEN = () => {
@@ -47,7 +96,7 @@ const Setting = ({ navigation, route }) => {
 
   return (
 
-    <View style={style.container}>
+    <View style={[style.container,{backgroundColor:colors.background}]}>
       <View style={[style.container2, { marginTop: insets.top }]}>
         <Text>{t('text.setting')}</Text>
         <View style={style.item}>
@@ -58,7 +107,7 @@ const Setting = ({ navigation, route }) => {
         </View>
         <View style={style.item}>
           <Icon.Airplay stroke={Color.blue} />
-          <TouchableOpacity >
+          <TouchableOpacity onPress={()=>setVisibleColor(true)} >
             <Text>{t('text.theme')}</Text>
           </TouchableOpacity>
         </View>
@@ -76,6 +125,7 @@ const Setting = ({ navigation, route }) => {
         </View>
       </View>
       {changeLanguge()}
+      {changeTheme()}
     </View>
 
   )
