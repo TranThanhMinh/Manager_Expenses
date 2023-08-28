@@ -24,8 +24,8 @@ const Setting = ({ navigation, route }) => {
   function changeLanguge() {
     return (
       <Modal isVisible={visibleLanguage}>
-        <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
-          <Text style={{ fontSize: 20, color: Color.blue, paddingVertical: 20, fontWeight: 'bold' }}>{t('change_languge')}</Text>
+        <View  style={style.dialog}>
+          <Text style={style.title}>{t('change_languge')}</Text>
 
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity style={style.buttonLangagueVN} onPress={colorDark}>
@@ -44,8 +44,8 @@ const Setting = ({ navigation, route }) => {
   function changeTheme() {
     return (
       <Modal isVisible={visibleColor}>
-        <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
-          <Text style={{ fontSize: 20, color: Color.blue, paddingVertical: 20, fontWeight: 'bold' }}>{t('title.theme')}</Text>
+        <View style={style.dialog}>
+          <Text style={style.title}>{t('title.theme')}</Text>
 
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity style={style.buttonLangagueVN} onPress={handleVN}>
