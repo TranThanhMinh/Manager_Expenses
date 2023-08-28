@@ -94,7 +94,13 @@ i18n
                     "text.collect.money":'---Collect money---',
                     "text.salary":'Salary',
                     "text.interest":'Interest',
-                    "text.ponus":'Ponus'
+                    "text.ponus":'Ponus',
+
+                    "text.setting":'Setting app',
+                    "text.language":'Language',
+                    "text.theme":'Theme',
+                    "text.comment":'App review',
+                    "text.contact":'Contact',
                 }
             },
             vi: {
@@ -181,7 +187,13 @@ i18n
                     "text.collect.money":'---Thu Tiền---',
                     "text.salary":'Tiền lương',
                     "text.interest":'Tiền lãi',
-                    "text.ponus":'Tiền thưởng'
+                    "text.ponus":'Tiền thưởng',
+
+                    "text.setting":'Cài đặt ứng dụng',
+                    "text.language":'Ngôn ngữ',
+                    "text.theme":'Chế độ sáng tối',
+                    "text.comment":'Đánh giá ứng dụng',
+                    "text.contact":'Liên huệ',
                 }
             }
         },
