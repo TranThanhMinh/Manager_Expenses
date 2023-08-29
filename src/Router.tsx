@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Image, Text, View } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import BorrowScreen from './screens/BorrowScreen';
 import AddExpensesScreen from './screens/AddExpensesScreen';
@@ -11,6 +11,7 @@ import SlashScreen from './screens/SlashScreen';
 import ReportScreen from './screens/ReportScreen';
 import SettingScreen from './screens/SettingScreen';
 import { String } from '@common';
+import { useColors, ThemeContext } from '@hooks'
 import * as Icon from "react-native-feather"
 import './common/i18n'
 import i18n from "i18next";
@@ -51,7 +52,7 @@ const MyTabs = () => {
             // ? require('./images/real-estate_2.png')
             // : require('./images/real-estate.png');
           } else if (route.name === 'Report') {
-            iconName = require('./images/real-estate_2.png')
+            iconName = require('./images/report.png')
             // ? require('./images/real-estate_2.png')
             // : require('./images/real-estate.png');
           }
@@ -79,12 +80,18 @@ const MyTabs = () => {
 }
 
 const Router = () => {
+  const themeContext = useContext(ThemeContext)
+
   useEffect(() => {
+    themeContext.toggleTheme()
     getLanguge()
+
   }, [])
+
+
+
   const getLanguge = async () => {
     let language = await AsyncStorage.getItem("language");
-    console.log('language', language)
     try {
       if (language === null)
         i18n.changeLanguage('vi')

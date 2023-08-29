@@ -192,7 +192,7 @@ const AddExpenses = (props) => {
   const selectDate = () => {
     return (
       <Modal isVisible={isDate}>
-        <View style={{ backgroundColor: 'white', borderRadius: 10 }}>
+        <View style={{ backgroundColor: colors.viewBackground, borderRadius: 10 }}>
           <Calendar onDateChange={onDateChange} />
         </View>
       </Modal>

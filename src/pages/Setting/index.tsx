@@ -9,6 +9,7 @@ import i18n from "i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColors, ThemeContext } from '@hooks'
 import { useTheme } from 'react-native-paper';
+import { sendEmail } from '../../component/SendEmail';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Setting = ({ navigation, route }) => {
@@ -35,19 +36,30 @@ const Setting = ({ navigation, route }) => {
       action: () => setVisibleColor(true),
       id: 'theme'
     },
-    {
-      name: t('text.comment'),
-      icon: Icon.Heart,
-      action: () => changeLanguge(),
-      id: 'comment'
-    },
-    {
-      name: t('text.contact'),
-      icon: Icon.Inbox,
-      action: () => changeLanguge(),
-      id: 'contact'
-    },
+    // {
+    //   name: t('text.comment'),
+    //   icon: Icon.Heart,
+    //   action: () => changeLanguge(),
+    //   id: 'comment'
+    // },
+    // {
+    //   name: t('text.contact'),
+    //   icon: Icon.Inbox,
+    //   action: () => toMail(),
+    //   id: 'contact'
+    // },
   ]
+
+  function toMail() {
+    sendEmail(
+      'minhtt.cdcntt@gmail.com',
+      'We need your feedback',
+      'UserName, we need 2 minutes of your time to fill this quick survey [link]',
+      { cc: 'minh11i1cit@gmail.com' }
+    ).then(() => {
+      console.log('Your message was successfully sent!');
+    });
+  }
 
   function changeTheme() {
     return (
@@ -162,16 +174,18 @@ const Setting = ({ navigation, route }) => {
 
     <View style={[style.container]}>
       <View style={[style.container2, { marginTop: insets.top, backgroundColor: colors.background }]}>
-      <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.setting')}</Text>
         </View>
-        {/* <Text style={[style.textTitle, { color: colors.title }]}>{t('text.setting')}</Text> */}
         <FlatList
           data={list}
           style={style.bgList}
-          renderItem={Item}/>
+          renderItem={Item} />
         {changeLanguge()}
         {changeTheme()}
+        <View>
+           <Text style={style.version}>{t('text.version')} 1.0.0</Text>
+        </View>
       </View>
 
     </View>

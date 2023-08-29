@@ -70,5 +70,10 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20
   },
+  version:{
+    textAlign:'center',
+    marginBottom: 10,
+    color:Color.gray2
+  }
 })
 export default style

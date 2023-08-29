@@ -476,7 +476,7 @@ const Report = (props) => {
 
   return (
     <View style={style.container}>
-      <View style={[style.container2, { marginTop: insets.top, backgroundColor: colors.background, }]}>
+      <View style={[style.container2, { marginTop: insets.top, backgroundColor: colors.background}]}>
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.report')}</Text>
         </View>
@@ -630,12 +630,12 @@ const Report = (props) => {
           </View>
         </ScrollView>
         <Modal isVisible={isFromDate}>
-          <View style={style.borderCalendar}>
+          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
             <Calendar onDateChange={onFromDateChange} />
           </View>
         </Modal>
         <Modal isVisible={isToDate}>
-          <View style={style.borderCalendar}>
+          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
             <Calendar onDateChange={onToDateChange} />
           </View>
         </Modal>

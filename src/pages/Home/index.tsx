@@ -459,14 +459,14 @@ const Home = (props) => {
           <ButtonAdd />
         </TouchableOpacity>
         <Modal isVisible={isFromDate}>
-          <View style={style.borderCalendar}>
+          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
 
             <Calendar onDateChange={onFromDateChange} />
           </View>
 
         </Modal>
         <Modal isVisible={isToDate}>
-          <View style={style.borderCalendar}>
+          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
             <Calendar onDateChange={onToDateChange} />
 
           </View>

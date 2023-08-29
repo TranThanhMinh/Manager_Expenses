@@ -104,7 +104,8 @@ i18n
 
                     'dark':'Dark',
                     'light':'Light',
-                    'title.theme':'Toggle theme'
+                    'title.theme':'Toggle theme',
+                    'text.version':'Version '
                 }
             },
             vi: {
@@ -200,7 +201,8 @@ i18n
                     "text.contact":'Liên huệ',
                     'dark':'Tối',
                     'light':'Sáng',
-                    'title.theme':'Chế độ sáng và tối'
+                    'title.theme':'Chế độ sáng và tối',
+                    'text.version':'Phiên bản '
                 }
             }
         },

@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React,{useEffect} from 'react';
+import React,{useEffect,useContext} from 'react';
 import Router from './Router'
 import { Provider } from 'react-redux';
 import { store } from './redux/reducer';
@@ -17,20 +17,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "i18next";
 const App = () => {
   console.disableYellowBox = true
+
   const { theme, setTheme, themeName } = useColors({ themeName: 'Light' })
+ 
+  
 
   const toggleTheme = async () => {
     const theme = await AsyncStorage.getItem("color");
     setTheme(theme)
   }
 
-
   return (
      <ThemeContext.Provider value={{ theme: themeName, toggleTheme }}>
      <PaperProvider theme={theme} >
     <Provider store={store}>
       <SafeAreaProvider>
-        <Router />
+        <Router/>
       </SafeAreaProvider>
     </Provider>
      </PaperProvider>

@@ -128,6 +128,7 @@ const style = StyleSheet.create({
     marginVertical: 5,
     paddingHorizontal: 0,
     marginHorizontal: 5,
+    borderBottomColor:Color.gray2,
     backgroundColor: '#FFF',
   },
   dropdown1BtnStyleFalse: {

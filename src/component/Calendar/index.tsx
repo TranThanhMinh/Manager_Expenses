@@ -4,9 +4,11 @@ import CalendarPicker from 'react-native-calendar-picker';
 import { Utils, String } from "@common";
 import { useTranslation, initReactI18next } from "react-i18next";
 import Color from "../../common/Color";
+import { useTheme } from "react-native-paper";
 
 const Calendar = (props) => {
     const { t } = useTranslation()
+    const {colors} = useTheme()
 
     const listDay = [t('textcn'), t('textt2'), t('textt3'), t('textt4'), t('textt5'), t('textt6'), t('textt7')]
     const listMonths = [t('textmonth1'), t('textmonth2'), t('textmonth3'), t('textmonth4'), t('textmonth5'), t('textmonth6'), t('textmonth7'), t('textmonth8'), t('textmonth9'), t('textmonth10'), t('textmonth11'), t('textmonth12')]
@@ -36,7 +38,7 @@ const Calendar = (props) => {
          // backgroundColor: '#909',
         },
         textStyle: {
-          color: Color.black,
+          color: colors.title,
           fontSize:16
         }
       };
@@ -61,7 +63,7 @@ const Calendar = (props) => {
                 selectedDayTextColor={Color.white}
                 scaleFactor={375}
                 textStyle={{
-                    color: '#000000',
+                    color:colors.title,
                     fontSize: 18,
                     
                 }}

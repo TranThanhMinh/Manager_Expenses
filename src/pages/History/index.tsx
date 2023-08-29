@@ -32,7 +32,7 @@ const History = (props) => {
         <Text style={{ color: colors.title, fontWeight: 'bold',fontSize:16 }}>{descripbe}</Text>
         <View>
           <Text style={{color:colors.title}}>{Utils.formatDateDefault(created_date)} {created_time}</Text>
-          <Text style={[style.textPrice, { color: in_out == 0 ? 'red' : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+          <Text style={[style.textPrice, { color: in_out == 0 ? Color.blue : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
         </View>
       </View>
     )
