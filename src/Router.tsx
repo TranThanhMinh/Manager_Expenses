@@ -19,6 +19,9 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import { useTheme } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Color from './common/Color';
+
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -37,45 +40,57 @@ const MyTabs = () => {
 
 
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+    <View style={{ flex: 1 }}>
 
-          if (route.name === 'Home') {
-            iconName = require('./images/home.png')
-            // ? require('./images/ic_expenses.png')
-            // : require('./images/ic_expenses_2.png');
-          }
-          else if (route.name === 'Borrow') {
-            iconName = require('./images/real-estate_2.png')
-            // ? require('./images/real-estate_2.png')
-            // : require('./images/real-estate.png');
-          } else if (route.name === 'Report') {
-            iconName = require('./images/report.png')
-            // ? require('./images/real-estate_2.png')
-            // : require('./images/real-estate.png');
-          }
-          else {
-            iconName = require('./images/ic_setting.png')
-            // ? require('./images/ic_report.png')
-            // : require('./images/ic_report_2.png');
-          }
-          return <Image source={iconName} style={{ width: 25, height: 25, tintColor: color }} />
-        },
-        tabBarActiveTintColor: Color.blue,
-        tabBarInactiveTintColor: '#444',
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: colors.viewBackground
-        }
+      <Tab.Navigator
 
-      })} >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ title: t('tab_1') }} />
-      <Tab.Screen name="Borrow" component={BorrowScreen} options={{ title: t('tab_2') }} />
-      <Tab.Screen name="Report" component={ReportScreen} options={{ title: t('tab_3') }} />
-      <Tab.Screen name="Setting" component={SettingScreen} options={{ title: t('tab_4') }} />
-    </Tab.Navigator>
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = require('./images/home.png')
+              // ? require('./images/ic_expenses.png')
+              // : require('./images/ic_expenses_2.png');
+            }
+            else if (route.name === 'Borrow') {
+              iconName = require('./images/real-estate_2.png')
+              // ? require('./images/real-estate_2.png')
+              // : require('./images/real-estate.png');
+            } else if (route.name === 'Report') {
+              iconName = require('./images/report.png')
+              // ? require('./images/real-estate_2.png')
+              // : require('./images/real-estate.png');
+            }
+            else {
+              iconName = require('./images/ic_setting.png')
+              // ? require('./images/ic_report.png')
+              // : require('./images/ic_report_2.png');
+            }
+            return <Image source={iconName} style={{ width: 25, height: 25, tintColor: color }} />
+          },
+          tabBarActiveTintColor: Color.blue,
+          tabBarInactiveTintColor: '#444',
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: colors.viewBackground
+          }
+
+        })} >
+        <Tab.Screen name="Home" component={HomeScreen} options={{ title: t('tab_1') }} />
+        <Tab.Screen name="Borrow" component={BorrowScreen} options={{ title: t('tab_2') }} />
+        <Tab.Screen name="Report" component={ReportScreen} options={{ title: t('tab_3') }} />
+        <Tab.Screen name="Setting" component={SettingScreen} options={{ title: t('tab_4') }} />
+      </Tab.Navigator>
+      <BannerAd
+        unitId={"ca-app-pub-5751638294565515/5612128837"}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
+    </View>
+
   );
 }
 
