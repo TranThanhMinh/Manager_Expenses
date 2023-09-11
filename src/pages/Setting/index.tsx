@@ -9,8 +9,7 @@ import i18n from "i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColors, ThemeContext } from '@hooks'
 import { useTheme } from 'react-native-paper';
-import { sendEmail } from '../../component/SendEmail';
-
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
@@ -50,16 +49,6 @@ const Setting = ({ navigation, route }) => {
     // },
   ]
 
-  function toMail() {
-    sendEmail(
-      'minhtt.cdcntt@gmail.com',
-      'We need your feedback',
-      'UserName, we need 2 minutes of your time to fill this quick survey [link]',
-      { cc: 'minh11i1cit@gmail.com' }
-    ).then(() => {
-      console.log('Your message was successfully sent!');
-    });
-  }
 
   function changeTheme() {
     return (
@@ -177,6 +166,13 @@ const Setting = ({ navigation, route }) => {
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.setting')}</Text>
         </View>
+        <BannerAd
+          unitId={"ca-app-pub-3940256099942544/6300978111"}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
         <FlatList
           data={list}
           style={style.bgList}
@@ -184,7 +180,7 @@ const Setting = ({ navigation, route }) => {
         {changeLanguge()}
         {changeTheme()}
         <View>
-           <Text style={style.version}>{t('text.version')} 1.0.0</Text>
+          <Text style={style.version}>{t('text.version')} 1.0.0</Text>
         </View>
       </View>
 

@@ -1,4 +1,8 @@
 {
   "name": "managerexpenses",
-  "displayName": "Money Lover Manager"
+  "displayName": "Money Lover Manager",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-5751638294565515~7272980270",
+    "ios_app_id": "ca-app-pub-5751638294565515~5403249423"
+  }
 }
