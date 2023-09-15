@@ -11,5 +11,7 @@ export default {
     tab_2: 'Cho vay - Đi vay',
     tab_3: 'Báo cáo',
     date:'Ngày',
-    listHistory:'Danh sách lịch sử'
+    listHistory:'Danh sách lịch sử',
+    banner:'ca-app-pub-5751638294565515/5612128837',
+    inters: 'ca-app-pub-5751638294565515/4449260407'
 }

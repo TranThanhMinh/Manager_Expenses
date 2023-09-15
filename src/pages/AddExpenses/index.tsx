@@ -20,6 +20,16 @@ import Modal from "react-native-modal";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation, initReactI18next } from "react-i18next";
 import { useTheme } from "react-native-paper";
+import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType } from 'react-native-google-mobile-ads';
+
+
+const adUnitId = String.inters;
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ['fashion', 'clothing'],
+});
+
 const AddExpenses = (props) => {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation()
@@ -45,6 +55,29 @@ const AddExpenses = (props) => {
   const [inOut, setInOut] = useState(0)
   const [wallet, setWallet] = useState();
   const [money, setMoney] = useState(0);
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      setLoaded(true);
+      interstitial.show()
+    });
+
+        // Start loading the interstitial straight away
+        interstitial.load();
+
+    // Unsubscribe from events on unmount
+    return unsubscribe;
+  }, []);
+
+
+
+  // No advert ready to show yet
+  // if (!loaded) {
+  //   return null;
+  // }
+
   useEffect(() => {
 
     if (!item.add) {

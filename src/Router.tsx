@@ -37,13 +37,17 @@ const MyTabs = () => {
   const [multilanguge, setMultilanguge] = useState('vn')
   global.multilanguge = multilanguge
   const { colors } = useTheme()
-
-
+ 
   return (
     <View style={{ flex: 1 }}>
-
+      <BannerAd
+        unitId={String.banner}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
       <Tab.Navigator
-
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
@@ -82,13 +86,6 @@ const MyTabs = () => {
         <Tab.Screen name="Report" component={ReportScreen} options={{ title: t('tab_3') }} />
         <Tab.Screen name="Setting" component={SettingScreen} options={{ title: t('tab_4') }} />
       </Tab.Navigator>
-      <BannerAd
-        unitId={"ca-app-pub-5751638294565515/5612128837"}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
     </View>
 
   );
@@ -109,13 +106,12 @@ const Router = () => {
     let language = await AsyncStorage.getItem("language");
     try {
       if (language === null)
-        i18n.changeLanguage('vi')
+        i18n.changeLanguage('en')
       else
         i18n.changeLanguage(language)
     }
     catch (error) {
-      console.log(error);
-      language = 'vi'
+      language = 'en'
       i18n.changeLanguage(language)
     }
   }
