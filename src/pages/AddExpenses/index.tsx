@@ -23,7 +23,7 @@ import { useTheme } from "react-native-paper";
 import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType } from 'react-native-google-mobile-ads';
 
 
-const adUnitId = String.inters;
+const adUnitId = TestIds.INTERSTITIAL;
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -63,10 +63,8 @@ const AddExpenses = (props) => {
       setLoaded(true);
       interstitial.show()
     });
-
-        // Start loading the interstitial straight away
-        interstitial.load();
-
+    // Start loading the interstitial straight away
+    interstitial.load();
     // Unsubscribe from events on unmount
     return unsubscribe;
   }, []);
@@ -82,7 +80,7 @@ const AddExpenses = (props) => {
 
     if (!item.add) {
       setWallet(item.wallet)
-      setEdit(true)
+      setEdit(false)
       setId(item.item.id)
       setDescripbe(item.item.descripbe)
       setPrice(item.item.price)
@@ -286,8 +284,8 @@ const AddExpenses = (props) => {
                   <View>
                     {
                       item.id != 0 && item.id != 11 && item.id != 16 ?
-                        <Text style={[style.dropdown1RowTxtStyle,{color:colors.title}]}>{t(item.name)}</Text>
-                        : <Text style={[style.dropdown1RowTxtStyleTitle,{color:colors.title}]}>{t(item.name)}</Text>
+                        <Text style={[style.dropdown1RowTxtStyle, { color: colors.title }]}>{t(item.name)}</Text>
+                        : <Text style={[style.dropdown1RowTxtStyleTitle, { color: colors.title }]}>{t(item.name)}</Text>
                     }
                   </View>
                 );
@@ -308,7 +306,7 @@ const AddExpenses = (props) => {
               }}
               dropdownIconPosition={'right'}
               dropdownStyle={style.dropdown1DropdownStyle}
-              rowStyle={[style.dropdown1RowStyle,{backgroundColor:colors.viewBackground}]}
+              rowStyle={[style.dropdown1RowStyle, { backgroundColor: colors.viewBackground }]}
               rowTextStyle={style.dropdown1RowTxtStyle}
             />
           </View>
@@ -334,7 +332,7 @@ const AddExpenses = (props) => {
 
                   renderCustomizedRowChild={(item, index) => {
                     return (
-                      <View><Text style={[style.dropdown1RowTxtStyle,{color:colors.title}]}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + t('text.unit')}</Text>
+                      <View><Text style={[style.dropdown1RowTxtStyle, { color: colors.title }]}>{item.descripbe + " - " + Utils.numberWithCommas(item.price_borrow) + t('text.unit')}</Text>
                       </View>
                     );
                   }}
@@ -345,7 +343,7 @@ const AddExpenses = (props) => {
                   }}
                   dropdownIconPosition={'right'}
                   dropdownStyle={style.dropdown1DropdownStyle}
-                  rowStyle={[style.dropdown1RowStyle, { backgroundColor: colors.viewBackground ,}]}
+                  rowStyle={[style.dropdown1RowStyle, { backgroundColor: colors.viewBackground, }]}
                   rowTextStyle={style.dropdown1RowTxtStyle2}
                 />
               </View>

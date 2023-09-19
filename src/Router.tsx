@@ -40,13 +40,7 @@ const MyTabs = () => {
  
   return (
     <View style={{ flex: 1 }}>
-      <BannerAd
-        unitId={String.banner}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
+     
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -86,6 +80,7 @@ const MyTabs = () => {
         <Tab.Screen name="Report" component={ReportScreen} options={{ title: t('tab_3') }} />
         <Tab.Screen name="Setting" component={SettingScreen} options={{ title: t('tab_4') }} />
       </Tab.Navigator>
+      
     </View>
 
   );
