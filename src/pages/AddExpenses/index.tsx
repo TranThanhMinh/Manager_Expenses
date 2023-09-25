@@ -23,7 +23,7 @@ import { useTheme } from "react-native-paper";
 import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType } from 'react-native-google-mobile-ads';
 
 
-const adUnitId = TestIds.INTERSTITIAL;
+const adUnitId = String.inters;
 
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -173,11 +173,14 @@ const AddExpenses = (props) => {
             else updateWallet(item.wallet.default, item.wallet.money + parseFloat(price))
             if (type == 13 || type == 15) {
               updateBorrow(idBorrow, priceBorrow).then(task => {
-                props.goToBack()
+               // props.goToBack()
               })
             } else {
-              props.goToBack()
+             // props.goToBack()
             }
+
+            setDescripbe('')
+            setPrice('')
           })
       }
       else {

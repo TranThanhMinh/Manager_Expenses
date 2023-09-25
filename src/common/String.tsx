@@ -13,5 +13,5 @@ export default {
     date:'Ngày',
     listHistory:'Danh sách lịch sử',
     banner:'ca-app-pub-5751638294565515/5612128837',
-    inters: 'ca-app-pub-5751638294565515/4449260407'
+    inters: 'ca-app-pub-5751638294565515/1388163970'
 }

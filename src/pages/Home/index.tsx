@@ -28,6 +28,8 @@ import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import Empty from "../../component/Empty";
 import { useTheme } from 'react-native-paper';
+import Banner from "../../component/Banner";
+
 
 const Home = (props) => {
   const { t } = useTranslation()
@@ -60,17 +62,13 @@ const Home = (props) => {
 
   const [type, setType] = useState(0)
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   let collect = 0
   let payout = 0
   let first = 0
 
 
-  const session = ["Buổi sáng", "Buổi trưa", "Buổi tối"]
-
-  // let date = new Date();
-  // date.setDate(date.getDate() + 1);
-  // date.setHours(13, 55);
-  // AlarmClock.createAlarm(date.toISOString(), 'My Custom Alarm');
 
   useEffect(() => {
     if (isVisible) {
@@ -88,6 +86,11 @@ const Home = (props) => {
     } else
       setListExpenses([])
     setListSearch([])
+
+    setTimeout(() => {
+      setLoading(true)
+    }, 2000);
+  
 
   }, [isVisible]);
 
@@ -281,7 +284,7 @@ const Home = (props) => {
           style={[style.actionButton, style.deleteBtn]}
           onPress={() => handleRemove(data)}
         >
-          <Text style={style.btnText}>Xóa</Text>
+          <Text style={style.btnText}>{t('button.delete')}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -290,14 +293,7 @@ const Home = (props) => {
   const onItemOpen = data => {
   };
 
-  const create = () => {
-    let date = new Date();
-    date.setDate(date.getDate());
-    date.setHours(16, 37);
-
-    AlarmClock.createAlarm(date.toDateString(), 'My Custom Alarm');
-  };
-
+ 
   const onFromDateChange = (date) => {
     getListDate(new Date(date).getTime(), toDate)
     toggleModalFromDate()
@@ -338,47 +334,22 @@ const Home = (props) => {
   }
 
 
-  function changeLanguge() {
+  function showLoading() {
     return (
-      <Modal isVisible={visible}>
-        <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
-          <Text style={{ fontSize: 20, color: Color.blue, paddingVertical: 20, fontWeight: 'bold' }}>{t('change_languge')}</Text>
-
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity style={style.buttonLangagueVN} onPress={handleVN}>
-              <Text style={style.textLangague}>{t('vietnam')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={style.buttonLangagueEN} onPress={handleEN}>
-              <Text style={style.textLangague}>{t('english')}</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={{ backgroundColor: 'white',position:'absolute', alignItems: 'center' ,width:'100%',height:'100%'}}>
         </View>
-      </Modal>
+    
     )
   }
-
-  const handleEN = () => {
-    global.multilanguge = 'en'
-    setVisible(false)
-    i18n.changeLanguage(global.multilanguge)
-  };
-
-  const handleVN = () => {
-    global.multilanguge = 'vi';
-    i18n.changeLanguage(global.multilanguge)
-    setVisible(false)
-  };
 
 
   return (
     <View style={[style.container]}>
-      <View style={[style.container2, { marginTop: insets.top,backgroundColor: colors.background}]}>
+      <View style={[style.container2, { top: insets.top,backgroundColor: colors.background}]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }}>
           <Text style={style.textHistory}>{t('text.history')} </Text>
-          {/* <TouchableOpacity style={{ position: 'absolute', right: 15, top: 15 }} onPress={() => setVisible(true)}>
-            <Text style={{ color: Color.white, fontWeight: 'bold', borderWidth: 0.5, borderRadius: 3, paddingHorizontal: 4, borderColor: Color.white }}>{t('language')}</Text>
-          </TouchableOpacity> */}
         </View>
+        <Banner/>
         <View style={[style.borderBalance,{backgroundColor:colors.viewBackground}]}>
           <Text style={[style.textBalance,{color:colors.title}]}>{t('text.balance')}</Text>
           <Text style={[style.textPrice, { color: Color.blue }]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
@@ -443,7 +414,7 @@ const Home = (props) => {
             />
           </View>
         </View>
-
+        <View>
         {
           listExpenses != null && listExpenses.length > 0 ?
             <FlatList
@@ -453,7 +424,7 @@ const Home = (props) => {
             :
             <Empty title={t('text.not.record')} />
         }
-
+        </View>
 
         <TouchableOpacity style={{ position: 'absolute', bottom: 25, right: 20 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
           <ButtonAdd />
@@ -472,7 +443,11 @@ const Home = (props) => {
           </View>
         </Modal>
       </View>
-      {changeLanguge()}
+      
+      {
+        !loading?
+        showLoading():
+        null}
     </View>
   )
 }

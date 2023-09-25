@@ -16,6 +16,7 @@ import {
 import { LineChart } from "react-native-gifted-charts";
 import { useTranslation, initReactI18next } from "react-i18next"
 import { useTheme } from "react-native-paper";
+import Banner from "../../component/Banner";
 
 const Report = (props) => {
   const { t } = useTranslation()
@@ -480,6 +481,7 @@ const Report = (props) => {
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.report')}</Text>
         </View>
+        <Banner/>
         <View style={{ padding: 15, flexDirection: 'row', justifyContent: 'center', backgroundColor: colors.viewBackground }}>
           <Text style={style.textFromDate}>{t('from')}</Text>
           <TouchableOpacity onPress={toggleModalFromDate}>

@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColors, ThemeContext } from '@hooks'
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Banner from '../../component/Banner';
 
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
@@ -158,9 +159,6 @@ const Setting = ({ navigation, route }) => {
     )
   }
 
-  const loadshow = () => {
-    interstitial.show()
-  }
 
   return (
 
@@ -169,6 +167,7 @@ const Setting = ({ navigation, route }) => {
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.setting')}</Text>
         </View>
+        <Banner/>
         <FlatList
           data={list}
           style={style.bgList}
@@ -177,7 +176,7 @@ const Setting = ({ navigation, route }) => {
         {changeLanguge()}
         {changeTheme()}
         <View>
-          <Text style={style.version}>{t('text.version')} 1.0.0</Text>
+          <Text style={style.version}>{t('text.version')} 1.0.2</Text>
         </View>
       </View>
 

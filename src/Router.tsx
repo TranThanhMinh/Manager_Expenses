@@ -20,7 +20,6 @@ import { useTheme } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Color from './common/Color';
 
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,9 +36,26 @@ const MyTabs = () => {
   const [multilanguge, setMultilanguge] = useState('vn')
   global.multilanguge = multilanguge
   const { colors } = useTheme()
- 
+  const [loading, setLoading] = useState(false);
+
+  setTimeout(() => {
+    setLoading(true)
+  }, 1500);
+
+
+
+  function showLoading() {
+    return (
+        <View style={{ backgroundColor: 'white',position:'absolute', alignItems: 'center' ,width:'100%',height:'100%'}}>
+          
+        </View>
+    
+    )
+  }
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{  width:'100%',
+    height:'100%'}}>
      
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -80,7 +96,12 @@ const MyTabs = () => {
         <Tab.Screen name="Report" component={ReportScreen} options={{ title: t('tab_3') }} />
         <Tab.Screen name="Setting" component={SettingScreen} options={{ title: t('tab_4') }} />
       </Tab.Navigator>
-      
+  
+
+      {
+        !loading?
+        showLoading():
+        null}
     </View>
 
   );

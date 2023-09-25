@@ -10,12 +10,10 @@ const Empty = (props) => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: colors.background,
-            flex: 1
+            width:'100%',
+            height:'100%'
         }}>
             <Text style={{
-                textAlign: 'center',
-                alignItems: 'center',
-                alignContent: 'center',
                 color: Color.gray2,
                 fontSize:18
             }}>{props.title}</Text>

@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React,{useEffect,useContext} from 'react';
+import React, { useEffect, useContext } from 'react';
 import Router from './Router'
 import { Provider } from 'react-redux';
 import { store } from './redux/reducer';
@@ -19,8 +19,8 @@ const App = () => {
   console.disableYellowBox = true
 
   const { theme, setTheme, themeName } = useColors({ themeName: 'Light' })
- 
-  
+
+
 
   const toggleTheme = async () => {
     const theme = await AsyncStorage.getItem("color");
@@ -28,15 +28,15 @@ const App = () => {
   }
 
   return (
-     <ThemeContext.Provider value={{ theme: themeName, toggleTheme }}>
-     <PaperProvider theme={theme} >
-    <Provider store={store}>
-      <SafeAreaProvider>
-        <Router/>
-      </SafeAreaProvider>
-    </Provider>
-     </PaperProvider>
-     </ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme: themeName, toggleTheme }}>
+      <PaperProvider theme={theme} >
+        <Provider store={store}>
+          <SafeAreaProvider>
+            <Router />
+          </SafeAreaProvider>
+        </Provider>
+      </PaperProvider>
+    </ThemeContext.Provider>
   );
 };
 
