@@ -89,7 +89,7 @@ const style = StyleSheet.create({
     borderSatrtWidth:0.2
   },
   textLangague: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   itemExpenses: {
     flexDirection: 'row',
@@ -111,6 +111,17 @@ const style = StyleSheet.create({
   },
   textFromDate: {
     fontWeight: 'bold', color: Color.blue, fontSize: 16, marginHorizontal: 5
+  },
+  dialog: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: 20,
+    color: Color.blue,
+    paddingVertical: 20,
+    fontWeight: 'bold'
   },
 
   borderBalance: {

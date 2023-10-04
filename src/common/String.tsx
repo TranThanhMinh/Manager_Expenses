@@ -13,5 +13,9 @@ export default {
     date:'Ngày',
     listHistory:'Danh sách lịch sử',
     banner:'ca-app-pub-5751638294565515/5612128837',
-    inters: 'ca-app-pub-5751638294565515/1388163970'
+    inters: 'ca-app-pub-5751638294565515/1388163970',
+    version:'7.0',
+    link:'https://play.google.com/store/apps/details?id=com.manager.expenses&pli=1',
+    title_update_app:'New version available',
+    update_app:'Please, update app to new version',
 }

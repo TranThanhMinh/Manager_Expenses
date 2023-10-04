@@ -25,10 +25,7 @@ import { BannerAd, BannerAdSize, TestIds, InterstitialAd, AdEventType } from 're
 
 const adUnitId = String.inters;
 
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-  requestNonPersonalizedAdsOnly: true,
-  keywords: ['fashion', 'clothing'],
-});
+
 
 const AddExpenses = (props) => {
   const insets = useSafeAreaInsets();
@@ -53,23 +50,11 @@ const AddExpenses = (props) => {
   const [edit, setEdit] = useState(false);
   const [idWallet, setIdWallet] = useState('')
   const [inOut, setInOut] = useState(0)
+  const [inOutChange, setInOutChange] = useState(0)
   const [wallet, setWallet] = useState();
   const [money, setMoney] = useState(0);
 
   const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = interstitial.addAdEventListener(AdEventType.LOADED, () => {
-      setLoaded(true);
-      interstitial.show()
-    });
-    // Start loading the interstitial straight away
-    interstitial.load();
-    // Unsubscribe from events on unmount
-    return unsubscribe;
-  }, []);
-
-
 
   // No advert ready to show yet
   // if (!loaded) {
@@ -93,6 +78,7 @@ const AddExpenses = (props) => {
       setTypeBorrow(item.item.type_borrow)
       setIdBorrow(item.item.id_borrow)
       setInOut(item.item.in_out)
+      setInOutChange(item.item.in_out)
       setDate(item.item.created_date)
       if (item.item.type == 13) {
         getListExpensesBorrow(12).then(stask => {
@@ -114,6 +100,24 @@ const AddExpenses = (props) => {
       setIdWallet(item.wallet.id)
     }
   }, [])
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+        requestNonPersonalizedAdsOnly: true,
+        keywords: ['fashion', 'clothing'],
+      });
+      const unsubscribe = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+        setLoaded(true);
+        interstitial.show()
+      });
+      // Start loading the interstitial straight away
+      interstitial.load();
+      // Unsubscribe from events on unmount
+      return unsubscribe;
+    }, 2000);
+  }, []);
 
   const momentFormat = (date) => {
     return moment(date).format("DD-MM-YYYY")
@@ -185,12 +189,19 @@ const AddExpenses = (props) => {
       }
       else {
         let updatedate = moment(momentFormat(date), "DD-MM-YYYY").toDate().getTime()
-        if (item.item.in_out == 0)
+        if(inOutChange == inOut){
+          if (inOut == 0)
           updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price2) - parseFloat(price)))
         else updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price) - parseFloat(price2)))
+        }else {
+          if (inOut == 0)
+          updateWallet(item.wallet.default, item.wallet.money - (parseFloat(price2) + parseFloat(price)))
+        else updateWallet(item.wallet.default, item.wallet.money + (parseFloat(price) + parseFloat(price2)))
+        }
+        
         if (type == 13 || type == 15) {
           updateBorrow(idBorrow, priceBorrow - priceBorrow2)
-          updateTask(id, descripbe, price, priceBorrow, type, updatedate).then(task => {
+          updateTask(id, descripbe, price, priceBorrow, type, updatedate,inOut).then(task => {
             props.goToBack()
           })
         } else if (type == 12 || type == 14) {
@@ -199,11 +210,11 @@ const AddExpenses = (props) => {
             task.map(item => {
               paid = paid + parseFloat(item.price)
             })
-            updateTask(id, descripbe, price, parseFloat(price) - paid, type, updatedate).then(task => {
+            updateTask(id, descripbe, price, parseFloat(price) - paid, type, updatedate,inOut).then(task => {
               props.goToBack()
             })
           })
-        } else updateTask(id, descripbe, price, priceBorrow, type, updatedate).then(task => {
+        } else updateTask(id, descripbe, price, priceBorrow, type, updatedate,inOut).then(task => {
           props.goToBack()
         })
 

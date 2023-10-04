@@ -10,8 +10,7 @@ const Empty = (props) => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: colors.background,
-            width:'100%',
-            height:'100%'
+            flex:1
         }}>
             <Text style={{
                 color: Color.gray2,

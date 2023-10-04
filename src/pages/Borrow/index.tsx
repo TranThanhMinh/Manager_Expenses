@@ -181,6 +181,7 @@ const Borrow = (props) => {
             <FlatList
               data={listExpenses}
               renderItem={itemBorrow}
+              showsVerticalScrollIndicator={false}
             />
             :
             <Empty title={t('text.not.record')} />

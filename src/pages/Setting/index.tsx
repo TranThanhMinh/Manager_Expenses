@@ -4,6 +4,7 @@ import style from './style';
 import * as Icon from "react-native-feather"
 import { Color } from '../../common';
 import { useTranslation } from 'react-i18next';
+import { Utils, String } from "@common";
 import Modal from "react-native-modal";
 import i18n from "i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -11,6 +12,7 @@ import { useColors, ThemeContext } from '@hooks'
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Banner from '../../component/Banner';
+import { Linking } from 'react-native';
 
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
@@ -33,6 +35,12 @@ const Setting = ({ navigation, route }) => {
       name: t('text.theme'),
       icon: Icon.Moon,
       action: () => setVisibleColor(true),
+      id: 'theme'
+    },
+    {
+      name: t('text.revew.app'),
+      icon: Icon.MessageSquare,
+      action: () => Linking.openURL(String.link) ,
       id: 'theme'
     },
     // {
@@ -176,7 +184,7 @@ const Setting = ({ navigation, route }) => {
         {changeLanguge()}
         {changeTheme()}
         <View>
-          <Text style={style.version}>{t('text.version')} 1.0.2</Text>
+          <Text style={style.version}>{t('text.version')} 1.0.4</Text>
         </View>
       </View>
 
