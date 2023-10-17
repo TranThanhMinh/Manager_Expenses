@@ -184,7 +184,7 @@ const Setting = ({ navigation, route }) => {
         {changeLanguge()}
         {changeTheme()}
         <View>
-          <Text style={style.version}>{t('text.version')} 1.0.4</Text>
+          <Text style={style.version}>{t('text.version')} 1.0.5</Text>
         </View>
       </View>
 

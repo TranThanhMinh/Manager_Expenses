@@ -110,6 +110,7 @@ i18n
                     'update_app': 'Please, update app to new version',
                     'btn_update_app': 'Update',
                     'text.revew.app': 'Review app',
+                    'txt.done':'Saved'
                 }
             },
             vi: {
@@ -211,6 +212,7 @@ i18n
                     'update_app': 'Vui lòng cập nhập ứng dụng lên phiên bản mới',
                     'btn_update_app': 'Cập nhập',
                     'text.revew.app': 'Đánh giá ứng dụng',
+                    'txt.done':'Đã lưu'
                 }
             }
         },

@@ -4,8 +4,6 @@ import { useIsFocused } from "@react-navigation/native";
 import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
 import style from "./style";
-import { getFloodReports } from "../../redux/actions/danang";
-import { Data } from "../../model/types.d";
 import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
@@ -15,23 +13,19 @@ import {
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
 import { SwipeListView } from 'react-native-swipe-list-view';
-import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
-import ButtonAdd from "../../component/ButtonAdd";
 import { Utils, String } from "@common";
 import Calendar from "../../component/Calendar";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import SelectDropdown from 'react-native-select-dropdown'
 import * as Icon from "react-native-feather"
-import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import Empty from "../../component/Empty";
 import { useTheme } from 'react-native-paper';
 import Banner from "../../component/Banner";
 import { Linking } from 'react-native';
 import VersionCheck from 'react-native-version-check';
-
 
 const Home = (props) => {
   const { t } = useTranslation()
@@ -87,7 +81,6 @@ const Home = (props) => {
         }
       });
   }, [])
-
 
 
   useEffect(() => {
@@ -243,7 +236,7 @@ const Home = (props) => {
     return (
       <TouchableHighlight
         onPress={() => {
-          props.goToEdit({ item: item, wallet: wallet[0], add: false })
+          props.goToEdit({ item: item, wallet: null, add: false })
         }}
         style={[style.rowFront, { backgroundColor: colors.viewBackground }]}
         underlayColor={'#fff'}
@@ -391,7 +384,7 @@ const Home = (props) => {
         <Banner />
         <View style={[style.borderBalance, { backgroundColor: colors.viewBackground }]}>
           <Text style={[style.textBalance, { color: colors.title }]}>{t('text.balance')}</Text>
-          <Text style={[style.textPrice, { color: Color.blue }]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
+          <Text style={[style.textPrice, { color: wallet.length > 0 ? parseFloat(wallet[0].money) > 0 ? 'green': Color.blue : Color.blue} ]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
         </View>
         <View style={{ backgroundColor: colors.viewBackground, padding: 5 }}>
           <View style={{ marginTop: 5, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
@@ -465,9 +458,9 @@ const Home = (props) => {
         }
 
 
-        <TouchableOpacity style={{ position: 'absolute', bottom: 30, right: 30 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
+        {/* <TouchableOpacity style={{ position: 'absolute', bottom: 30, right: 30 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
           <ButtonAdd />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Modal isVisible={isFromDate}>
           <View style={[style.borderCalendar, { backgroundColor: colors.viewBackground }]}>
 

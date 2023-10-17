@@ -1,7 +1,6 @@
 import React from "react";
 
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-import String from "../../common/String";
 
 const Banner =()=>{
   const unitId ='ca-app-pub-5751638294565515/7484204003'

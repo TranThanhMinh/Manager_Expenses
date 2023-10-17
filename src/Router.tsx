@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Image, Text, View } from 'react-native'
+import { Image, Text, View, TouchableOpacity } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
@@ -12,6 +12,7 @@ import ReportScreen from './screens/ReportScreen';
 import SettingScreen from './screens/SettingScreen';
 import { String } from '@common';
 import { useColors, ThemeContext } from '@hooks'
+import ButtonAdd from './component/ButtonAdd';
 import * as Icon from "react-native-feather"
 import './common/i18n'
 import i18n from "i18next";
@@ -19,7 +20,7 @@ import { useTranslation, initReactI18next } from "react-i18next";
 import { useTheme } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Color from './common/Color';
-
+import { updateWallet, addWallet, getListwalletDefault } from "./data/WalletServices";
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,12 +32,13 @@ const defaultOptions = {
   headerTintColor: 'white',
 }
 
-const MyTabs = () => {
+const MyTabs = ({ navigation, route }) => {
   const { t } = useTranslation();
   const [multilanguge, setMultilanguge] = useState('vn')
   global.multilanguge = multilanguge
   const { colors } = useTheme()
   const [loading, setLoading] = useState(false);
+  const [wallet, setWallet] = useState([]);
 
   setTimeout(() => {
     setLoading(true)
@@ -46,17 +48,19 @@ const MyTabs = () => {
 
   function showLoading() {
     return (
-        <View style={{ backgroundColor: 'white',position:'absolute', alignItems: 'center' ,width:'100%',height:'100%'}}>
-          
-        </View>
-    
+      <View style={{ backgroundColor: 'white', position: 'absolute', alignItems: 'center', width: '100%', height: '100%' }}>
+
+      </View>
+
     )
   }
 
   return (
-    <View style={{  width:'100%',
-    height:'100%'}}>
-     
+    <View style={{
+      width: '100%',
+      height: '100%'
+    }}>
+
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -96,12 +100,16 @@ const MyTabs = () => {
         <Tab.Screen name="Report" component={ReportScreen} options={{ title: t('tab_3') }} />
         <Tab.Screen name="Setting" component={SettingScreen} options={{ title: t('tab_4') }} />
       </Tab.Navigator>
-  
+
 
       {
-        !loading?
-        showLoading():
-        null}
+        !loading ?
+          showLoading() :
+          null}
+
+      <TouchableOpacity style={{ position: 'absolute', bottom: 80, right: 30 }} onPress={() => navigation.navigate('AddExpenses', { item: { wallet: null, add: true } })}>
+        <ButtonAdd />
+      </TouchableOpacity>
     </View>
 
   );
