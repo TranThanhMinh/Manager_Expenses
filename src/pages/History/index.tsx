@@ -11,6 +11,7 @@ import Empty from "../../component/Empty";
 
 import { useTranslation, initReactI18next } from "react-i18next"
 import { useTheme } from "react-native-paper";
+import Banner from "../../component/Banner";
 
 const History = (props) => {
   const {t} = useTranslation()
@@ -57,6 +58,7 @@ const History = (props) => {
           <Icon.ArrowLeft stroke={'white'} />
           <Text style={[style.text2, { color: 'white' }]}>{t('listHistory')}</Text>
         </TouchableOpacity>
+        <Banner/>
           {list != null && list.length > 0 ?
             <FlatList
               data={list}

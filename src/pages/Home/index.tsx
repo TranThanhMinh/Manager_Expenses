@@ -4,8 +4,6 @@ import { useIsFocused } from "@react-navigation/native";
 import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
 import style from "./style";
-import { getFloodReports } from "../../redux/actions/danang";
-import { Data } from "../../model/types.d";
 import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
@@ -15,19 +13,19 @@ import {
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
 import { SwipeListView } from 'react-native-swipe-list-view';
-import CalendarPicker from 'react-native-calendar-picker';
 import Modal from "react-native-modal";
-import ButtonAdd from "../../component/ButtonAdd";
 import { Utils, String } from "@common";
 import Calendar from "../../component/Calendar";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import SelectDropdown from 'react-native-select-dropdown'
 import * as Icon from "react-native-feather"
-import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import Empty from "../../component/Empty";
 import { useTheme } from 'react-native-paper';
+import Banner from "../../component/Banner";
+import { Linking } from 'react-native';
+import VersionCheck from 'react-native-version-check';
 
 const Home = (props) => {
   const { t } = useTranslation()
@@ -38,7 +36,7 @@ const Home = (props) => {
     type: '0'
   }
   const addfirst = [fisrt, ...Utils.TypeExpenses]
-   const {colors} = useTheme()
+  const { colors } = useTheme()
   const [wallet, setWallet] = useState([]);
   const isVisible = useIsFocused();
   const { danangReducer } = useSelector(state => state)
@@ -60,17 +58,30 @@ const Home = (props) => {
 
   const [type, setType] = useState(0)
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [updateApp, setUpdateApp] = useState(false);
+
   let collect = 0
   let payout = 0
   let first = 0
 
+  useEffect(() => {
+    VersionCheck.getCountry()
+      .then(country => console.log(country));          // KR
+    //console.log('KR',VersionCheck.getPackageName());        // com.reactnative.app
+    // console.log(VersionCheck.getCurrentBuildNumber()); // 10
+    // console.log(VersionCheck.getCurrentVersion());     // 0.1.1
 
-  const session = ["Buổi sáng", "Buổi trưa", "Buổi tối"]
+    VersionCheck.needUpdate()
+      .then(async res => {
+        console.log(res.isNeeded);    // true
+        if (res.isNeeded) {
+          setUpdateApp(true)
+        }
+      });
+  }, [])
 
-  // let date = new Date();
-  // date.setDate(date.getDate() + 1);
-  // date.setHours(13, 55);
-  // AlarmClock.createAlarm(date.toISOString(), 'My Custom Alarm');
 
   useEffect(() => {
     if (isVisible) {
@@ -88,6 +99,11 @@ const Home = (props) => {
     } else
       setListExpenses([])
     setListSearch([])
+
+    setTimeout(() => {
+      setLoading(true)
+    }, 2000);
+
 
   }, [isVisible]);
 
@@ -181,16 +197,15 @@ const Home = (props) => {
     }
 
     const { list } = item
-
     let lis = [...list].reverse()
 
     return (
-      <View style={{ marginTop: 8, backgroundColor: colors.viewBackground}}>
+      <View style={{ marginTop: 8, backgroundColor: colors.viewBackground }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ backgroundColor: Color.blue, width: 5, height: 50 }} />
             <Text style={{
-              fontSize: 18, marginLeft: 10, fontWeight: 'bold',color:colors.title
+              fontSize: 18, marginLeft: 10, fontWeight: 'bold', color: colors.title
             }}>{momentFormat(parseFloat(item.created_date))}</Text>
           </View>
 
@@ -221,18 +236,18 @@ const Home = (props) => {
     return (
       <TouchableHighlight
         onPress={() => {
-          props.goToEdit({ item: item, wallet: wallet[0], add: false })
+          props.goToEdit({ item: item, wallet: null, add: false })
         }}
-        style={[style.rowFront,{backgroundColor:colors.viewBackground}]}
+        style={[style.rowFront, { backgroundColor: colors.viewBackground }]}
         underlayColor={'#fff'}
       >
         <View style={{ height: 50, paddingHorizontal: 10 }}>
           <View style={style.itemExpenses}>
             <Text style={[style.text2, { color: colors.title }]}>{t(selectDropdown[(type + 1)].name)}</Text>
-            <Text style={[style.text,{color:colors.title}]}> {created_time}</Text>
+            <Text style={[style.text, { color: colors.title }]}> {created_time}</Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text,{color:colors.title}]}>{descripbe}</Text>
+            <Text style={[style.text, { color: colors.title }]}>{descripbe}</Text>
             <Text style={[style.text, { fontSize: 18, color: in_out == 0 ? Color.blue : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
         </View>
@@ -281,7 +296,7 @@ const Home = (props) => {
           style={[style.actionButton, style.deleteBtn]}
           onPress={() => handleRemove(data)}
         >
-          <Text style={style.btnText}>Xóa</Text>
+          <Text style={style.btnText}>{t('button.delete')}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -290,13 +305,6 @@ const Home = (props) => {
   const onItemOpen = data => {
   };
 
-  const create = () => {
-    let date = new Date();
-    date.setDate(date.getDate());
-    date.setHours(16, 37);
-
-    AlarmClock.createAlarm(date.toDateString(), 'My Custom Alarm');
-  };
 
   const onFromDateChange = (date) => {
     getListDate(new Date(date).getTime(), toDate)
@@ -337,19 +345,19 @@ const Home = (props) => {
 
   }
 
-
-  function changeLanguge() {
+  function showUpdateApp() {
     return (
-      <Modal isVisible={visible}>
-        <View style={{ backgroundColor: 'white', borderRadius: 10, alignItems: 'center' }}>
-          <Text style={{ fontSize: 20, color: Color.blue, paddingVertical: 20, fontWeight: 'bold' }}>{t('change_languge')}</Text>
-
+      <Modal isVisible={updateApp}>
+        <View style={style.dialog}>
+          <Text style={style.title}>{t('title_update_app')}</Text>
+          <Text style={[style.textLangague, { marginBottom: 10 }]}>{t('update_app')}</Text>
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity style={style.buttonLangagueVN} onPress={handleVN}>
-              <Text style={style.textLangague}>{t('vietnam')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={style.buttonLangagueEN} onPress={handleEN}>
-              <Text style={style.textLangague}>{t('english')}</Text>
+
+            <TouchableOpacity style={style.buttonLangagueEN} onPress={() => {
+              Linking.openURL(String.link),
+              setUpdateApp(false)
+            }} >
+              <Text style={[style.textLangague, { fontWeight: 'bold' }]}>{t('btn_update_app')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -357,48 +365,43 @@ const Home = (props) => {
     )
   }
 
-  const handleEN = () => {
-    global.multilanguge = 'en'
-    setVisible(false)
-    i18n.changeLanguage(global.multilanguge)
-  };
 
-  const handleVN = () => {
-    global.multilanguge = 'vi';
-    i18n.changeLanguage(global.multilanguge)
-    setVisible(false)
-  };
+  function showLoading() {
+    return (
+      <View style={{ backgroundColor: 'white', position: 'absolute', alignItems: 'center', width: '100%', height: '100%' }}>
+      </View>
+
+    )
+  }
 
 
   return (
     <View style={[style.container]}>
-      <View style={[style.container2, { marginTop: insets.top,backgroundColor: colors.background}]}>
+      <View style={[style.container2, { top: insets.top, backgroundColor: colors.background }]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }}>
           <Text style={style.textHistory}>{t('text.history')} </Text>
-          {/* <TouchableOpacity style={{ position: 'absolute', right: 15, top: 15 }} onPress={() => setVisible(true)}>
-            <Text style={{ color: Color.white, fontWeight: 'bold', borderWidth: 0.5, borderRadius: 3, paddingHorizontal: 4, borderColor: Color.white }}>{t('language')}</Text>
-          </TouchableOpacity> */}
         </View>
-        <View style={[style.borderBalance,{backgroundColor:colors.viewBackground}]}>
-          <Text style={[style.textBalance,{color:colors.title}]}>{t('text.balance')}</Text>
-          <Text style={[style.textPrice, { color: Color.blue }]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
+        <Banner />
+        <View style={[style.borderBalance, { backgroundColor: colors.viewBackground }]}>
+          <Text style={[style.textBalance, { color: colors.title }]}>{t('text.balance')}</Text>
+          <Text style={[style.textPrice, { color: wallet.length > 0 ? parseFloat(wallet[0].money) > 0 ? 'green': Color.blue : Color.blue} ]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
         </View>
         <View style={{ backgroundColor: colors.viewBackground, padding: 5 }}>
           <View style={{ marginTop: 5, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={style.textFromDate}>{t('from')}</Text>
             <TouchableOpacity onPress={toggleModalFromDate}>
-              <Text style={[style.textDate,{color:colors.title}]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+              <Text style={[style.textDate, { color: colors.title }]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
             </TouchableOpacity>
             <Text style={style.textFromDate}> {t('to')} </Text>
             <TouchableOpacity onPress={toggleModalToDate}>
-              <Text style={[style.textDate,{color:colors.title}]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+              <Text style={[style.textDate, { color: colors.title }]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
             </TouchableOpacity>
 
           </View>
           <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <TextInput
-              style={[style.borderSearch,{color:colors.title}]}
-              
+              style={[style.borderSearch, { color: colors.title }]}
+
               placeholderTextColor={Color.gray2}
               placeholder={t('txt_search')}
               onChangeText={text => onSearch(text)}
@@ -418,8 +421,8 @@ const Home = (props) => {
                   <View>
                     {
                       item.id != 0 && item.id != 11 && item.id != 16 ?
-                        <Text style={[style.dropdown1RowTxtStyle,{color:colors.title}]}>{t(item.name)}</Text>
-                        : <Text style={[style.dropdown1RowTxtStyleTitle,{color:colors.title}]}>{t(item.name)}</Text>
+                        <Text style={[style.dropdown1RowTxtStyle, { color: colors.title }]}>{t(item.name)}</Text>
+                        : <Text style={[style.dropdown1RowTxtStyleTitle, { color: colors.title }]}>{t(item.name)}</Text>
                     }
                   </View>
                 );
@@ -431,14 +434,14 @@ const Home = (props) => {
               rowTextForSelection={(item, index) => {
                 return t(item.name)
               }}
-              buttonStyle={[style.dropdown1BtnStyleFalse,{backgroundColor:colors.viewBackground}]}
-              buttonTextStyle={[style.dropdown1BtnTxtStyle,{color:colors.title}]}
+              buttonStyle={[style.dropdown1BtnStyleFalse, { backgroundColor: colors.viewBackground }]}
+              buttonTextStyle={[style.dropdown1BtnTxtStyle, { color: colors.title }]}
               renderDropdownIcon={isOpened => {
                 return !edit ? isOpened ? <Icon.ChevronUp stroke={Color.blue} /> : <Icon.ChevronDown stroke={Color.blue} /> : null
               }}
               dropdownIconPosition={'right'}
               dropdownStyle={style.dropdown1DropdownStyle}
-              rowStyle={[style.dropdown1RowStyle,{backgroundColor:colors.viewBackground}]}
+              rowStyle={[style.dropdown1RowStyle, { backgroundColor: colors.viewBackground }]}
               rowTextStyle={style.dropdown1RowTxtStyle}
             />
           </View>
@@ -455,24 +458,30 @@ const Home = (props) => {
         }
 
 
-        <TouchableOpacity style={{ position: 'absolute', bottom: 25, right: 20 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
+        {/* <TouchableOpacity style={{ position: 'absolute', bottom: 30, right: 30 }} onPress={() => props.goToAdd({ wallet: wallet[0], add: true })}>
           <ButtonAdd />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Modal isVisible={isFromDate}>
-          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
+          <View style={[style.borderCalendar, { backgroundColor: colors.viewBackground }]}>
 
             <Calendar onDateChange={onFromDateChange} />
           </View>
 
         </Modal>
         <Modal isVisible={isToDate}>
-          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
+          <View style={[style.borderCalendar, { backgroundColor: colors.viewBackground }]}>
             <Calendar onDateChange={onToDateChange} />
 
           </View>
         </Modal>
+        {showUpdateApp()}
       </View>
-      {changeLanguge()}
+
+      {
+
+        !loading ?
+          showLoading() :
+          null}
     </View>
   )
 }

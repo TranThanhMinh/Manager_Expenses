@@ -37,6 +37,11 @@ const DailyExpenses = {
   }
 }
 
+
 export default new Realm({
-  schema: [TaskSchema, DailyExpenses, Wallet]
+  schema: [TaskSchema, DailyExpenses, Wallet],
+  schemaVersion:1, //add verion number
+  migration: (oldrealm, newrealm) => {
+
+  },
 })

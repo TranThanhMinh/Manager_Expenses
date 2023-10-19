@@ -1,16 +1,19 @@
-import React, { useState, useContext } from 'react';
-import { Text, View, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { Text, View, TouchableOpacity, FlatList, Button } from 'react-native';
 import style from './style';
 import * as Icon from "react-native-feather"
 import { Color } from '../../common';
 import { useTranslation } from 'react-i18next';
+import { Utils, String } from "@common";
 import Modal from "react-native-modal";
 import i18n from "i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColors, ThemeContext } from '@hooks'
 import { useTheme } from 'react-native-paper';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Banner from '../../component/Banner';
+import { Linking } from 'react-native';
+
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
   const insets = useSafeAreaInsets();
@@ -20,7 +23,6 @@ const Setting = ({ navigation, route }) => {
   const { theme, setTheme } = useColors({ themeName: 'Light' })
   const [visibleColor, setVisibleColor] = useState(false);
   const { colors } = useTheme()
-
 
   const list = [
     {
@@ -33,6 +35,12 @@ const Setting = ({ navigation, route }) => {
       name: t('text.theme'),
       icon: Icon.Moon,
       action: () => setVisibleColor(true),
+      id: 'theme'
+    },
+    {
+      name: t('text.revew.app'),
+      icon: Icon.MessageSquare,
+      action: () => Linking.openURL(String.link) ,
       id: 'theme'
     },
     // {
@@ -159,6 +167,7 @@ const Setting = ({ navigation, route }) => {
     )
   }
 
+
   return (
 
     <View style={[style.container]}>
@@ -166,21 +175,16 @@ const Setting = ({ navigation, route }) => {
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.setting')}</Text>
         </View>
-        <BannerAd
-          unitId={"ca-app-pub-3940256099942544/6300978111"}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        />
+        <Banner/>
         <FlatList
           data={list}
           style={style.bgList}
           renderItem={Item} />
+        
         {changeLanguge()}
         {changeTheme()}
         <View>
-          <Text style={style.version}>{t('text.version')} 1.0.0</Text>
+          <Text style={style.version}>{t('text.version')} 1.0.5</Text>
         </View>
       </View>
 

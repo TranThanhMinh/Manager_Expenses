@@ -42,7 +42,8 @@ const style = StyleSheet.create({
     borderSatrtWidth: 0.2
   },
   textLangague: {
-    textAlign: 'center'
+    textAlign: 'center',
+    color:Color.black
   },
   dialog: {
     backgroundColor: 'white',

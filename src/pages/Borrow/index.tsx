@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation, initReactI18next } from "react-i18next"
 import Empty from '../../component/Empty'
 import { useTheme } from "react-native-paper";
+import Banner from "../../component/Banner";
 
 const Borrow = (props) => {
   const insets = useSafeAreaInsets();
@@ -174,11 +175,13 @@ const Borrow = (props) => {
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={[style.text2, { color: 'white' }]}>{t('text.lent.borrow')}</Text>
         </View>
+        <Banner/>
         {
           listExpenses != null && listExpenses.length > 0 ?
             <FlatList
               data={listExpenses}
               renderItem={itemBorrow}
+              showsVerticalScrollIndicator={false}
             />
             :
             <Empty title={t('text.not.record')} />
