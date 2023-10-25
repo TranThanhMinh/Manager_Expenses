@@ -107,9 +107,9 @@ const MyTabs = ({ navigation, route }) => {
           showLoading() :
           null}
 
-      <TouchableOpacity style={{ position: 'absolute', bottom: 80, right: 30 }} onPress={() => navigation.navigate('AddExpenses', { item: { wallet: null, add: true } })}>
-        <ButtonAdd />
-      </TouchableOpacity>
+      <View style={{ position: 'absolute', bottom: 80, right: 30 }}>
+        <ButtonAdd addExpenses = {() => navigation.navigate('AddExpenses', { item: { wallet: null, add: true } })}/>
+      </View>
     </View>
 
   );

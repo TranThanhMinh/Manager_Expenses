@@ -7,7 +7,7 @@ import Color from "../../common/Color";
 const ButtonAdd = (props) => {
   return (
 
-    <View
+    <TouchableOpacity  onPress={props.addExpenses}
       style={{
         borderWidth: 1,
         borderColor:  Color.blue,
@@ -22,7 +22,7 @@ const ButtonAdd = (props) => {
         bottom: 5
       }}>
       <Text style={{ color: "white" ,fontSize:30,top:-1,}}>+</Text>
-    </View>
+    </TouchableOpacity>
 
   )
 }
