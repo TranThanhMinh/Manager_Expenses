@@ -59,12 +59,14 @@ const Home = (props) => {
   const [type, setType] = useState(0)
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [select, setSelect] = useState([t('text.day')]);
 
   const [updateApp, setUpdateApp] = useState(false);
 
   let collect = 0
   let payout = 0
   let first = 0
+  let listDate = [t('text.day'), t('text.weeks'), t('text.month'), t('text.select.day')]
 
   useEffect(() => {
     VersionCheck.getCountry()
@@ -82,30 +84,48 @@ const Home = (props) => {
       });
   }, [])
 
+  useEffect(() => {
+    const item = select[0]
+    if (item == t('text.day'))
+      getDay()
+    else if (item == t('text.weeks'))
+      getWeeks()
+    else if (item == t('text.month'))
+      getMonths()
+    else {
+      //getWeeks()
+      console.log(select)
+    }
+  }, [select])
+
 
   useEffect(() => {
     if (isVisible) {
-      const now = new Date();
-      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-      //   console.log(firstDay); // 👉️ Sat Oct 01 2022 ...
-      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
-      if (first == 0)
-        first = new Date(firstDay).getTime()
-      let last = new Date(lastDay).getTime()
-      getListDate(first, last)
+      const item = select[0]
+      if (item == 'Ngay')
+        getDay()
+      else if (item == 'Tuan')
+        getWeeks()
+      else if (item == 'Thang')
+        getMonths()
+      else {
+        //getWeeks()
+        console.log(select)
+      }
       getWallet()
 
     } else
       setListExpenses([])
     setListSearch([])
-
     setTimeout(() => {
       setLoading(true)
     }, 2000);
 
 
   }, [isVisible]);
+
+
+
 
 
   useEffect(() => {
@@ -127,6 +147,38 @@ const Home = (props) => {
         setWallet(task)
       else addWalletDefault()
     })
+  }
+
+
+  const getWeeks = () => {
+    var curr = new Date; // get current date
+    var first = curr.getDate() - curr.getDay();
+    var firstdayOb = new Date(curr.setDate(first));
+    var firstday = firstdayOb.toUTCString();
+    var firstdayTemp = firstdayOb;
+    var lastday = new Date(firstdayTemp.setDate(firstdayTemp.getDate() + 6)).toUTCString();
+    // console.log('chu nhat',new Date(firstday).getTime());
+    // console.log('thu 7 ',new Date(lastday).getTime());
+    getListDate(new Date(firstday).getTime(), new Date(lastday).getTime())
+
+  }
+
+  const getMonths = () => {
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    //   console.log(firstDay); // 👉️ Sat Oct 01 2022 ...
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
+    if (first == 0)
+      first = new Date(firstDay).getTime()
+    let last = new Date(lastDay).getTime()
+    getListDate(first, last)
+  }
+
+  const getDay = () => {
+    const date = new Date().getTime()
+    getListDate(date, date)
+
   }
 
   const addWalletDefault = () => {
@@ -317,11 +369,13 @@ const Home = (props) => {
   }
 
   const toggleModalFromDate = () => {
-    setFromDate(!isFromDate);
+    if (select[0] ==  t('text.select.day'))
+      setFromDate(!isFromDate);
   };
 
   const toggleModalToDate = () => {
-    setToDate(!isToDate);
+    if (select[0] ==  t('text.select.day'))
+      setToDate(!isToDate);
   };
 
   const handleSearch = (search) => {
@@ -355,7 +409,7 @@ const Home = (props) => {
 
             <TouchableOpacity style={style.buttonLangagueEN} onPress={() => {
               Linking.openURL(String.link),
-              setUpdateApp(false)
+                setUpdateApp(false)
             }} >
               <Text style={[style.textLangague, { fontWeight: 'bold' }]}>{t('btn_update_app')}</Text>
             </TouchableOpacity>
@@ -374,6 +428,23 @@ const Home = (props) => {
     )
   }
 
+  const itemSelectDate = ({ item }) => {
+    const check = select.includes(item)
+    return (
+      <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check)}>
+        <Text style={{ color: colors.title }}>{item}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  const selectDate = (i, check) => {
+    if (check) {
+      setSelect([...new Set([i])])
+    } else {
+      //  setSelect(select.filter(item=>item =! i))
+    }
+  }
+
 
   return (
     <View style={[style.container]}>
@@ -384,17 +455,30 @@ const Home = (props) => {
         <Banner />
         <View style={[style.borderBalance, { backgroundColor: colors.viewBackground }]}>
           <Text style={[style.textBalance, { color: colors.title }]}>{t('text.balance')}</Text>
-          <Text style={[style.textPrice, { color: wallet.length > 0 ? parseFloat(wallet[0].money) > 0 ? 'green': Color.blue : Color.blue} ]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
+          <Text style={[style.textPrice, { color: wallet.length > 0 ? parseFloat(wallet[0].money) > 0 ? 'green' : Color.blue : Color.blue }]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
         </View>
         <View style={{ backgroundColor: colors.viewBackground, padding: 5 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 5 }}>
+            <FlatList
+              data={listDate}
+              horizontal={true}
+              renderItem={itemSelectDate} />
+          </View>
           <View style={{ marginTop: 5, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={style.textFromDate}>{t('from')}</Text>
-            <TouchableOpacity onPress={toggleModalFromDate}>
+            <TouchableOpacity onPress={toggleModalFromDate} style={{ flexDirection: 'row' ,justifyContent:'center',alignItems:'center'}}>
               <Text style={[style.textDate, { color: colors.title }]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+              {
+                select[0] == t('text.select.day') ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
+              }
+
             </TouchableOpacity>
             <Text style={style.textFromDate}> {t('to')} </Text>
-            <TouchableOpacity onPress={toggleModalToDate}>
+            <TouchableOpacity onPress={toggleModalToDate} style={{ flexDirection: 'row' ,justifyContent:'center',alignItems:'center'}}>
               <Text style={[style.textDate, { color: colors.title }]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+              {
+                select[0] == t('text.select.day') ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
+              }
             </TouchableOpacity>
 
           </View>

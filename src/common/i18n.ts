@@ -110,7 +110,17 @@ i18n
                     'update_app': 'Please, update app to new version',
                     'btn_update_app': 'Update',
                     'text.revew.app': 'Review app',
-                    'txt.done':'Saved'
+                    'txt.done':'Saved',
+                    'text.remove.data':'Delete database',
+                    'text.remove.database':'Are you sure to delete the data?',
+                    'text.remove.data.yes':'Yes',
+                    'text.remove.data.no':'No',
+                    'txt.removed':'Deleted',
+                    'text.day':'Day',
+                    'text.weeks':'Week',
+                    'text.month':'Month',
+                    'text.select.day':'Select by date',
+
                 }
             },
             vi: {
@@ -212,7 +222,16 @@ i18n
                     'update_app': 'Vui lòng cập nhập ứng dụng lên phiên bản mới',
                     'btn_update_app': 'Cập nhập',
                     'text.revew.app': 'Đánh giá ứng dụng',
-                    'txt.done':'Đã lưu'
+                    'txt.done':'Đã lưu',
+                    'text.remove.data':'Xóa dữ liệu',
+                    'text.remove.database':'Bạn có chắc chắn xóa dữ liệu?',
+                    'text.remove.data.yes':'Có',
+                    'text.remove.data.no':'Không',
+                    'txt.removed':'Đã xóa',
+                    'text.day':'Ngày',
+                    'text.weeks':'Tuần',
+                    'text.month':'Tháng',
+                    'text.select.day':'Chọn theo ngày',
                 }
             }
         },

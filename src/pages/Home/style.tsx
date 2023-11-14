@@ -121,7 +121,7 @@ const style = StyleSheet.create({
     fontSize: 20,
     color: Color.blue,
     paddingVertical: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 
   borderBalance: {
@@ -195,6 +195,20 @@ const style = StyleSheet.create({
   dropdown1RowTxtStyle2: { color: 'black', textAlign: 'center', fontSize: 16, marginHorizontal: 5 },
   dropdown1RowTxtStyle: { color: 'black', textAlign: 'center', fontSize: 16, marginHorizontal: 5 },
   dropdown1RowTxtStyleTitle: { color: 'black', textAlign: 'center', fontSize: 16, marginHorizontal: 5, fontWeight: 'bold' },
+  selectTime:{
+    padding:5,
+    borderColor:Color.blue,
+    borderRadius:5,
+    borderWidth:0.5,
+    margin:5,
+  },
+  selectTimeOn:{
+    padding:5,
+    backgroundColor:Color.blue,
+    borderRadius:5,
+    margin:5,
+    borderColor:'white'
+  }
 
 })
 

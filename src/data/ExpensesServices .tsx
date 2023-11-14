@@ -80,6 +80,16 @@ export const removeTask2 = (id) => {
   })
 }
 
+export  const removeAll =()=>{
+  const data = realm.objects('Expenses')
+  return new Promise(resolve=>{
+    realm.write(()=>{
+      realm.delete(data)
+      resolve(data)
+    })
+  })
+}
+
 export const updateTask = (id, descripbe, price,price_borrow,typeExpenses,created_date,inOut) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   return new Promise(resolve => {

@@ -11,8 +11,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColors, ThemeContext } from '@hooks'
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { removeAll } from '../../data/ExpensesServices ';
+import { updateWallet, getListwalletDefault } from "../../data/WalletServices";
 import Banner from '../../component/Banner';
 import { Linking } from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
@@ -22,7 +25,19 @@ const Setting = ({ navigation, route }) => {
   const themeContext = useContext(ThemeContext)
   const { theme, setTheme } = useColors({ themeName: 'Light' })
   const [visibleColor, setVisibleColor] = useState(false);
+  const [visibleRemove, setVisibleRemove] = useState(false);
+  const [wallet, setWallet] = useState();
   const { colors } = useTheme()
+
+
+  useEffect(()=>{
+    getListwalletDefault(true).then(task => {
+      if (task.length > 0) {
+        setWallet(task[0])
+      }
+    })
+
+  },[])
 
   const list = [
     {
@@ -36,6 +51,12 @@ const Setting = ({ navigation, route }) => {
       icon: Icon.Moon,
       action: () => setVisibleColor(true),
       id: 'theme'
+    },
+    {
+      name: t('text.remove.data'),
+      icon: Icon.Delete,
+      action: () => setVisibleRemove(true) ,
+      id: 'delete'
     },
     {
       name: t('text.revew.app'),
@@ -90,6 +111,35 @@ const Setting = ({ navigation, route }) => {
             </TouchableOpacity>
             <TouchableOpacity style={style.buttonLangagueEN} onPress={handleEN}>
               <Text style={style.textLangague}>{t('english')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    )
+  }
+
+
+  const deleteData =()=>{
+    setVisibleRemove(false)
+    removeAll().then(()=>{
+        updateWallet(wallet.default, 0)
+      Toast.show(t('txt.removed'), Toast.LONG);
+    })
+  }
+  
+
+  function removeDatabase() {
+    return (
+      <Modal isVisible={visibleRemove}>
+        <View style={style.dialog}>
+          <Text style={style.title}>{t('text.remove.database')}</Text>
+
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity style={style.buttonLangagueVN} onPress={deleteData}>
+              <Text style={style.textLangague}>{t('text.remove.data.yes')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={style.buttonLangagueEN} onPress={()=> setVisibleRemove(false)}>
+              <Text style={style.textLangague}>{t('text.remove.data.no')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -183,6 +233,7 @@ const Setting = ({ navigation, route }) => {
         
         {changeLanguge()}
         {changeTheme()}
+        {removeDatabase()}
         <View>
           <Text style={style.version}>{t('text.version')} 1.0.5</Text>
         </View>
