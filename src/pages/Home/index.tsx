@@ -102,16 +102,16 @@ const Home = (props) => {
   useEffect(() => {
     if (isVisible) {
       const item = select[0]
-      if (item == 'Ngay')
-        getDay()
-      else if (item == 'Tuan')
-        getWeeks()
-      else if (item == 'Thang')
-        getMonths()
-      else {
-        //getWeeks()
-        console.log(select)
-      }
+      if (item == t('text.day'))
+      getDay()
+    else if (item == t('text.weeks'))
+      getWeeks()
+    else if (item == t('text.month'))
+      getMonths()
+    else {
+      //getWeeks()
+      console.log(select)
+    }
       getWallet()
 
     } else
