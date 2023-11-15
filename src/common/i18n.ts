@@ -120,6 +120,9 @@ i18n
                     'text.weeks':'Week',
                     'text.month':'Month',
                     'text.select.day':'Select by date',
+                    'text.export':'Export file excel',
+                    'text.export.shared':'Shared file excel',
+                    'text.export.close':'Close',
 
                 }
             },
@@ -232,6 +235,9 @@ i18n
                     'text.weeks':'Tuần',
                     'text.month':'Tháng',
                     'text.select.day':'Chọn theo ngày',
+                    'text.export':'Xuất file excel',
+                    'text.export.shared':'Chia sẻ file excel',
+                    'text.export.close':'Đóng',
                 }
             }
         },

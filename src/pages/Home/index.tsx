@@ -103,15 +103,15 @@ const Home = (props) => {
     if (isVisible) {
       const item = select[0]
       if (item == t('text.day'))
-      getDay()
-    else if (item == t('text.weeks'))
-      getWeeks()
-    else if (item == t('text.month'))
-      getMonths()
-    else {
-      //getWeeks()
-      console.log(select)
-    }
+        getDay()
+      else if (item == t('text.weeks'))
+        getWeeks()
+      else if (item == t('text.month'))
+        getMonths()
+      else {
+        //getWeeks()
+        console.log(select)
+      }
       getWallet()
 
     } else
@@ -369,12 +369,12 @@ const Home = (props) => {
   }
 
   const toggleModalFromDate = () => {
-    if (select[0] ==  t('text.select.day'))
+    if (select[0] == t('text.select.day'))
       setFromDate(!isFromDate);
   };
 
   const toggleModalToDate = () => {
-    if (select[0] ==  t('text.select.day'))
+    if (select[0] == t('text.select.day'))
       setToDate(!isToDate);
   };
 
@@ -466,7 +466,7 @@ const Home = (props) => {
           </View>
           <View style={{ marginTop: 5, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={style.textFromDate}>{t('from')}</Text>
-            <TouchableOpacity onPress={toggleModalFromDate} style={{ flexDirection: 'row' ,justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity onPress={toggleModalFromDate} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <Text style={[style.textDate, { color: colors.title }]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
               {
                 select[0] == t('text.select.day') ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
@@ -474,7 +474,7 @@ const Home = (props) => {
 
             </TouchableOpacity>
             <Text style={style.textFromDate}> {t('to')} </Text>
-            <TouchableOpacity onPress={toggleModalToDate} style={{ flexDirection: 'row' ,justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity onPress={toggleModalToDate} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <Text style={[style.textDate, { color: colors.title }]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
               {
                 select[0] == t('text.select.day') ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
