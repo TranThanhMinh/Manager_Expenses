@@ -17,6 +17,7 @@ import { LineChart } from "react-native-gifted-charts";
 import { useTranslation, initReactI18next } from "react-i18next"
 import { useTheme } from "react-native-paper";
 import Banner from "../../component/Banner";
+import * as Icon from "react-native-feather"
 
 const Report = (props) => {
   const { t } = useTranslation()
@@ -41,28 +42,45 @@ const Report = (props) => {
   const [listCT, setListCt] = React.useState([]);
   const [listTT, setListTt] = React.useState([]);
   const [listExpensesDaily, setListExpensesDaily] = useState([])
+
+  const [select, setSelect] = useState([{ name: t('text.day'), index: 0 }]);
   let list1 = []
   let list2 = []
-
+  let first = 0
   const { width } = Dimensions.get("window");
   const height = 256;
+  let listDate = [{ name: t('text.day'), index: 0 }, { name: t('text.weeks'), index: 1 }, { name: t('text.month'), index: 2 }, { name: t('text.select.day'), index: 3 }]
+
 
   useEffect(() => {
-
-  }, [])
-
+    const item = select[0]
+    if (item.index == 0)
+      getDay()
+    else if (item.index == 1)
+      getWeeks()
+    else if (item.index == 2)
+      getMonths()
+    else {
+      //getWeeks()
+      console.log(select)
+    }
+  }, [select])
 
   useEffect(() => {
     if (isVisible) {
-      const now = new Date();
-      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-      //   console.log(firstDay); // 👉️ Sat Oct 01 2022 ...
-      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
-      let first = new Date(firstDay).getTime()
-      let last = new Date(lastDay).getTime()
+      const item = select[0]
+      if (item.index == 0)
+      getDay()
+    else if (item.index == 1)
+      getWeeks()
+    else if (item.index == 2)
+      getMonths()
+    else {
+      //getWeeks()
+      console.log(select)
+    }
       getWallet()
-      getListDate(first, last)
+   
 
     } else
       setListExpenses([])
@@ -82,6 +100,37 @@ const Report = (props) => {
     getListwalletDefault(true).then(task => {
       setWallet(task)
     })
+  }
+
+  const getWeeks = () => {
+    var curr = new Date; // get current date
+    var first = curr.getDate() - curr.getDay();
+    var firstdayOb = new Date(curr.setDate(first));
+    var firstday = firstdayOb.toUTCString();
+    var firstdayTemp = firstdayOb;
+    var lastday = new Date(firstdayTemp.setDate(firstdayTemp.getDate() + 6)).toUTCString();
+    // console.log('chu nhat',new Date(firstday).getTime());
+    // console.log('thu 7 ',new Date(lastday).getTime());
+    getListDate(new Date(firstday).getTime(), new Date(lastday).getTime())
+
+  }
+
+  const getMonths = () => {
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    //   console.log(firstDay); // 👉️ Sat Oct 01 2022 ...
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    //  console.log(lastDay); // 👉️ Mon Oct 31 2022 ...
+    if (first == 0)
+      first = new Date(firstDay).getTime()
+    let last = new Date(lastDay).getTime()
+    getListDate(first, last)
+  }
+
+  const getDay = () => {
+    const date = new Date().getTime()
+    getListDate(date, date)
+
   }
 
 
@@ -425,7 +474,7 @@ const Report = (props) => {
     return (
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-          <Text style={{ fontSize: 16,color: colors.title}}>{name}</Text>
+          <Text style={{ fontSize: 16, color: colors.title }}>{name}</Text>
           <Text style={{ fontSize: 16, color: color }}> ({prencent.toFixed(2)})%</Text>
 
         </View>
@@ -440,10 +489,29 @@ const Report = (props) => {
     return (
       <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center' }}>
         <Text style={{ width: 10, height: 10, backgroundColor: color, margin: 5 }} />
-        <Text style={{ fontSize: 16,  color: colors.title }}>{name}</Text>
+        <Text style={{ fontSize: 16, color: colors.title }}>{name}</Text>
       </View>
     )
   }
+
+  
+  const itemSelectDate = ({ item ,index}) => {
+    const check = select[0].index == item.index
+    return (
+      <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check,index)}>
+        <Text style={{ color: colors.title }}>{item.name}</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  const selectDate = (i, check,index) => {
+    if (check) {
+      setSelect([...new Set([{ name: i.name, index: index }])])
+    } else {
+      //  setSelect(select.filter(item=>item =! i))
+    }
+  }
+
 
   const ItemDivider = () => {
     return (
@@ -468,29 +536,49 @@ const Report = (props) => {
   }
 
   const toggleModalFromDate = () => {
-    setFromDate(!isFromDate);
+    if (select[0].index == 3)
+      setFromDate(!isFromDate);
   };
 
   const toggleModalToDate = () => {
-    setToDate(!isToDate);
+    if (select[0].index == 3)
+      setToDate(!isToDate);
   };
 
   return (
     <View style={style.container}>
-      <View style={[style.container2, { marginTop: insets.top, backgroundColor: colors.background}]}>
+      <View style={[style.container2, { marginTop: insets.top, backgroundColor: colors.background }]}>
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.report')}</Text>
         </View>
-        <Banner/>
-        <View style={{ padding: 15, flexDirection: 'row', justifyContent: 'center', backgroundColor: colors.viewBackground }}>
-          <Text style={style.textFromDate}>{t('from')}</Text>
-          <TouchableOpacity onPress={toggleModalFromDate}>
-            <Text style={[style.textDate, { color: colors.title }]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
-          </TouchableOpacity>
-          <Text style={style.textFromDate}> {t('to')} </Text>
-          <TouchableOpacity onPress={toggleModalToDate}>
-            <Text style={[style.textDate, { color: colors.title }]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
-          </TouchableOpacity>
+        <Banner />
+
+        <View style={{ backgroundColor: colors.viewBackground, padding: 5 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 5 }}>
+            <FlatList
+              data={listDate}
+              horizontal={true}
+              renderItem={itemSelectDate} />
+          </View>
+          <View style={{ padding: 15, flexDirection: 'row', justifyContent: 'center', backgroundColor: colors.viewBackground }}>
+
+            <Text style={style.textFromDate}>{t('from')}</Text>
+            <TouchableOpacity onPress={toggleModalFromDate} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={[style.textDate, { color: colors.title }]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
+              {
+                select[0].index == 3 ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
+              }
+
+            </TouchableOpacity>
+            <Text style={style.textFromDate}> {t('to')} </Text>
+            <TouchableOpacity onPress={toggleModalToDate} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={[style.textDate, { color: colors.title }]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
+              {
+                select[0].index == 3 ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
+              }
+
+            </TouchableOpacity>
+          </View>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
@@ -632,12 +720,12 @@ const Report = (props) => {
           </View>
         </ScrollView>
         <Modal isVisible={isFromDate}>
-          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
+          <View style={[style.borderCalendar, { backgroundColor: colors.viewBackground }]}>
             <Calendar onDateChange={onFromDateChange} />
           </View>
         </Modal>
         <Modal isVisible={isToDate}>
-          <View style={[style.borderCalendar,{backgroundColor:colors.viewBackground}]}>
+          <View style={[style.borderCalendar, { backgroundColor: colors.viewBackground }]}>
             <Calendar onDateChange={onToDateChange} />
           </View>
         </Modal>

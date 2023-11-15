@@ -123,6 +123,9 @@ i18n
                     'text.export':'Export file excel',
                     'text.export.shared':'Shared file excel',
                     'text.export.close':'Close',
+                    'text.export.success':'Shared',
+                    'text.export.error':'Error Shared',
+                    'txt.no.data':'No data!'
 
                 }
             },
@@ -238,7 +241,11 @@ i18n
                     'text.export':'Xuất file excel',
                     'text.export.shared':'Chia sẻ file excel',
                     'text.export.close':'Đóng',
+                    'text.export.success':'Đã chia sẻ',
+                    'text.export.error':'Lỗi chia sẻ',
+                    'txt.no.data':'Không có dữ liệu'
                 }
+
             }
         },
         fallbackLng: 'vi',

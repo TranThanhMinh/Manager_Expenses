@@ -57,6 +57,20 @@ const style = StyleSheet.create({
   },
   textPrive:{
     fontWeight: 'bold', textAlign: 'center'
+  },
+  selectTime:{
+    padding:5,
+    borderColor:Color.blue,
+    borderRadius:5,
+    borderWidth:0.5,
+    margin:5,
+  },
+  selectTimeOn:{
+    padding:5,
+    backgroundColor:Color.blue,
+    borderRadius:5,
+    margin:5,
+    borderColor:'white'
   }
 })
 

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, View, TouchableOpacity, FlatList, Button ,PermissionsAndroid,Alert} from 'react-native';
+import { Text, View, TouchableOpacity, FlatList, Button, PermissionsAndroid, Alert,Platform } from 'react-native';
 import style from './style';
 import * as Icon from "react-native-feather"
 import { Color } from '../../common';
@@ -13,6 +13,7 @@ import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { removeAll } from '../../data/ExpensesServices ';
 import { updateWallet, getListwalletDefault } from "../../data/WalletServices";
+import { getListExpenses } from '../../data/ExpensesServices ';
 import Banner from '../../component/Banner';
 import { Linking } from 'react-native';
 import Toast from 'react-native-simple-toast';
@@ -31,15 +32,12 @@ const Setting = ({ navigation, route }) => {
   const [visibleExport, setVisibleExport] = useState(false);
   const [filePath, setFilePath] = useState('');
   const [wallet, setWallet] = useState();
+  const [listExpenses, setListExpenses] = useState([]);
   const { colors } = useTheme()
-
-
 
   var RNFS = require('react-native-fs');
 
-
-
-  useEffect(()=>{
+  useEffect(() => {
     permission_reqused_fn()
     getListwalletDefault(true).then(task => {
       if (task.length > 0) {
@@ -47,7 +45,7 @@ const Setting = ({ navigation, route }) => {
       }
     })
 
-  },[])
+  }, [])
 
   const list = [
     {
@@ -65,19 +63,19 @@ const Setting = ({ navigation, route }) => {
     {
       name: t('text.remove.data'),
       icon: Icon.Delete,
-      action: () => setVisibleRemove(true) ,
+      action: () => setVisibleRemove(true),
       id: 'delete'
     },
     {
       name: t('text.revew.app'),
       icon: Icon.MessageSquare,
-      action: () => Linking.openURL(String.link) ,
+      action: () => Linking.openURL(String.link),
       id: 'theme'
     },
     {
       name: t('text.export'),
       icon: Icon.File,
-      action: () =>exportDataToExcel(),
+      action: () => exportDataToExcel(),
       id: 'export'
     },
     // {
@@ -129,14 +127,14 @@ const Setting = ({ navigation, route }) => {
   }
 
 
-  const deleteData =()=>{
+  const deleteData = () => {
     setVisibleRemove(false)
-    removeAll().then(()=>{
-        updateWallet(wallet.default, 0)
+    removeAll().then(() => {
+      updateWallet(wallet.default, 0)
       Toast.show(t('txt.removed'), Toast.LONG);
     })
   }
-  
+
   function removeDatabase() {
     return (
       <Modal isVisible={visibleRemove}>
@@ -147,7 +145,7 @@ const Setting = ({ navigation, route }) => {
             <TouchableOpacity style={style.buttonLangagueVN} onPress={deleteData}>
               <Text style={style.textLangague}>{t('text.remove.data.yes')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={style.buttonLangagueEN} onPress={()=> setVisibleRemove(false)}>
+            <TouchableOpacity style={style.buttonLangagueEN} onPress={() => setVisibleRemove(false)}>
               <Text style={style.textLangague}>{t('text.remove.data.no')}</Text>
             </TouchableOpacity>
           </View>
@@ -157,17 +155,17 @@ const Setting = ({ navigation, route }) => {
   }
 
 
-    
+
   function exportFile() {
     return (
       <Modal isVisible={visibleExport}>
         <View style={style.dialog}>
           <Text style={style.title}>File path: {filePath}</Text>
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity style={style.buttonLangagueVN} onPress= {shareToFiles}>
+            <TouchableOpacity style={style.buttonLangagueVN} onPress={shareToFiles}>
               <Text style={style.textLangague}>{t('text.export.shared')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={style.buttonLangagueEN} onPress={()=> setVisibleExport(false)}>
+            <TouchableOpacity style={style.buttonLangagueEN} onPress={() => setVisibleExport(false)}>
               <Text style={style.textLangague}>{t('text.export.close')}</Text>
             </TouchableOpacity>
           </View>
@@ -201,63 +199,82 @@ const Setting = ({ navigation, route }) => {
     try {
       const ShareResponse = await Share.open(shareOptions);
       console.log('Result =>', ShareResponse);
-     // setResult(JSON.stringify(ShareResponse, null, 2));
+      setVisibleExport(false)
+      Toast.show(t('txt.export.success'), Toast.LONG);
+      // setResult(JSON.stringify(ShareResponse, null, 2));
     } catch (error) {
       console.log('Error =>', error);
-   //   setResult('error: '.concat(getErrorString(error)));
+      Toast.show(t('txt.export.error'), Toast.LONG);
+      setVisibleExport(false)
+      //   setResult('error: '.concat(getErrorString(error)));
     }
   };
 
-  const permission_reqused_fn = async() =>{
-    try{
-    const granted_read = await PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  const permission_reqused_fn = async () => {
+    try {
+      const granted_read = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         {
-    title: "Storage Read Permisison: ",
-    message:"This app requires storage permission for importing app data.",
-    buttonNeutral: 'Ask Me Later',
-    buttonNegative: 'Cancel',
-    buttonPositive: 'OK'
+          title: "Storage Read Permisison: ",
+          message: "This app requires storage permission for importing app data.",
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
         }
-    );
-    const granted_write = await PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      const granted_write = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-    title: "Storage Write Permisison: ",
-    message:"This app requires storage permission in order to store data on device.",
-    buttonNeutral: 'Ask Me Later',
-    buttonNegative: 'Cancel',
-    buttonPositive: 'OK'
+          title: "Storage Write Permisison: ",
+          message: "This app requires storage permission in order to store data on device.",
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
         }
-    );
-    if ((granted_write === PermissionsAndroid.RESULTS.GRANTED && granted_read === PermissionsAndroid.RESULTS.GRANTED )|| Number(Platform.Version) >=33){
+      );
+      if ((granted_write === PermissionsAndroid.RESULTS.GRANTED && granted_read === PermissionsAndroid.RESULTS.GRANTED) || Number(Platform.Version) >= 33) {
+      }
+      else {
+        Alert.alert("Storage Permission is not granted.");
+      }
+    } catch (err) {
+      Alert.alert("Storage Permission is not granted.");
     }
-    else{
-    Alert.alert("Storage Permission is not granted.");
-    }}catch(err){
-    Alert.alert("Storage Permission is not granted.");
-    }
-    }
+  }
 
   // function to handle exporting
   const exportDataToExcel = () => {
-
-    // Created Sample data
-    let sample_data_to_export = [{id: '1', name: 'Minh'},{ id: '2', name: 'Tuan'},{ id: '2', name: 'Binh'}];
-
-    let wb = XLSX.utils.book_new();
-    let ws = XLSX.utils.json_to_sheet(sample_data_to_export)    
-    XLSX.utils.book_append_sheet(wb,ws,"Users")
-    const wbout = XLSX.write(wb, {type:'binary', bookType:"xlsx"});
-
-    // Write generated excel to Storage
-    RNFS.writeFile(RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx', wbout, 'ascii').then((r)=>{
-     console.log('Success',RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx')
-     setFilePath(RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx')
-     setVisibleExport(true)
-    }).catch((e)=>{
-      console.log('Error', e);
-    });
+    getListExpenses().then(listExpenses => {
+      if (listExpenses.length > 0){
+          let list = []
+          listExpenses.map(item => {
+            let sample_data_to_export = {
+              created_date: item.created_date, created_time: item.created_time,
+              descripbe: item.descripbe, id: item.id, id_borrow: item.id_borrow, id_wallet: item.id_wallet,
+              in_out: item.in_out, price: item.price, price_borrow: item.price_borrow, type: item.type, type_borrow: item.type_borrow
+            };
+    
+            list.push(sample_data_to_export)
+          })
+          let wb = XLSX.utils.book_new();
+          let ws = XLSX.utils.json_to_sheet(list)
+          XLSX.utils.book_append_sheet(wb, ws, "Users")
+          const wbout = XLSX.write(wb, { type: 'binary', bookType: "xlsx" });
+    
+          // Write generated excel to Storage
+          RNFS.writeFile(RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx', wbout, 'ascii').then((r) => {
+            // console.log('Success', RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx')
+            setFilePath(RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx')
+            setVisibleExport(true)
+          }).catch((e) => {
+            console.log('Error', e);
+          });
+        
+      }else {
+        Toast.show(t('txt.no.data'), Toast.LONG);
+      }
+    })
+    
 
   }
 
@@ -328,12 +345,12 @@ const Setting = ({ navigation, route }) => {
         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: Color.blue, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={style.text2}>{t('text.setting')}</Text>
         </View>
-        <Banner/>
+        <Banner />
         <FlatList
           data={list}
           style={style.bgList}
           renderItem={Item} />
-        
+
         {changeLanguge()}
         {changeTheme()}
         {removeDatabase()}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TextInput, TouchableOpacity, TouchableHighlight, Button } from "react-native"
+import { View, Text, FlatList, TextInput, TouchableOpacity, TouchableHighlight, PermissionsAndroid, Alert, Platform } from "react-native"
 import { useIsFocused } from "@react-navigation/native";
 import { Color } from "../../common";
 import { useSelector, useDispatch } from "react-redux";
@@ -59,16 +59,17 @@ const Home = (props) => {
   const [type, setType] = useState(0)
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [select, setSelect] = useState([t('text.day')]);
+  const [select, setSelect] = useState([{ name: t('text.day'), index: 0 }]);
 
   const [updateApp, setUpdateApp] = useState(false);
 
   let collect = 0
   let payout = 0
   let first = 0
-  let listDate = [t('text.day'), t('text.weeks'), t('text.month'), t('text.select.day')]
+  let listDate = [{ name: t('text.day'), index: 0 }, { name: t('text.weeks'), index: 1 }, { name: t('text.month'), index: 2 }, { name: t('text.select.day'), index: 3 }]
 
   useEffect(() => {
+    permission_reqused_fn()
     VersionCheck.getCountry()
       .then(country => console.log(country));          // KR
     //console.log('KR',VersionCheck.getPackageName());        // com.reactnative.app
@@ -86,11 +87,11 @@ const Home = (props) => {
 
   useEffect(() => {
     const item = select[0]
-    if (item == t('text.day'))
+    if (item.index == 0)
       getDay()
-    else if (item == t('text.weeks'))
+    else if (item.index == 1)
       getWeeks()
-    else if (item == t('text.month'))
+    else if (item.index == 2)
       getMonths()
     else {
       //getWeeks()
@@ -102,16 +103,16 @@ const Home = (props) => {
   useEffect(() => {
     if (isVisible) {
       const item = select[0]
-      if (item == t('text.day'))
-        getDay()
-      else if (item == t('text.weeks'))
-        getWeeks()
-      else if (item == t('text.month'))
-        getMonths()
-      else {
-        //getWeeks()
-        console.log(select)
-      }
+      if (item.index == 0)
+      getDay()
+    else if (item.index == 1)
+      getWeeks()
+    else if (item.index == 2)
+      getMonths()
+    else {
+      //getWeeks()
+      console.log(select)
+    }
       getWallet()
 
     } else
@@ -149,6 +150,38 @@ const Home = (props) => {
     })
   }
 
+  const permission_reqused_fn = async () => {
+    try {
+      const granted_read = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: "Storage Read Permisison: ",
+          message: "This app requires storage permission for importing app data.",
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
+        }
+      );
+      const granted_write = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: "Storage Write Permisison: ",
+          message: "This app requires storage permission in order to store data on device.",
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
+        }
+      );
+      if ((granted_write === PermissionsAndroid.RESULTS.GRANTED && granted_read === PermissionsAndroid.RESULTS.GRANTED) || Number(Platform.Version) >= 33) {
+
+      }
+      else {
+        Alert.alert("Storage Permission is not granted.");
+      }
+    } catch (err) {
+      Alert.alert("Storage Permission is not granted.");
+    }
+  }
 
   const getWeeks = () => {
     var curr = new Date; // get current date
@@ -369,12 +402,12 @@ const Home = (props) => {
   }
 
   const toggleModalFromDate = () => {
-    if (select[0] == t('text.select.day'))
+    if (select[0].index == 3)
       setFromDate(!isFromDate);
   };
 
   const toggleModalToDate = () => {
-    if (select[0] == t('text.select.day'))
+    if (select[0].index == 3)
       setToDate(!isToDate);
   };
 
@@ -389,7 +422,6 @@ const Home = (props) => {
   }
 
   const onSearch = (search) => {
-    console.log(search)
     if (search != '') {
       const list = listSearch.filter(item => item.descripbe.toLowerCase().includes(search.toLowerCase()))
       filterDate(list)
@@ -428,18 +460,19 @@ const Home = (props) => {
     )
   }
 
-  const itemSelectDate = ({ item }) => {
-    const check = select.includes(item)
+  const itemSelectDate = ({ item ,index}) => {
+    const check = select[0].index == item.index
+    console.log(select,item)
     return (
-      <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check)}>
-        <Text style={{ color: colors.title }}>{item}</Text>
+      <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check,index)}>
+        <Text style={{ color: colors.title }}>{item.name}</Text>
       </TouchableOpacity>
     )
   }
 
-  const selectDate = (i, check) => {
+  const selectDate = (i, check,index) => {
     if (check) {
-      setSelect([...new Set([i])])
+      setSelect([...new Set([{ name: i.name, index: index }])])
     } else {
       //  setSelect(select.filter(item=>item =! i))
     }
@@ -469,7 +502,7 @@ const Home = (props) => {
             <TouchableOpacity onPress={toggleModalFromDate} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <Text style={[style.textDate, { color: colors.title }]}> {fromDate ? momentFormat(fromDate) : momentFormat(new Date().getTime())}</Text>
               {
-                select[0] == t('text.select.day') ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
+                select[0].index == 3 ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
               }
 
             </TouchableOpacity>
@@ -477,10 +510,9 @@ const Home = (props) => {
             <TouchableOpacity onPress={toggleModalToDate} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <Text style={[style.textDate, { color: colors.title }]}>{toDate ? momentFormat(toDate) : momentFormat(new Date().getTime())}</Text>
               {
-                select[0] == t('text.select.day') ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
+                select[0].index == 3 ? <Icon.Calendar stroke={colors.title} width={17} height={17} /> : null
               }
             </TouchableOpacity>
-
           </View>
           <View style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <TextInput
