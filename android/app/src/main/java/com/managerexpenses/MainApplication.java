@@ -8,8 +8,11 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
+import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.managerexpenses.newarchitecture.MainApplicationReactNativeHost;
+import com.rnfs.RNFSPackage;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -32,6 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
            // packages.add(new RNVersionCheckPackage());
             new RNVersionCheckPackage();
+            new MainReactPackage(); // <---- add comma
+            new RNFSPackage(); // <---------- add package
             return packages;
         }
 
