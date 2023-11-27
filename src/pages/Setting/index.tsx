@@ -19,7 +19,6 @@ import { Linking } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import XLSX from 'xlsx'
 import Share from 'react-native-share';
-import RNFS from 'react-native-fs';
 
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
@@ -36,6 +35,7 @@ const Setting = ({ navigation, route }) => {
   const [listExpenses, setListExpenses] = useState([]);
   const { colors } = useTheme()
 
+  var RNFS = require('react-native-fs');
 
   useEffect(() => {
     permission_reqused_fn()
@@ -200,11 +200,11 @@ const Setting = ({ navigation, route }) => {
       const ShareResponse = await Share.open(shareOptions);
       console.log('Result =>', ShareResponse);
       setVisibleExport(false)
-      Toast.show(t('text.export.success'), Toast.LONG);
+      Toast.show(t('txt.export.success'), Toast.LONG);
       // setResult(JSON.stringify(ShareResponse, null, 2));
     } catch (error) {
       console.log('Error =>', error);
-      Toast.show(t('text.export.error'), Toast.LONG);
+      Toast.show(t('txt.export.error'), Toast.LONG);
       setVisibleExport(false)
       //   setResult('error: '.concat(getErrorString(error)));
     }
@@ -244,23 +244,6 @@ const Setting = ({ navigation, route }) => {
 
   // function to handle exporting
   const exportDataToExcel = () => {
-    // require the module
-var RNFS = require('react-native-fs');
-
-// create a path you want to write to
-// :warning: on iOS, you cannot write into `RNFS.MainBundlePath`,
-// but `RNFS.DocumentDirectoryPath` exists on both platforms and is writable
-// var path = RNFS.DownloadDirectoryPath + '/test.txt';
-
-
-// // write the file
-// RNFS.writeFile(path, 'Minh tran', 'utf8')
-//   .then((success) => {
-//     console.log('FILE WRITTEN!',JSON.stringify(success),path);
-//   })
-//   .catch((err) => {
-//     console.log(err.message);
-//   });
     getListExpenses().then(listExpenses => {
       if (listExpenses.length > 0){
           let list = []
@@ -279,9 +262,9 @@ var RNFS = require('react-native-fs');
           const wbout = XLSX.write(wb, { type: 'binary', bookType: "xlsx" });
     
           // Write generated excel to Storage
-          RNFS.writeFile(RNFS.DownloadDirectoryPath + '/my_exported_file.xlsx', wbout, 'ascii').then((r) => {
+          RNFS.writeFile(RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx', wbout, 'ascii').then((r) => {
             // console.log('Success', RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx')
-            setFilePath(RNFS.DownloadDirectoryPath + '/my_exported_file.xlsx')
+            setFilePath(RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx')
             setVisibleExport(true)
           }).catch((e) => {
             console.log('Error', e);
