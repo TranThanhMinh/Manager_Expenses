@@ -41,6 +41,8 @@ private static String[] PERMISSIONS_STORAGE = {
   }
 
 
+
+
   public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
       super(activity, mainComponentName);
@@ -52,6 +54,7 @@ private static String[] PERMISSIONS_STORAGE = {
       ReactRootView reactRootView = new ReactRootView(getContext());
       // If you opted-in for the New Architecture, we enable the Fabric Renderer.
       reactRootView.setIsFabric(BuildConfig.IS_NEW_ARCHITECTURE_ENABLED);
+
       verifyStoragePermissions((Activity) getContext());
       return reactRootView;
     }
