@@ -8,7 +8,7 @@ import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
-  removeTask2, getListExpensesFromDateToDate, deleteBorrow, updateBorrow2
+  removeTask2, getListExpensesFromDateToDate, deleteBorrow, updateBorrow2,getListExpenses
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
@@ -38,6 +38,7 @@ const Home = (props) => {
   const addfirst = [fisrt, ...Utils.TypeExpenses]
   const { colors } = useTheme()
   const [wallet, setWallet] = useState([]);
+  const [sum, setSum] = useState(0);
   const isVisible = useIsFocused();
   const { danangReducer } = useSelector(state => state)
   const dispatch = useDispatch();
@@ -102,17 +103,28 @@ const Home = (props) => {
 
   useEffect(() => {
     if (isVisible) {
+      getListExpenses().then(list=>{
+        let spend = 0
+        let collect = 0
+        list.map((item) => {
+          if (item.in_out == 0)
+            spend = spend + parseFloat(item.price)
+          else collect = collect + parseFloat(item.price)
+        })
+        let result = collect - spend
+        setSum(result)
+      })
       const item = select[0]
       if (item.index == 0)
-      getDay()
-    else if (item.index == 1)
-      getWeeks()
-    else if (item.index == 2)
-      getMonths()
-    else {
-      //getWeeks()
-      console.log(select)
-    }
+        getDay()
+      else if (item.index == 1)
+        getWeeks()
+      else if (item.index == 2)
+        getMonths()
+      else {
+        //getWeeks()
+        console.log(select)
+      }
       getWallet()
 
     } else
@@ -232,7 +244,6 @@ const Home = (props) => {
   }
 
   const filterDate = (list) => {
-
     let newList = Object.values(list.reduce((acc, item) => {
       if (!acc[item.created_date]) acc[item.created_date] = {
         created_date: item.created_date,
@@ -377,12 +388,12 @@ const Home = (props) => {
   const renderHiddenItem = (data, rowMap) => {
     return (
       <View style={style.rowBack}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[style.actionButton, style.deleteBtn]}
           onPress={() => handleRemove(data)}
         >
           <Text style={style.btnText}>{t('button.delete')}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     )
   }
@@ -460,17 +471,17 @@ const Home = (props) => {
     )
   }
 
-  const itemSelectDate = ({ item ,index}) => {
+  const itemSelectDate = ({ item, index }) => {
     const check = select[0].index == item.index
-    console.log(select,item)
+    console.log(select, item)
     return (
-      <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check,index)}>
+      <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check, index)}>
         <Text style={{ color: colors.title }}>{item.name}</Text>
       </TouchableOpacity>
     )
   }
 
-  const selectDate = (i, check,index) => {
+  const selectDate = (i, check, index) => {
     if (check) {
       setSelect([...new Set([{ name: i.name, index: index }])])
     } else {
@@ -488,7 +499,7 @@ const Home = (props) => {
         <Banner />
         <View style={[style.borderBalance, { backgroundColor: colors.viewBackground }]}>
           <Text style={[style.textBalance, { color: colors.title }]}>{t('text.balance')}</Text>
-          <Text style={[style.textPrice, { color: wallet.length > 0 ? parseFloat(wallet[0].money) > 0 ? 'green' : Color.blue : Color.blue }]}> {wallet.length > 0 ? Utils.numberWithCommas(wallet[0].money) : 0} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
+          <Text style={[style.textPrice, { color: sum > 0 ? 'green' : Color.blue }]}> {Utils.numberWithCommas(parseFloat(sum))} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
         </View>
         <View style={{ backgroundColor: colors.viewBackground, padding: 5 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 5 }}>
