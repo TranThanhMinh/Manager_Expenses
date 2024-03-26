@@ -2,6 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon-603x.png</string>
+		<string>Icon-76.png</string>
+		<string>Icon-762x.png</string>
+		<string>Icon-83.52x.png</string>
+		<string>Icon-Small-40.png</string>
+		<string>Icon-Small-402x.png</string>
+		<string>Icon-Small.png</string>
+		<string>Icon-Small2x.png</string>
+		<string>Icon-Small3x.png</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
