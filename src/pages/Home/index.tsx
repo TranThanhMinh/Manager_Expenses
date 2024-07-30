@@ -79,7 +79,7 @@ const Home = (props) => {
 
     VersionCheck.needUpdate()
       .then(async res => {
-        console.log(res.isNeeded);    // true
+       // console.log(res.isNeeded);    // true
         if (res.isNeeded) {
           setUpdateApp(true)
         }
@@ -96,7 +96,7 @@ const Home = (props) => {
       getMonths()
     else {
       //getWeeks()
-      console.log(select)
+      //console.log(select)
     }
   }, [select])
 
@@ -123,7 +123,7 @@ const Home = (props) => {
         getMonths()
       else {
         //getWeeks()
-        console.log(select)
+       // console.log(select)
       }
       getWallet()
 
@@ -473,10 +473,10 @@ const Home = (props) => {
 
   const itemSelectDate = ({ item, index }) => {
     const check = select[0].index == item.index
-    console.log(select, item)
+    // console.log(select, item)
     return (
       <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check, index)}>
-        <Text style={{ color: colors.title }}>{item.name}</Text>
+        <Text style={{ color: check ? 'white' : colors.title }}>{item.name}</Text>
       </TouchableOpacity>
     )
   }
@@ -494,13 +494,15 @@ const Home = (props) => {
     <View style={[style.container]}>
       <View style={[style.container2, { top: insets.top, backgroundColor: colors.background }]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }}>
-          <Text style={style.textHistory}>{t('text.history')} </Text>
+          <Text style={[style.textBalance, { color: colors.title, fontWeight: 'bold' }]}>{t('text.balance')}</Text>
+          <Text style={[style.textPrice, { color: 'white' }]}> {Utils.numberWithCommas(parseFloat(sum))} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
+          {/* <Text style={style.textHistory}> <Text style={[style.textBalance, { color: colors.title }]}>{t('text.balance')}</Text>{Utils.numberWithCommas(parseFloat(sum))} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text> */}
         </View>
         <Banner />
-        <View style={[style.borderBalance, { backgroundColor: colors.viewBackground }]}>
+        {/* <View style={[style.borderBalance, { backgroundColor: colors.viewBackground }]}>
           <Text style={[style.textBalance, { color: colors.title }]}>{t('text.balance')}</Text>
           <Text style={[style.textPrice, { color: sum > 0 ? 'green' : Color.blue }]}> {Utils.numberWithCommas(parseFloat(sum))} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
-        </View>
+        </View> */}
         <View style={{ backgroundColor: colors.viewBackground, padding: 5 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 5 }}>
             <FlatList
@@ -573,15 +575,25 @@ const Home = (props) => {
             />
           </View>
         </View>
-        <View  style={{paddingHorizontal:10}}>
-          <View style={{ flexDirection: 'row', alignContent: 'center',marginTop:5 }}>
-            <Text style={{ width: 80, fontSize: 18 }}>Tổng chi: </Text>
-            <Text style={{ color: Color.blue, fontSize: 18,fontWeight:'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignContent: 'center' ,marginTop:5}}>
-            <Text style={{ width: 80, fontSize: 18 }}>Tổng thu: </Text>
-            <Text style={{ color: 'green', fontSize: 18,fontWeight:'bold' }}>{Utils.numberWithCommas(parseFloat(sumIN))} {t('text.unit')}</Text>
-          </View>
+        <View style={{ paddingHorizontal: 10 }}>
+          {
+            sumOUT != 0 ?
+              <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
+                <Text style={{ width: 80, fontSize: 18 }}>Tổng chi: </Text>
+                <Text style={{ color: Color.blue, fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
+              </View>
+              : null
+
+          }
+          {
+            sumIN != 0 ?
+              <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
+                <Text style={{ width: 80, fontSize: 18 }}>Tổng thu: </Text>
+                <Text style={{ color: 'green', fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumIN))} {t('text.unit')}</Text>
+              </View>
+              : null
+
+          }
         </View>
         {
           listExpenses != null && listExpenses.length > 0 ?

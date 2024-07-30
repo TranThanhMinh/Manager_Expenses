@@ -100,11 +100,7 @@ const AddExpenses = (props) => {
           setIdWallet(task[0].id)
         }
       }
-
-
     })
-
-
 
   }, [])
 
@@ -119,7 +115,7 @@ const AddExpenses = (props) => {
       interstitial.load();
       // Unsubscribe from events on unmount
       return unsubscribe;
-    }, 2000);
+    }, 500);
   }, []);
 
   const momentFormat = (date) => {

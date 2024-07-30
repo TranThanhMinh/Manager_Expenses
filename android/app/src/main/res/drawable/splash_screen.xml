@@ -4,11 +4,11 @@
     <item
         android:drawable="@android:color/white"/>
 
-    <item android:width="120dp"
-        android:height="120dp"
-        android:gravity="center">
-        <bitmap
-            android:src="@drawable/ic_app"/>
-    </item>
+<!--    <item android:width="120dp"-->
+<!--        android:height="120dp"-->
+<!--        android:gravity="center">-->
+<!--        <bitmap-->
+<!--            android:src="@drawable/ic_app"/>-->
+<!--    </item>-->
 
 </layer-list>

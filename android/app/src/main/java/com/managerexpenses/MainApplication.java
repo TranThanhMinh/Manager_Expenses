@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.managerexpenses.newarchitecture.MainApplicationReactNativeHost;
 import com.rnfs.RNFSPackage;
 
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNVersionCheckPackage();
             new MainReactPackage(); // <---- add comma
             new RNFSPackage(); // <---------- add package
+            new RNExitAppPackage();
             return packages;
         }
 

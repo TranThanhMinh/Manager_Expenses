@@ -15,6 +15,7 @@ import { useColors, ThemeContext } from '@hooks'
 import { Provider as PaperProvider } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "i18next";
+
 const App = () => {
   console.disableYellowBox = true
 

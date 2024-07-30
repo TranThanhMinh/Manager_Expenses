@@ -298,6 +298,7 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha01'
     implementation project(':react-native-version-check')
     implementation project(':react-native-fs')
+    implementation project(':react-native-exit-app')
 }
 
 task wrapper(type: Wrapper) {

@@ -62,7 +62,7 @@ const Report = (props) => {
       getMonths()
     else {
       //getWeeks()
-      console.log(select)
+     // console.log(select)
     }
   }, [select])
 
@@ -77,7 +77,7 @@ const Report = (props) => {
       getMonths()
     else {
       //getWeeks()
-      console.log(select)
+     // console.log(select)
     }
       getWallet()
    
@@ -179,7 +179,7 @@ const Report = (props) => {
 
     })
     setListDaily(listDaily)
-    console.log(listDaily)
+    //console.log(listDaily)
   }
 
   function biggestToSmallest(a, b) {
@@ -201,7 +201,7 @@ const Report = (props) => {
   }
 
   const filterDate = (list) => {
-    console.log(list)
+    //console.log(list)
     setListExpenses(list)
     let sumIn = 0
     let sumOut = 0
@@ -366,7 +366,7 @@ const Report = (props) => {
               price: ct72,
               percentage: (ct72 / sumOut) * 100,
             }
-            console.log('14', i.price)
+           // console.log('14', i.price)
             isFound(item)
           }
           else if (i.type == 12) {
@@ -499,7 +499,7 @@ const Report = (props) => {
     const check = select[0].index == item.index
     return (
       <TouchableOpacity style={check ? style.selectTimeOn : style.selectTime} onPress={() => selectDate(item, !check,index)}>
-        <Text style={{ color: colors.title }}>{item.name}</Text>
+        <Text style={{ color: check ? 'white' : colors.title }}>{item.name}</Text>
       </TouchableOpacity>
     )
   }
