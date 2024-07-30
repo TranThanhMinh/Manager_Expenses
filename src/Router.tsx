@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext,useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { Image, AppState, View, TouchableOpacity } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
@@ -43,38 +43,40 @@ const MyTabs = ({ navigation, route }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+     requestNonPersonalizedAdsOnly: true,
     keywords: ['fashion', 'clothing'],
   });
   setTimeout(() => {
     setLoading(true)
   }, 1500);
 
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        console.log('App has come to the foreground!');
-                const unsubscribe = appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
-          // setLoaded(true);
-           appOpenAd.show()
-         });
-         // Start loading the interstitial straight away
-         appOpenAd.load();
-         // Unsubscribe from events on unmount
-         return unsubscribe;
-      }
+  // useEffect(() => {
+  //   const subscription = AppState.addEventListener('change', nextAppState => {
+  //     if (
+  //       appState.current.match(/inactive|background/) &&
+  //       nextAppState === 'active'
+  //     ) {
+  //       console.log('App has come to the foreground!');
+  //       const unsubscribe = appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+  //         // setLoaded(true);
+  //         appOpenAd.show()
+  //       });
+  //       // Start loading the interstitial straight away
+  //       appOpenAd.load();
+  //       // Unsubscribe from events on unmount
+  //       return unsubscribe;
+  //     }
 
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-      console.log('AppState', appState.current);
-    });
-    
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  //     appState.current = nextAppState;
+  //     setAppStateVisible(appState.current);
+  //     console.log('AppState', appState.current);
+      
+  //   });
+
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
 
 
@@ -140,7 +142,7 @@ const MyTabs = ({ navigation, route }) => {
           null}
 
       <View style={{ position: 'absolute', bottom: 80, right: 30 }}>
-        <ButtonAdd addExpenses = {() => navigation.navigate('AddExpenses', { item: { wallet: null, add: true } })}/>
+        <ButtonAdd addExpenses={() => navigation.navigate('AddExpenses', { item: { wallet: null, add: true } })} />
       </View>
     </View>
 
@@ -180,7 +182,7 @@ const Router = () => {
           headerShown: false,
           ...defaultOptions,
         }}>
-        <stack.Screen name="Slash" component={SlashScreen}  />
+        <stack.Screen name="Slash" component={SlashScreen} />
         <stack.Screen name="MyTabs" component={MyTabs} />
         <stack.Screen name="AddExpenses" options={{ title: 'Thêm Chi tiêu hàng ngày' }} component={AddExpensesScreen} />
         <stack.Screen name="History" options={{ title: 'Danh sách lịch sử' }} component={HistoryScreen} />

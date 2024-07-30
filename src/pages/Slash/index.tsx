@@ -19,33 +19,35 @@ const Slash = (props) => {
     keywords: ['fashion', 'clothing'],
   });
 
+  const [tabs, setTabs] = useState(false);
+
   const { type, isConnected } = useNetInfo();
 
   useEffect(() => {
-    if (isConnected)
+    if (isConnected && !tabs) {
       setTimeout(() => {
+        setTabs(true)
         props.goToMyTabs()
       }, 5000)
-    // const unsubscribe = appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
-    //   // setLoaded(true);
-    //   appOpenAd.show()
-    // });
-    // // Start loading the interstitial straight away
-    // appOpenAd.load();
-    // // Unsubscribe from events on unmount
-    // return unsubscribe;
+
+      const unsubscribe = appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+        // setLoaded(true);
+        appOpenAd.show()
+      });
+      // Start loading the interstitial straight away
+      appOpenAd.load();
+      // Unsubscribe from events on unmount
+      return unsubscribe;
+    }
   }, [isConnected]);
-
-
-
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: Color.white }}>
       <Image source={require('../../images/ic_app.png')} style={{ width: 120, height: 120 }} />
       {/* <Text style={{ marginTop: 5, color: Color.pink, fontSize: 15 }}>Money Lover</Text> */}
       <Banner />
-      <View style={{ position: 'absolute', bottom: 10, marginBottom: insets.bottom,alignItems:'center' }}>
-        <Progress.Bar progress={0.3} width={100} indeterminate={true} style={{marginBottom:10}} />
+      <View style={{ position: 'absolute', bottom: 10, marginBottom: insets.bottom, alignItems: 'center' }}>
+        <Progress.Bar progress={0.3} width={100} indeterminate={true} style={{ marginBottom: 10 }} />
         <Text style={{ fontStyle: 'italic', fontSize: 10 }}>A product of Minh Trần</Text>
       </View>
 

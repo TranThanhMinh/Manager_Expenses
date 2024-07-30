@@ -140,7 +140,7 @@ const style = StyleSheet.create({
   textPrice: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 27,
   },
 
   textHistory: {
