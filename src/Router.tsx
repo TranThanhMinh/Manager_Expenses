@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Image, Text, View, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState, useContext,useRef } from 'react';
+import { Image, AppState, View, TouchableOpacity } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
@@ -21,7 +21,8 @@ import { useTheme } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Color from './common/Color';
 import { updateWallet, addWallet, getListwalletDefault } from "./data/WalletServices";
-
+import { AppOpenAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
+const adUnitId = 'ca-app-pub-5751638294565515/8172882991';
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -39,10 +40,41 @@ const MyTabs = ({ navigation, route }) => {
   const { colors } = useTheme()
   const [loading, setLoading] = useState(false);
   const [wallet, setWallet] = useState([]);
-
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+    keywords: ['fashion', 'clothing'],
+  });
   setTimeout(() => {
     setLoading(true)
   }, 1500);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+                const unsubscribe = appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+          // setLoaded(true);
+           appOpenAd.show()
+         });
+         // Start loading the interstitial straight away
+         appOpenAd.load();
+         // Unsubscribe from events on unmount
+         return unsubscribe;
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+    });
+    
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
 
 
@@ -148,7 +180,7 @@ const Router = () => {
           headerShown: false,
           ...defaultOptions,
         }}>
-        {/* <stack.Screen name="Slash" component={SlashScreen}  /> */}
+        <stack.Screen name="Slash" component={SlashScreen}  />
         <stack.Screen name="MyTabs" component={MyTabs} />
         <stack.Screen name="AddExpenses" options={{ title: 'Thêm Chi tiêu hàng ngày' }} component={AddExpensesScreen} />
         <stack.Screen name="History" options={{ title: 'Danh sách lịch sử' }} component={HistoryScreen} />

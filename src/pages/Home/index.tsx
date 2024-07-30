@@ -8,7 +8,7 @@ import { FloodReports } from "../../model/types.d";
 import urid from 'urid';
 import { updateWallet, addWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
-  removeTask2, getListExpensesFromDateToDate, deleteBorrow, updateBorrow2,getListExpenses
+  removeTask2, getListExpensesFromDateToDate, deleteBorrow, updateBorrow2, getListExpenses
 } from "../../data/ExpensesServices ";
 import moment from 'moment';
 import * as ActionTypes from '../../redux/actions/ActionTypes'
@@ -103,7 +103,7 @@ const Home = (props) => {
 
   useEffect(() => {
     if (isVisible) {
-      getListExpenses().then(list=>{
+      getListExpenses().then(list => {
         let spend = 0
         let collect = 0
         list.map((item) => {
@@ -573,7 +573,16 @@ const Home = (props) => {
             />
           </View>
         </View>
-
+        <View  style={{paddingHorizontal:10}}>
+          <View style={{ flexDirection: 'row', alignContent: 'center',marginTop:5 }}>
+            <Text style={{ width: 80, fontSize: 18 }}>Tổng chi: </Text>
+            <Text style={{ color: Color.blue, fontSize: 18,fontWeight:'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignContent: 'center' ,marginTop:5}}>
+            <Text style={{ width: 80, fontSize: 18 }}>Tổng thu: </Text>
+            <Text style={{ color: 'green', fontSize: 18,fontWeight:'bold' }}>{Utils.numberWithCommas(parseFloat(sumIN))} {t('text.unit')}</Text>
+          </View>
+        </View>
         {
           listExpenses != null && listExpenses.length > 0 ?
             <FlatList
@@ -608,8 +617,9 @@ const Home = (props) => {
 
         !loading ?
           showLoading() :
-          null}
-    </View>
+          null
+      }
+    </View >
   )
 }
 
