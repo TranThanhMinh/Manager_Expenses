@@ -306,7 +306,7 @@ const Home = (props) => {
           </View>
 
           <Text style={{
-            fontSize: 18, color: sum >= 0 ? 'green' : Color.blue, fontWeight: 'bold', marginRight: 10
+            fontSize: 18, color: sum >= 0 ? 'green' : Color.red, fontWeight: 'bold', marginRight: 10
           }}>{Utils.numberWithCommas(sum)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
         </View>
 

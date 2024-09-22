@@ -332,6 +332,7 @@ const AddExpenses = (props) => {
                 <SelectDropdown
                   data={listBorrow}
                   disabled={edit}
+                  disableAutoScroll={false}
                   defaultButtonText={listBorrow[typeBorrow].descripbe + " - " + Utils.numberWithCommas(edit ? money : listBorrow[typeBorrow].price_borrow) + t('text.unit')}
                   onSelect={(selectedItem, index) => {
                     setIdBorrow(selectedItem.id)

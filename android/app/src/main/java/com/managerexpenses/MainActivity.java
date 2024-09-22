@@ -49,6 +49,8 @@ private static String[] PERMISSIONS_STORAGE = {
 
     }
 
+
+
     @Override
     protected ReactRootView createRootView() {
       ReactRootView reactRootView = new ReactRootView(getContext());
