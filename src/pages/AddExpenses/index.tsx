@@ -67,7 +67,7 @@ const AddExpenses = (props) => {
       if (task.length > 0) {
         setWallet(task[0])
         if (!item.add) {
-          setEdit(false)
+          setEdit(true)
           setId(item.item.id)
           setDescripbe(item.item.descripbe)
           setPrice(item.item.price)
@@ -337,6 +337,7 @@ const AddExpenses = (props) => {
                     setIdBorrow(selectedItem.id)
                     setTypeBorrow(index)
                     setMoney(selectedItem.price_borrow)
+                    console.log("index thư",index)
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
                     setMoney(selectedItem.price_borrow)

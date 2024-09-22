@@ -583,7 +583,7 @@ const Report = (props) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <View style={[style.bgView, { backgroundColor: colors.viewBackground }]}>
-              <Text style={[style.text, { color: Color.blue }]}>{t('text.expense')} {Utils.numberWithCommas(sumOUT)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+              <Text style={[style.text, { color: Color.red }]}>{t('text.expense')} {Utils.numberWithCommas(sumOUT)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
               {
                 listCT.length > 0 ?
                   <View style={{

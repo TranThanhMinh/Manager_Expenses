@@ -158,8 +158,8 @@ const Borrow = (props) => {
             <Text style={[style.text, { color: colors.title }]}>{type == 12 ? t('text.total.debt') : t('text.total.loan')} {Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
           <View style={style.itemExpenses}>
-            <Text style={[style.text, { color: type == 13 ? 'green' : Color.blue }]}>{type == 12 ? t('text.total.payable') : t('text.total.collectible')} {Utils.numberWithCommas(price_borrow)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
-            <Text style={[style.text, { color: type == 13 ? Color.blue : 'green' }]}>{type == 12 ? t('text.total.paid') : t('text.total.collected')} {Utils.numberWithCommas(borrow)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+            <Text style={[style.text, { color: type == 13 ? 'green' : Color.red }]}>{type == 12 ? t('text.total.payable') : t('text.total.collectible')} {Utils.numberWithCommas(price_borrow)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+            <Text style={[style.text, { color: type == 13 ? Color.red : 'green' }]}>{type == 12 ? t('text.total.paid') : t('text.total.collected')} {Utils.numberWithCommas(borrow)} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
           <View style={style.progressBar}>
             <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: "green", width: `${prencent}%` }]} />

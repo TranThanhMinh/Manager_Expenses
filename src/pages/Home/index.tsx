@@ -344,7 +344,7 @@ const Home = (props) => {
           </View>
           <View style={style.itemExpenses}>
             <Text style={[style.text, { color: colors.title }]}>{descripbe}</Text>
-            <Text style={[style.text, { fontSize: 18, color: in_out == 0 ? Color.blue : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
+            <Text style={[style.text, { fontSize: 18, color: in_out == 0 ? Color.red : 'green' }]}>{Utils.numberWithCommas(parseFloat(price))} <Text style={style.textUnit}>{t('text.unit')}</Text></Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -580,7 +580,7 @@ const Home = (props) => {
             sumOUT != 0 ?
               <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
                 <Text style={{ width: 80, fontSize: 18 }}>Tổng chi: </Text>
-                <Text style={{ color: Color.blue, fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
+                <Text style={{ color: Color.red, fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
               </View>
               : null
 
