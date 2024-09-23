@@ -43,7 +43,7 @@ const Slash = (props) => {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: Color.white }}>
-      <Image source={require('../../images/ic_app.png')} style={{ width: 120, height: 120 }} />
+      <Image source={require('../../images/ic_app.png')} style={{ width: 120, height: 120,borderRadius:60,padding:10 }} />
       {/* <Text style={{ marginTop: 5, color: Color.pink, fontSize: 15 }}>Money Lover</Text> */}
       <Banner />
       <View style={{ position: 'absolute', bottom: 10, marginBottom: insets.bottom, alignItems: 'center' }}>
@@ -53,9 +53,9 @@ const Slash = (props) => {
 
       <Modal isVisible={!isConnected}>
         <View style={{ alignItems: 'center', backgroundColor: 'white', borderRadius: 10 }}>
-          <Text style={{ marginTop: 5, color: '#ED5D52', fontSize: 15, fontWeight: 'bold' }}>{t('text.network')}</Text>
-          <Text style={{ marginVertical: 5, color: '#ED5D52', fontSize: 18, fontWeight: 'bold' }}>{t('text.turnoffapp')}</Text>
-          <TouchableOpacity style={{ paddingHorizontal: 10, paddingVertical: 5, marginBottom: 5, backgroundColor: '#ED5D52', borderRadius: 10 }} onPress={() => { RNExitApp.exitApp(); }}>
+          <Text style={{ marginTop: 5, color: Color.blue, fontSize: 15, fontWeight: 'bold' }}>{t('text.network')}</Text>
+          <Text style={{ marginVertical: 5, color: Color.blue, fontSize: 18, fontWeight: 'bold' }}>{t('text.turnoffapp')}</Text>
+          <TouchableOpacity style={{ paddingHorizontal: 10, paddingVertical: 5, marginBottom: 5, backgroundColor: Color.blue, borderRadius: 10 }} onPress={() => { RNExitApp.exitApp(); }}>
             <Text style={{ color: 'white' }}>{t('text.close')}</Text>
           </TouchableOpacity>
 

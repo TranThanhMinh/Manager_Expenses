@@ -373,7 +373,7 @@ var RNFS = require('react-native-fs');
         {removeDatabase()}
         {exportFile()}
         <View>
-          <Text style={style.version}>{t('text.version')} 1.0.5</Text>
+          <Text style={style.version}>{t('text.version')} 1.0.1</Text>
         </View>
       </View>
 
