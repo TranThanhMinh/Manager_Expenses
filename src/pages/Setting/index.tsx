@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, View, TouchableOpacity, FlatList, Button, PermissionsAndroid, Alert,Platform } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList, Button, PermissionsAndroid, Alert, Platform } from 'react-native';
 import style from './style';
 import * as Icon from "react-native-feather"
 import { Color } from '../../common';
@@ -13,6 +13,9 @@ import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { removeAll } from '../../data/ExpensesServices ';
 import { updateWallet, getListwalletDefault } from "../../data/WalletServices";
+import {
+  addExpenses,  updateBorrow
+} from "../../data/ExpensesServices ";
 import { getListExpenses } from '../../data/ExpensesServices ';
 import Banner from '../../component/Banner';
 import { Linking } from 'react-native';
@@ -20,12 +23,13 @@ import Toast from 'react-native-simple-toast';
 import XLSX from 'xlsx'
 import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
+import DocumentPicker from 'react-native-document-picker';
+
 
 const Setting = ({ navigation, route }) => {
   const { t } = useTranslation()
   const insets = useSafeAreaInsets();
   const [visibleLanguage, setVisibleLanguage] = useState(false)
-  const [visibleTheme, setVisibleTheme] = useState(false)
   const themeContext = useContext(ThemeContext)
   const { theme, setTheme } = useColors({ themeName: 'Light' })
   const [visibleColor, setVisibleColor] = useState(false);
@@ -33,15 +37,17 @@ const Setting = ({ navigation, route }) => {
   const [visibleExport, setVisibleExport] = useState(false);
   const [filePath, setFilePath] = useState('');
   const [wallet, setWallet] = useState();
-  const [listExpenses, setListExpenses] = useState([]);
+  const [idWallet, setIdWallet] = useState('');
   const { colors } = useTheme()
 
 
   useEffect(() => {
-    permission_reqused_fn()
+    requestWritePermission()
+    requestStoragePermission()
     getListwalletDefault(true).then(task => {
       if (task.length > 0) {
         setWallet(task[0])
+        setIdWallet(task[0].id)
       }
     })
 
@@ -78,12 +84,12 @@ const Setting = ({ navigation, route }) => {
       action: () => exportDataToExcel(),
       id: 'export'
     },
-    // {
-    //   name: t('text.contact'),
-    //   icon: Icon.Inbox,
-    //   action: () => toMail(),
-    //   id: 'contact'
-    // },
+    {
+      name: t('text.importexcel'),
+      icon: Icon.Inbox,
+      action: () => pickAndReadFile(),
+      id: 'contact'
+    },
   ]
 
 
@@ -155,6 +161,57 @@ const Setting = ({ navigation, route }) => {
   }
 
 
+  const pickAndReadFile = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+  
+      const filePath = result[0].uri;
+      const fileContent = await RNFS.readFile(filePath, 'base64');
+      const workbook = XLSX.read(fileContent, { type: 'base64' });
+  
+      const sheetName = workbook.SheetNames[0];
+      const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+  
+      
+
+      sheetData.map((item)=>{
+        console.log(item);
+        insertExpenses(item)
+      })
+      Toast.show(t('txt.done'), Toast.LONG);
+
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('User canceled the file picker.');
+      } else {
+        console.error('Error picking file:', error);
+      }
+    }
+  };
+
+
+
+  const insertExpenses =(item)=>{
+    const {created_date,created_time,descripbe,id,id_borrow,id_wallet,in_out,price,price_borrow,type,type_borrow} = item
+    addExpenses(id, created_time,
+      created_date,
+      descripbe, price, price_borrow, type, type_borrow, id_borrow, idWallet, in_out).then(task => {
+
+      if (in_out == 0)
+        updateWallet(wallet.default, wallet.money - parseFloat(price))
+      else updateWallet(wallet.default, wallet.money + parseFloat(price))
+      if (type == 13 || type == 15) {
+        updateBorrow(idBorrow, priceBorrow).then(task => {
+          // props.goToBack()
+        })
+      } else {
+        // props.goToBack()
+      }
+   
+    })
+  }
 
   function exportFile() {
     return (
@@ -210,6 +267,51 @@ const Setting = ({ navigation, route }) => {
     }
   };
 
+  const requestWritePermission = async () => {
+    if (Platform.OS === 'android' && Platform.Version < 30) { // Android 10 and below
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    title: "Storage Permission",
+                    message: "App needs access to your storage to save files",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK",
+                }
+            );
+            return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } catch (err) {
+            console.warn(err);
+            return false;
+        }
+    }
+    return true; // No permission needed for iOS or Android 11+
+};
+
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          {
+            title: "Storage Permission",
+            message: "App needs access to your storage to read files",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        );
+
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.log('minh tran', err);
+        return false;
+      }
+    }
+    return true; // iOS does not need runtime permission for file access
+  };
+
   const permission_reqused_fn = async () => {
     try {
       const granted_read = await PermissionsAndroid.request(
@@ -243,55 +345,46 @@ const Setting = ({ navigation, route }) => {
   }
 
   // function to handle exporting
-  const exportDataToExcel = () => {
+  const exportDataToExcel = async () => {
+    const hasPermission = await requestWritePermission();
+    if (!hasPermission) {
+      console.log("Permission denied");
+      return;
+    }
     // require the module
-var RNFS = require('react-native-fs');
-
-// create a path you want to write to
-// :warning: on iOS, you cannot write into `RNFS.MainBundlePath`,
-// but `RNFS.DocumentDirectoryPath` exists on both platforms and is writable
-// var path = RNFS.DownloadDirectoryPath + '/test.txt';
-
-
-// // write the file
-// RNFS.writeFile(path, 'Minh tran', 'utf8')
-//   .then((success) => {
-//     console.log('FILE WRITTEN!',JSON.stringify(success),path);
-//   })
-//   .catch((err) => {
-//     console.log(err.message);
-//   });
+    var RNFS = require('react-native-fs');
     getListExpenses().then(listExpenses => {
-      if (listExpenses.length > 0){
-          let list = []
-          listExpenses.map(item => {
-            let sample_data_to_export = {
-              created_date: item.created_date, created_time: item.created_time,
-              descripbe: item.descripbe, id: item.id, id_borrow: item.id_borrow, id_wallet: item.id_wallet,
-              in_out: item.in_out, price: item.price, price_borrow: item.price_borrow, type: item.type, type_borrow: item.type_borrow
-            };
-    
-            list.push(sample_data_to_export)
-          })
-          let wb = XLSX.utils.book_new();
-          let ws = XLSX.utils.json_to_sheet(list)
-          XLSX.utils.book_append_sheet(wb, ws, "Users")
-          const wbout = XLSX.write(wb, { type: 'binary', bookType: "xlsx" });
-    
-          // Write generated excel to Storage
-          RNFS.writeFile(RNFS.DownloadDirectoryPath + '/my_exported_file.xlsx', wbout, 'ascii').then((r) => {
-            // console.log('Success', RNFS.ExternalStorageDirectoryPath + '/my_exported_file.xlsx')
-            setFilePath(RNFS.DownloadDirectoryPath + '/my_exported_file.xlsx')
-            setVisibleExport(true)
-          }).catch((e) => {
-            console.log('Error', e);
-          });
-        
-      }else {
+
+      if (listExpenses.length > 0) {
+        let list = []
+        listExpenses.map(item => {
+          let sample_data_to_export = {
+            created_date: item.created_date, created_time: item.created_time,
+            descripbe: item.descripbe, id: item.id, id_borrow: item.id_borrow, id_wallet: item.id_wallet,
+            in_out: item.in_out, price: item.price, price_borrow: item.price_borrow, type: item.type, type_borrow: item.type_borrow
+          };
+          list.push(sample_data_to_export)
+        })
+        let wb = XLSX.utils.book_new();
+        let ws = XLSX.utils.json_to_sheet(list)
+        XLSX.utils.book_append_sheet(wb, ws, "Users")
+        const wbout = XLSX.write(wb, { type: 'binary', bookType: "xlsx" });
+        const filePath = `${RNFS.DocumentDirectoryPath}/my_exported_file.xlsx`;
+        // Write generated excel to Storage
+        RNFS.writeFile(filePath, wbout, 'ascii').then((r) => {
+        const filePath = `${RNFS.DocumentDirectoryPath}/my_exported_file.xlsx`;
+         //  console.log('Success', filePath)
+          setFilePath(filePath)
+          setVisibleExport(true)
+        }).catch((e: any) => {
+          console.log('Error', e);
+        });
+
+      } else {
         Toast.show(t('txt.no.data'), Toast.LONG);
       }
     })
-    
+
 
   }
 

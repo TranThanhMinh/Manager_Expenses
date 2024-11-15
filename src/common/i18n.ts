@@ -128,7 +128,8 @@ i18n
                     'txt.no.data': 'No data!',
                     'text.network': 'Check network connection',
                     'text.close': 'Close',
-                     'text.turnoffapp':'Turn the app off and back on'
+                    'text.turnoffapp': 'Turn the app off and back on',
+                    'text.importexcel': 'Import file Excel'
                 }
             },
             vi: {
@@ -241,6 +242,7 @@ i18n
                     'text.month': 'Tháng',
                     'text.select.day': 'Chọn theo ngày',
                     'text.export': 'Xuất file excel',
+                    'text.importexcel': 'Nhập file Excel',
                     'text.export.shared': 'Chia sẻ file excel',
                     'text.export.close': 'Đóng',
                     'text.export.success': 'Đã chia sẻ',
@@ -248,7 +250,7 @@ i18n
                     'txt.no.data': 'Không có dữ liệu',
                     'text.network': 'Kiểm tra kết nối mạng',
                     'text.close': 'Đóng',
-                    'text.turnoffapp':'Tắt và bật lại ứng dụng'
+                    'text.turnoffapp': 'Tắt và bật lại ứng dụng'
                 }
 
             }
