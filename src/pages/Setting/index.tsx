@@ -14,9 +14,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { removeAll } from '../../data/ExpensesServices ';
 import { updateWallet, getListwalletDefault } from "../../data/WalletServices";
 import {
-  addExpenses,  updateBorrow
+  addExpenses, updateBorrow
 } from "../../data/ExpensesServices ";
-import { getListExpenses } from '../../data/ExpensesServices ';
+import { getListExpenses, existExpenses } from '../../data/ExpensesServices ';
 import Banner from '../../component/Banner';
 import { Linking } from 'react-native';
 import Toast from 'react-native-simple-toast';
@@ -31,7 +31,6 @@ const Setting = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const [visibleLanguage, setVisibleLanguage] = useState(false)
   const themeContext = useContext(ThemeContext)
-  const { theme, setTheme } = useColors({ themeName: 'Light' })
   const [visibleColor, setVisibleColor] = useState(false);
   const [visibleRemove, setVisibleRemove] = useState(false);
   const [visibleExport, setVisibleExport] = useState(false);
@@ -166,20 +165,23 @@ const Setting = ({ navigation, route }) => {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-  
+
       const filePath = result[0].uri;
       const fileContent = await RNFS.readFile(filePath, 'base64');
       const workbook = XLSX.read(fileContent, { type: 'base64' });
-  
+
       const sheetName = workbook.SheetNames[0];
       const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-  
-      
 
-      sheetData.map((item)=>{
-        console.log(item);
-        insertExpenses(item)
-      })
+      sheetData.map((item) => {
+
+        existExpenses(item.id).then(it => {
+          if (it.length == 0) {
+            insertExpenses(item)
+          }else console.log("exist", it.id)
+        })
+
+      });
       Toast.show(t('txt.done'), Toast.LONG);
 
     } catch (error) {
@@ -193,24 +195,24 @@ const Setting = ({ navigation, route }) => {
 
 
 
-  const insertExpenses =(item)=>{
-    const {created_date,created_time,descripbe,id,id_borrow,id_wallet,in_out,price,price_borrow,type,type_borrow} = item
+  const insertExpenses = (item) => {
+    const { created_date, created_time, descripbe, id, id_borrow, id_wallet, in_out, price, price_borrow, type, type_borrow } = item
     addExpenses(id, created_time,
       created_date,
       descripbe, price, price_borrow, type, type_borrow, id_borrow, idWallet, in_out).then(task => {
 
-      if (in_out == 0)
-        updateWallet(wallet.default, wallet.money - parseFloat(price))
-      else updateWallet(wallet.default, wallet.money + parseFloat(price))
-      if (type == 13 || type == 15) {
-        updateBorrow(idBorrow, priceBorrow).then(task => {
-          // props.goToBack()
-        })
-      } else {
-        // props.goToBack()
-      }
-   
-    })
+        // if (in_out == 0)
+        //   updateWallet(wallet.default, wallet.money - parseFloat(price))
+        // else updateWallet(wallet.default, wallet.money + parseFloat(price))
+        // if (type == 13 || type == 15) {
+        //   updateBorrow(idBorrow, priceBorrow).then(task => {
+        //     // props.goToBack()
+        //   })
+        // } else {
+        //   // props.goToBack()
+        // }
+
+      })
   }
 
   function exportFile() {
@@ -269,25 +271,25 @@ const Setting = ({ navigation, route }) => {
 
   const requestWritePermission = async () => {
     if (Platform.OS === 'android' && Platform.Version < 30) { // Android 10 and below
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                {
-                    title: "Storage Permission",
-                    message: "App needs access to your storage to save files",
-                    buttonNeutral: "Ask Me Later",
-                    buttonNegative: "Cancel",
-                    buttonPositive: "OK",
-                }
-            );
-            return granted === PermissionsAndroid.RESULTS.GRANTED;
-        } catch (err) {
-            console.warn(err);
-            return false;
-        }
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: "Storage Permission",
+            message: "App needs access to your storage to save files",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK",
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
     }
     return true; // No permission needed for iOS or Android 11+
-};
+  };
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
@@ -372,8 +374,8 @@ const Setting = ({ navigation, route }) => {
         const filePath = `${RNFS.DocumentDirectoryPath}/my_exported_file.xlsx`;
         // Write generated excel to Storage
         RNFS.writeFile(filePath, wbout, 'ascii').then((r) => {
-        const filePath = `${RNFS.DocumentDirectoryPath}/my_exported_file.xlsx`;
-         //  console.log('Success', filePath)
+          const filePath = `${RNFS.DocumentDirectoryPath}/my_exported_file.xlsx`;
+          //  console.log('Success', filePath)
           setFilePath(filePath)
           setVisibleExport(true)
         }).catch((e: any) => {
@@ -391,7 +393,6 @@ const Setting = ({ navigation, route }) => {
   const saveColor = (color) => {
     try {
       AsyncStorage.setItem("color", color);
-      setTheme(color)
       themeContext.toggleTheme()
     } catch (error) {
       console.log("color error 2")

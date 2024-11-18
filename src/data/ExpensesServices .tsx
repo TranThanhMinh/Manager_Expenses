@@ -2,33 +2,37 @@ import realm from './realm'
 
 export const getListExpenses = () => {
   const tasks = realm.objects('Expenses')
-
   return Promise.resolve(tasks)
+}
+
+export const existExpenses = (id) => {
+  
+ const sql = realm.objects('Expenses').filter(item => item.id == id)
+ return Promise.resolve(sql)
 }
 
 export const getListExpensesDate = (created_date) => {
   const tasks = realm.objects('Expenses').filter(item => item.created_date == created_date)
-
   return Promise.resolve(tasks)
 }
 
 export const getListExpensesFromDateToDate = (from_date, to_date) => {
-  const tasks = realm.objects('Expenses').filter(item=>item.created_date >=from_date && item.created_date <=to_date)
+  const tasks = realm.objects('Expenses').filter(item => item.created_date >= from_date && item.created_date <= to_date)
   return Promise.resolve(tasks)
 }
 
 
 export const getListExpensesBorrow = (id) => {
-  const tasks = realm.objects('Expenses').filter(item=>item.type == id)
+  const tasks = realm.objects('Expenses').filter(item => item.type == id)
   return Promise.resolve(tasks)
 }
 
 export const getListExpensesBorrow2 = (id) => {
-  const tasks = realm.objects('Expenses').filter(item=>item.type == id && item.price_borrow > 0)
+  const tasks = realm.objects('Expenses').filter(item => item.type == id && item.price_borrow > 0)
   return Promise.resolve(tasks)
 }
 
-export const addExpenses = (id, created_time, created_date, descripbe, price,price_borrow, type,type_borrow,id_borrow,id_wallet,in_out) => {
+export const addExpenses = (id, created_time, created_date, descripbe, price, price_borrow, type, type_borrow, id_borrow, id_wallet, in_out) => {
   if (!id) {
     return Promise.reject('Expenses name is empty')
   }
@@ -41,10 +45,10 @@ export const addExpenses = (id, created_time, created_date, descripbe, price,pri
     price: price,
     price_borrow: price_borrow,
     type: type,
-    type_borrow:type_borrow,
+    type_borrow: type_borrow,
     id_borrow: id_borrow,
     id_wallet: id_wallet,
-    in_out:in_out
+    in_out: in_out
   }
 
   const tasks = realm.objects('Expenses')
@@ -80,17 +84,17 @@ export const removeTask2 = (id) => {
   })
 }
 
-export  const removeAll =()=>{
+export const removeAll = () => {
   const data = realm.objects('Expenses')
-  return new Promise(resolve=>{
-    realm.write(()=>{
+  return new Promise(resolve => {
+    realm.write(() => {
       realm.delete(data)
       resolve(data)
     })
   })
 }
 
-export const updateTask = (id, descripbe, price,price_borrow,typeExpenses,created_date,inOut) => {
+export const updateTask = (id, descripbe, price, price_borrow, typeExpenses, created_date, inOut) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   return new Promise(resolve => {
     realm.write(() => {
@@ -105,21 +109,21 @@ export const updateTask = (id, descripbe, price,price_borrow,typeExpenses,create
   })
 }
 
-export const updateBorrow = (id,price_borrow) => {
+export const updateBorrow = (id, price_borrow) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   return new Promise(resolve => {
     realm.write(() => {
-      puppies[0].price_borrow = puppies[0].price_borrow - price_borrow 
+      puppies[0].price_borrow = puppies[0].price_borrow - price_borrow
       resolve(puppies)
     })
   })
 }
 
-export const updateBorrow2 = (id,price_borrow) => {
+export const updateBorrow2 = (id, price_borrow) => {
   const puppies = realm.objects("Expenses").filter(item => item.id == id)
   return new Promise(resolve => {
     realm.write(() => {
-      puppies[0].price_borrow = puppies[0].price_borrow + price_borrow 
+      puppies[0].price_borrow = puppies[0].price_borrow + price_borrow
       resolve(puppies)
     })
   })
