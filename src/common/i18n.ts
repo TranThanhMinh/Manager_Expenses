@@ -129,7 +129,9 @@ i18n
                     'text.network': 'Check network connection',
                     'text.close': 'Close',
                     'text.turnoffapp': 'Turn the app off and back on',
-                    'text.importexcel': 'Import file Excel'
+                    'text.importexcel': 'Import file Excel',
+                    'txt.revenue':'Revenue: ',
+                    'txt.expenditure':'Expenditure: '
                 }
             },
             vi: {
@@ -250,7 +252,9 @@ i18n
                     'txt.no.data': 'Không có dữ liệu',
                     'text.network': 'Kiểm tra kết nối mạng',
                     'text.close': 'Đóng',
-                    'text.turnoffapp': 'Tắt và bật lại ứng dụng'
+                    'text.turnoffapp': 'Tắt và bật lại ứng dụng',
+                    'txt.revenue':'Tổng thu: ',
+                    'txt.expenditure':'Tổng chi: '
                 }
 
             }

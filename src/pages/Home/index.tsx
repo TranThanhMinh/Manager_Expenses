@@ -38,6 +38,7 @@ const Home = (props) => {
   const { colors } = useTheme()
   const [wallet, setWallet] = useState([]);
   const [sum, setSum] = useState(0);
+  const [money, setMoney] = useState(0);
   const isVisible = useIsFocused();
   const { danangReducer } = useSelector(state => state)
   const dispatch = useDispatch();
@@ -52,10 +53,6 @@ const Home = (props) => {
   const [toDate, setSelectedToDate] = useState(0)
   const [isFromDate, setFromDate] = useState(false);
   const [isToDate, setToDate] = useState(false);
-  const [textSearch, setTextSearch] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [isType, setIsType] = useState(true)
-
   const [type, setType] = useState(0)
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -155,8 +152,10 @@ const Home = (props) => {
 
   const getWallet = () => {
     getListwalletDefault(true).then(task => {
-      if (task.length > 0)
+      if (task.length > 0){
         setWallet(task)
+        setMoney(task[0].money)
+      }
       else addWalletDefault()
     })
   }
@@ -491,7 +490,7 @@ const Home = (props) => {
   const viewBalance = () => (
     <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Color.blue, padding: 10 }}>
       <Text style={[style.textBalance, { color: colors.title, fontWeight: 'bold' }]}>{t('text.balance')}</Text>
-      <Text style={[style.textPrice, { color: 'white' }]}> {Utils.numberWithCommas(parseFloat( wallet[0].money))} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
+      <Text style={[style.textPrice, { color: 'white' }]}> {Utils.numberWithCommas(money)} <Text style={style.textUnit}>{t('text.unit')}</Text> </Text>
     </View>
   )
 
@@ -575,7 +574,7 @@ const Home = (props) => {
           {
             sumOUT != 0 ?
               <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
-                <Text style={{ width: 80, fontSize: 18 }}>Tổng chi: </Text>
+                <Text style={{fontSize: 18, color: colors.title }}>{t('txt.expenditure') }</Text>
                 <Text style={{ color: Color.red, fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
               </View>
               : null
@@ -584,7 +583,7 @@ const Home = (props) => {
           {
             sumIN != 0 ?
               <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
-                <Text style={{ width: 80, fontSize: 18 }}>Tổng thu: </Text>
+                <Text style={{fontSize: 18 ,color: colors.title}}>{t('txt.revenue') }</Text>
                 <Text style={{ color: 'green', fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumIN))} {t('text.unit')}</Text>
               </View>
               : null
