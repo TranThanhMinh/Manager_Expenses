@@ -201,16 +201,16 @@ const Setting = ({ navigation, route }) => {
       created_date,
       descripbe, price, price_borrow, type, type_borrow, id_borrow, idWallet, in_out).then(task => {
 
-        // if (in_out == 0)
-        //   updateWallet(wallet.default, wallet.money - parseFloat(price))
-        // else updateWallet(wallet.default, wallet.money + parseFloat(price))
-        // if (type == 13 || type == 15) {
-        //   updateBorrow(idBorrow, priceBorrow).then(task => {
-        //     // props.goToBack()
-        //   })
-        // } else {
-        //   // props.goToBack()
-        // }
+        if (in_out == 0)
+          updateWallet(wallet.default, wallet.money - parseFloat(price))
+        else updateWallet(wallet.default, wallet.money + parseFloat(price))
+        if (type == 13 || type == 15) {
+          updateBorrow(idBorrow, priceBorrow).then(task => {
+            // props.goToBack()
+          })
+        } else {
+          // props.goToBack()
+        }
 
       })
   }

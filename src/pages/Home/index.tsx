@@ -90,10 +90,6 @@ const Home = (props) => {
       getWeeks()
     else if (item.index == 2)
       getMonths()
-    else {
-      //getWeeks()
-      //console.log(select)
-    }
   }, [select])
 
 
@@ -117,14 +113,13 @@ const Home = (props) => {
         getWeeks()
       else if (item.index == 2)
         getMonths()
-      else {
-        //getWeeks()
-        // console.log(select)
-      }
+      else getListDate(fromDate, toDate)
+      
       getWallet()
-
-    } else
+    } else {
       setListExpenses([])
+    }
+
     setListSearch([])
     setTimeout(() => {
       setLoading(true)
@@ -132,10 +127,6 @@ const Home = (props) => {
 
 
   }, [isVisible]);
-
-
-
-
 
   useEffect(() => {
     const { data, type, message } = danangReducer
@@ -152,7 +143,7 @@ const Home = (props) => {
 
   const getWallet = () => {
     getListwalletDefault(true).then(task => {
-      if (task.length > 0){
+      if (task.length > 0) {
         setWallet(task)
         setMoney(task[0].money)
       }
@@ -231,11 +222,12 @@ const Home = (props) => {
     })
   }
 
-  const getListDate = (fromdate, toDate) => {
+  const getListDate = (fromdate: number, toDate: number) => {
     let from = moment(momentFormat(fromdate), "DD-MM-YYYY").toDate().getTime()
     setSelectedFromDate(from)
     setSelectedToDate(toDate)
     getListExpensesFromDateToDate(from, toDate).then(task => {
+      console.log("data ", task)
       filterDate(task)
       setListSearch(task)
     })
@@ -533,7 +525,6 @@ const Home = (props) => {
           disableAutoScroll={false}
           defaultButtonText={t(selectDropdown[type].name)}
           onSelect={(selectedItem, index) => {
-            setIsType(true)
             handleSearch(selectedItem.id)
           }}
 
@@ -569,27 +560,27 @@ const Home = (props) => {
     </View>
   )
 
-  const inOutExpenses = ()=>(
+  const inOutExpenses = () => (
     <View style={{ paddingHorizontal: 10 }}>
-          {
-            sumOUT != 0 ?
-              <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
-                <Text style={{fontSize: 18, color: colors.title }}>{t('txt.expenditure') }</Text>
-                <Text style={{ color: Color.red, fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
-              </View>
-              : null
+      {
+        sumOUT != 0 ?
+          <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
+            <Text style={{ fontSize: 18, color: colors.title }}>{t('txt.expenditure')}</Text>
+            <Text style={{ color: Color.red, fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumOUT))} {t('text.unit')}</Text>
+          </View>
+          : null
 
-          }
-          {
-            sumIN != 0 ?
-              <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
-                <Text style={{fontSize: 18 ,color: colors.title}}>{t('txt.revenue') }</Text>
-                <Text style={{ color: 'green', fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumIN))} {t('text.unit')}</Text>
-              </View>
-              : null
+      }
+      {
+        sumIN != 0 ?
+          <View style={{ flexDirection: 'row', alignContent: 'center', marginTop: 5 }}>
+            <Text style={{ fontSize: 18, color: colors.title }}>{t('txt.revenue')}</Text>
+            <Text style={{ color: 'green', fontSize: 18, fontWeight: 'bold' }}>{Utils.numberWithCommas(parseFloat(sumIN))} {t('text.unit')}</Text>
+          </View>
+          : null
 
-          }
-        </View>
+      }
+    </View>
   )
 
 
