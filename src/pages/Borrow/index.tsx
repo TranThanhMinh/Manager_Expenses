@@ -123,7 +123,7 @@ const Borrow = (props) => {
                   }}>{momentFormat(parseFloat(item.created_date))}</Text>
                 </View>
 
-                <View style={{ backgroundColor: 'black', height: 0.7, margin: 5 }} />
+                <View style={{ backgroundColor: colors.title, height: 0.7, margin: 5 }} />
                 <FlatList
                   data={newList}
                   showsVerticalScrollIndicator={false}
