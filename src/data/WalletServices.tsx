@@ -15,7 +15,7 @@ export const getListwalletDefault = (type) => {
   return Promise.resolve(tasks)
 }
 
-export const addWallet = (id, name, money, created_date,type) => {
+export const addWallet = (id: string, name: string, money: number, created_date: string,type: boolean) => {
   if (!id) {
     return Promise.reject('Expenses name is empty')
   }
